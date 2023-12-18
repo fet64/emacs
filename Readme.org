@@ -143,6 +143,9 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 * Org
 #+begin_src emacs-lisp
   (require 'org-tempo)
+
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
 #+end_src
 
 * Themes and visual stuff
@@ -197,6 +200,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
   (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
   (global-display-line-numbers-mode 1)
+  (setq-default display-line-numbers-width 3)
   (global-visual-line-mode t)   ;; Enable truncated lines
   (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
 
@@ -218,6 +222,22 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (setq-default tab-width 4)
   (setq-default fill-column 80)
   (setq line-move-visual t)
+
+  ;; BELL/WARNING
+  (setq visible-bell nil)
+  (setq ring-bell-function 'ignore)
+
+  ;; SCROLLING
+  (setq scroll-conservatively 101)
+  (setq mouse-wheel-follow-mouse 't
+		mouse-wheel-progressive-speed nil)
+  (setq mac-redisplay-dont-reset-vscroll t
+		mac-mouse-wheel-smooth-scroll nil)
+
+  (setq what-cursor-show-names t) ;; improves C-x =
+
+  ;; DIRED
+  (setq dired-kill-when-opening-new-dired-buffer t)
 #+end_src
 
 
