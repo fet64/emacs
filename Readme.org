@@ -113,6 +113,16 @@ Elpaca package manager
 
 #+end_src
 
+* Orderless
+#+begin_src emacs-lisp
+  (use-package orderless
+	:ensure t
+	:custom
+	(completion-styles '(orderless basic))
+	(completion-category-overrides '((file (styles basic partial-completion)))))
+
+#+end_src
+
 * Saving customizations
 I don't want saved customizations in my init.el file.
 Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
