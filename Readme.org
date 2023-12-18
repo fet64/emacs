@@ -11,6 +11,11 @@
 
 This is a work in progress...
 
+To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory:
+#+begin_src emacs-lisp
+(org-babel-tangle)
+#+end_src
+
 People who inspire me:
 - [[https://protesilaos.com]]
 - [[https://github.com/jakebox/jake-emacs/tree/main]]
