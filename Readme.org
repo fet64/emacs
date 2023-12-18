@@ -90,6 +90,13 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 
 #+end_src
 
+* Load local scripts
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.config/emacs/scripts/")
+  (require 'buffer-move)
+
+#+end_src
+
 * Magit
 Magit is a complete text-based user interface to Git.
 [[https://magit.vc]]
