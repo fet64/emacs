@@ -5,8 +5,8 @@ This is a work in progress...
 
 People who inspire me:
 - [[https://github.com/jakebox/jake-emacs/tree/main]]
-[[- https://sachachua.com/dotemacs/index.html]]
-[[- https://gitlab.com/dwt1/configuring-emacs]]
+- [[ https://sachachua.com/dotemacs/index.html]]
+-[[ https://gitlab.com/dwt1/configuring-emacs]]
 
 
 * MacOS Keyboard Configuration
