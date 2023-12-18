@@ -9,6 +9,7 @@
 
 *Last revised and exported on {{{latest-export-date}}}.*
 
+
 This is a work in progress...
 
 To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory:
@@ -22,6 +23,14 @@ People who inspire me:
 - [[https://sachachua.com/dotemacs/index.html]]
 - [[https://gitlab.com/dwt1/configuring-emacs]]
 - [[https://cestlaz.github.io]]
+
+* Table of contents
+:PROPERTIES:
+:TOC:      :include all :depth 3
+:END:
+:CONTENTS:
+
+:END:
 
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
@@ -459,6 +468,9 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
   (use-package org-bullets)
   (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+
+  ;(require 'org-make-toc)
+  (use-package org-make-toc)
 #+end_src
 
 * Themes and visual stuff
