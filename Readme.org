@@ -2,7 +2,7 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:4 author:t email:t num:t
+#+options: ':t toc:nil author:t email:t num:nil
 #+startup: content indent
 #+macro: latest-export-date (eval (format-time-string "%F %T %z"))
 
