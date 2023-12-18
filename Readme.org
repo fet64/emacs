@@ -4,9 +4,11 @@
 This is a work in progress...
 
 People who inspire me:
+- [[https://protesilaos.com]]
 - [[https://github.com/jakebox/jake-emacs/tree/main]]
 - [[https://sachachua.com/dotemacs/index.html]]
 - [[https://gitlab.com/dwt1/configuring-emacs]]
+- [[https://cestlaz.github.io]]
 
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp
@@ -262,6 +264,9 @@ By default, Emacs saves backup files in the current directory. These are files e
 		 "." '(counsel-find-file :wk "Find file")
 		 "u" '(universal-argument :wk "Universal argument")
 		 "TAB TAB" '(comment-line :wk "Comment lines")
+		 "i" '(ibuffer :wk "Ibuffer")
+		 "d" '(dired :wk "Dired")
+		 
 		 )
 
 		(fet/leader-keys
@@ -449,7 +454,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 	(menu-bar-mode 1)             ;; I like having access to the menu-bar
 
 	(delete-selection-mode 1)     ;; You can select text and delete it by typing
-	(electric-indent-mode -1)      ;; Turn off the weird indenting that Emacs does by default
+	(electric-indent-mode 1)      ;; Turn off the weird indenting that Emacs does by default
 	(electric-pair-mode -1)       ;; turns on the automatic parens pairing, I don't like it
 
 	(global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
