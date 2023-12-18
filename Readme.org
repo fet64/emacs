@@ -32,6 +32,7 @@ People who inspire me:
 
 :END:
 
+* Early-init.el
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
 	;;; early-init.el --- Fet64's early-init.el file
