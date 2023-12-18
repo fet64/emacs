@@ -289,7 +289,19 @@ By default, Emacs saves backup files in the current directory. These are files e
 		  "d d" '(dired :wk "Open dired")
 		  "d j" '(dired-jump :wk "Dired jump to current")
 		  "d n" '(neotree-dir :wk "Open directory in neotree")
-		  "d p" '(peep-dired :wk "Peep dired")
+		  )
+
+		(fet/leader-keys
+		  "e" '(nil :wk "Eshell/Evaluate")
+		  "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+		  "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+		  "e e" '(eval-expression :wk "Evaluate an elisp expression")
+		  "e h" '(counsel-esh-history :wk "Eshell history")
+		  "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+		  "e r" '(eval-region :wk "Evaluate elisp in region")
+		  "e R" '(eww-reload :wk "Reload current page in EWW")
+		  "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
+		  "e w" '(eww :wk "EWW emacs web broswer")
 		  )
 
 		) 
