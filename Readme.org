@@ -94,6 +94,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 Magit is a complete text-based user interface to Git.
 [[https://magit.vc]]
 
+[[./images/magit-400x400px.png]]
+
 A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
 
 #+begin_src emacs-lisp
