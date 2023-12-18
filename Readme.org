@@ -1,5 +1,13 @@
 #+TITLE: Fet64's Emacs Configuration File
 #+AUTHOR: Fet64
+#+email: fet64@outlook.com
+#+language: en
+#+options: ':t toc:nil author:t email:t num:t
+#+startup: content indent
+#+macro: latest-export-date (eval (format-time-string "%F %T %z"))
+
+
+*Last revised and exported on {{{latest-export-date}}}.*
 
 This is a work in progress...
 
@@ -10,8 +18,39 @@ People who inspire me:
 - [[https://gitlab.com/dwt1/configuring-emacs]]
 - [[https://cestlaz.github.io]]
 
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
+	;;; early-init.el --- Fet64's early-init.el file
+	;;; Commentary:
+	;;; Code:
+
+	(setq package-enable-at-startup nil)
+
+	;; Garbage collections
+	(setq gc-cons-percentage 0.6)
+
+	;; Compile warnings
+	(setq warning-minimum-level :emergency)
+	(setq native-comp-async-report-warnings-errors 'silent)
+	(setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
+
+	;; Misc optimizations
+	(setq idle-update-delay 1.0)
+	(setq-default bidi-display-reordering 'left-to-right
+				  bidi-paragraph-direction 'left-to-right)
+
+	(setq-default cursor-in-non-selected-windows nil)
+	(setq highlight-nonselected-windows nil)
+	(setq fast-but-imprecise-scrolling t)
+	(setq inhibit-compacting-font-caches t)
+
+	;;; early-init.el ends here
+
+#+end_src
+
+
+
 * MacOS Keyboard Configuration
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (setq mac-command-modifier   'meta
 	mac-option-modifier         nil
 	mac-control-modifier       'control
@@ -44,7 +83,7 @@ Elpaca package manager
 
 
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (defvar elpaca-installer-version 0.6)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -90,7 +129,7 @@ Elpaca package manager
 #+end_src
 
 * Garbage Collections and Collector
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package gcmh
 	:diminish gcmh-mode
 	:config
@@ -114,7 +153,7 @@ Elpaca package manager
 #+end_src
 
 * Orderless
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package orderless
 	:ensure t
 	:custom
@@ -127,21 +166,21 @@ Elpaca package manager
 I don't want saved customizations in my init.el file.
 Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (setq custom-file "~/.config/emacs/emacs-custom.el")
   (load custom-file)
 
 #+end_src
 
 * Load local scripts
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (add-to-list 'load-path "~/.config/emacs/scripts/")
   (require 'buffer-move)
 
 #+end_src
 
 * Registers
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (setq register-preview-delay 0)
   (set-register ?C (cons 'file "~/.config/emacs/Readme.org"))
   (set-register ?I (cons 'file "~/.config/emacs/init.el"))
@@ -153,7 +192,7 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 * Backups, history and trash
 By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   ;; Backup
   (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
   (setq delete-old-versions -1)
@@ -185,7 +224,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Projectile
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package projectile
 	:ensure t
 	:init
@@ -198,7 +237,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Company
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package company
 	:defer 2
 	:diminish
@@ -218,7 +257,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Ivy, counsel
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package counsel
 	:after ivy
 	:diminish
@@ -258,7 +297,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 * General
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
 	  (use-package general
 		:config
 		(general-evil-setup)
@@ -276,7 +315,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 		 "TAB TAB" '(comment-line :wk "Comment lines")
 		 "i" '(ibuffer :wk "Ibuffer")
 		 "d" '(dired :wk "Dired")
-		 
+		 "t" '(org-babel-tangle :wk "org-babel-tangle")
+
 		 )
 
 		(fet/leader-keys
@@ -324,7 +364,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Neotree
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package neotree
 	:config
 	(setq neo-smart-open t
@@ -344,7 +384,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Misc Packages
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package ace-window :defer t)
   (use-package restart-emacs :defer t)
   (use-package diminish)
@@ -355,7 +395,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 * Evil mode
 [[https://github.com/emacs-evil/evil]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package evil
 	 :init
 	 (setq evil-want-integration t
@@ -383,7 +423,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 * Hydras
 [[https://github.com/abo-abo/hydra]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package hydra :commands defhydra)
   (use-package use-package-hydra)
 
@@ -391,7 +431,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 ** Hydra window movement
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
  
 
 #+End_src
@@ -402,7 +442,7 @@ Magit is a complete text-based user interface to Git.
 
 A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package transient)
   (use-package magit)
 
@@ -410,7 +450,7 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 
 * Org
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (require 'org-tempo)
 
   (use-package org-bullets)
@@ -420,7 +460,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 * Themes and visual stuff
 ** All the icons
 [[https://github.com/domtronn/all-the-icons.el]]
-#+begin_src emacs-lisp
+
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package all-the-icons
     :ensure t
     :if (display-graphic-p))
@@ -435,7 +476,7 @@ Doom themes: [[https://github.com/doomemacs/themes]]
 
 Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t
@@ -458,7 +499,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 * General Settings (GUI and sane defaults)
 ** Sane defaults
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
 	(tool-bar-mode -1)
 	(scroll-bar-mode -1)
 	(menu-bar-mode 1)             ;; I like having access to the menu-bar
@@ -513,7 +554,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 ** Which-key
 [[https://github.com/justbur/emacs-which-key]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package which-key
   :init
     (which-key-mode 1)
