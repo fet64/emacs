@@ -90,6 +90,16 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 
 #+end_src
 
+* Magit
+Migit is a complete text-based user interface to Git.
+[[https://magit.vc]]
+
+#+begin_src emacs-lisp
+  (use-package transient)
+  (use-package magit)
+
+#+end_src
+
 * Org
 #+begin_src emacs-lisp
   (require 'org-tempo)
@@ -161,7 +171,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (setq frame-resize-pixelwise t)
   (setq ns-pop-up-frames nil)
   (setq window-resize-pixelwise nil)
-  (setq split-width-threshold 80)
+  ;;(setq split-width-threshold 80)
 
   ;; Lines
   (setq-default truncate-lines t)
