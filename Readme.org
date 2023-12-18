@@ -69,8 +69,7 @@ People who inspire me:
 
 #+end_src
 * Elpaca Package Manager
-Elpaca package manager
-** Quick start
+
 [[https://github.com/progfolio/elpaca]]
 |------------------------------------+--------------------+--------------------------------------------------|
 | Operation                          | Keys               | Commmands                                        |
