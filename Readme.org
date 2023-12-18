@@ -24,41 +24,6 @@ People who inspire me:
 - [[https://gitlab.com/dwt1/configuring-emacs]]
 - [[https://cestlaz.github.io]]
 
-* Table of contents
-:PROPERTIES:
-:TOC:      :include all :depth 3
-:END:
-:CONTENTS:
-- [[#table-of-contents][Table of contents]]
-- [[#early-initel][Early-init.el]]
-- [[#macos-keyboard-configuration][MacOS Keyboard Configuration]]
-- [[#elpaca-package-manager][Elpaca Package Manager]]
-  - [[#quick-start][Quick start]]
-- [[#garbage-collections-and-collector][Garbage Collections and Collector]]
-- [[#orderless][Orderless]]
-- [[#saving-customizations][Saving customizations]]
-- [[#load-local-scripts][Load local scripts]]
-- [[#registers][Registers]]
-- [[#backups-history-and-trash][Backups, history and trash]]
-- [[#projectile][Projectile]]
-- [[#company][Company]]
-- [[#ivy-counsel][Ivy, counsel]]
-- [[#general][General]]
-- [[#neotree][Neotree]]
-- [[#misc-packages][Misc Packages]]
-- [[#evil-mode][Evil mode]]
-- [[#hydras][Hydras]]
-  - [[#hydra-window-movement][Hydra window movement]]
-- [[#magit][Magit]]
-- [[#org][Org]]
-- [[#themes-and-visual-stuff][Themes and visual stuff]]
-  - [[#all-the-icons][All the icons]]
-  - [[#doom-theme-and-modeline][Doom theme and modeline]]
-- [[#general-settings-gui-and-sane-defaults][General Settings (GUI and sane defaults)]]
-  - [[#sane-defaults][Sane defaults]]
-  - [[#which-key][Which-key]]
-:END:
-
 * Early-init.el
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
