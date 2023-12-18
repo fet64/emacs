@@ -48,11 +48,11 @@ Elpaca package manager
 	 (build (expand-file-name "elpaca/" elpaca-builds-directory))
 	 (order (cdr elpaca-order))
 	 (default-directory repo))
-    (add-to-list 'load-path (if (file-exists-p build) build repo))
-    (unless (file-exists-p repo)
-      (make-directory repo t)
-      (when (< emacs-major-version 28) (require 'subr-x))
-      (condition-case-unless-debug err
+	(add-to-list 'load-path (if (file-exists-p build) build repo))
+	(unless (file-exists-p repo)
+	  (make-directory repo t)
+	  (when (< emacs-major-version 28) (require 'subr-x))
+	  (condition-case-unless-debug err
 	  (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
 		   ((zerop (call-process "git" nil buffer t "clone"
 					 (plist-get order :repo) repo)))
@@ -63,19 +63,20 @@ Elpaca package manager
 					 "--eval" "(byte-recompile-directory \".\" 0 'force)")))
 		   ((require 'elpaca))
 		   ((elpaca-generate-autoloads "elpaca" repo)))
-	      (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-	    (error "%s" (with-current-buffer buffer (buffer-string))))
+		  (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+		(error "%s" (with-current-buffer buffer (buffer-string))))
 	((error) (warn "%s" err) (delete-directory repo 'recursive))))
-    (unless (require 'elpaca-autoloads nil t)
-      (require 'elpaca)
-      (elpaca-generate-autoloads "elpaca" repo)
-      (load "./elpaca-autoloads")))
+	(unless (require 'elpaca-autoloads nil t)
+	  (require 'elpaca)
+	  (elpaca-generate-autoloads "elpaca" repo)
+	  (load "./elpaca-autoloads")))
   (add-hook 'after-init-hook #'elpaca-process-queues)
   (elpaca `(,@elpaca-order))
 
   (elpaca elpaca-use-package
 	  (elpaca-use-package-mode)
 	  (setq elpaca-use-package-by-default t))
+  (elpaca-wait)
 
 #+end_src
 
@@ -133,7 +134,42 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+end_src
 
-* GUI settings
+* General Settings (GUI and sane defaults)
+** Sane defaults
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode 1)             ;; I like having access to the menu-bar
+
+  (delete-selection-mode 1)     ;; You can select text and delete it by typing
+  (electric-indent-mode 1)      ;; Turn off the weird indenting that Emacs does by default
+  (electric-pair-mode -1)       ;; turns on the automatic parens pairing, I don't like it
+
+  (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
+  (global-display-line-numbers-mode 1)
+  (global-visual-line-mode t)   ;; Enable truncated lines
+  (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
+
+  ;; INTERACTION
+  (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
+  (setq confirm-kill-emacs 'yes-or-no-p)  ;; confirm to quit
+  (setq initial-major-mode 'org-mode
+	initial-scratch-message ""
+	initial-buffer-choice t)
+
+  ;; Window
+  (setq frame-resize-pixelwise t)
+  (setq ns-pop-up-frames nil)
+  (setq window-resize-pixelwise nil)
+  (setq split-width-threshold 80)
+
+  ;; Lines
+  (setq-default truncate-lines t)
+  (setq-default tab-width 4)
+  (setq-default fill-column 80)
+  (setq line-move-visual t)
+#+end_src
+
 
 ** Which-key
 [[https://github.com/justbur/emacs-which-key]]
