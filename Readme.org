@@ -247,9 +247,45 @@ By default, Emacs saves backup files in the current directory. These are files e
 * General
 
 #+begin_src emacs-lisp
-	  (use-package general)
+	  (use-package general
+		:config
+		(general-evil-setup)
+
+		(general-create-definer fet/leader-keys
+		  :states '(normal insert visual emacs)
+		  :keymaps 'override
+		  :prefix "SPC"
+		  :global-prefix "C-SPC") ;; access leader in insert mode
+
+		(fet/leader-keys
+		 "SPC" '(counsel-M-x :wk "M-x")
+		 "." '(counsel-find-file :wk "Find file")
+		 "u" '(universal-argument :wk "Universal argument")
+		 "TAB TAB" '(comment-line :wk "Comment lines")
+		 )
+
+		(fet/leader-keys
+		  "b" '(nil :wk "Bookmarks/Buffers")
+		  "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
+		  "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+		  "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+		  "b d" '(bookmark-delete :wk "Delete bookmark")
+		  "b i" '(ibuffer :wk "Ibuffer")
+		  "b k" '(kill-current-buffer :wk "Kill current buffer")
+		  "b K" '(kill-some-buffers :wk "Kill multiple buffers")
+		  "b l" '(list-bookmarks :wk "List bookmarks")
+		  "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
+		  "b n" '(next-buffer :wk "Next buffer")
+		  "b p" '(previous-buffer :wk "Prev buffer")
+		  "b r" '(revert-buffer :wk "Reload buffer")
+		  "b R" '(rename-buffer :wk "Rename buffer")
+		  "b s" '(basic-save-buffer :wk "Save buffer")
+		  "b S" '(save-some-buffers :wk "Save multiple buffers")
+		  "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
+		  )
 
 
+		) 
   ;; end of general-define-key
 #+end_src
 * Misc Packages
@@ -286,8 +322,6 @@ By default, Emacs saves backup files in the current directory. These are files e
 	(define-key evil-motion-state-map (kbd "TAB") nil))
 
   (setq org-return-follows-link t)
-
-  
 
 #+end_src
 
