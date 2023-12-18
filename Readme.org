@@ -79,6 +79,15 @@ Elpaca package manager
 
 #+end_src
 
+* Saving customizations
+I don't want saved customizations in my init.el file.
+Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
+
+#+begin_src emacs-lisp
+  (setq custom-file "~/.config/emacs/emacs-custom.el")
+  (load custom-file)
+
+#+end_src
 
 * Org
 #+begin_src emacs-lisp
