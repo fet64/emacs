@@ -109,6 +109,7 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 
 ** Doom theme and modeline
 Doom themes: [[https://github.com/doomemacs/themes]]
+
 Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+begin_src emacs-lisp
