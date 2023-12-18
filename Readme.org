@@ -182,10 +182,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 * Registers
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (setq register-preview-delay 0)
-  (set-register ?C (cons 'file "~/.config/emacs/Readme.org"))
-  (set-register ?I (cons 'file "~/.config/emacs/init.el"))
-  (set-register ?E (cons 'file "~/.config/emacs/early-init.el"))
-  (set-register ?G (cons 'file "~/.config/emacs/.gitignore"))
+  (set-register ?C (cons 'file "~/dev/emacs/Readme.org"))
+  (set-register ?G (cons 'file "~/dev/emacs/.gitignore"))
 
 #+end_src
 
@@ -569,7 +567,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 	  which-key-min-display-lines 6
 	  which-key-side-window-slot -10
 	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.8
+	  which-key-idle-delay 0.5
 	  which-key-max-description-length 25
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
