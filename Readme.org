@@ -2,7 +2,7 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:nil author:t email:t num:t
+#+options: ':t toc:4 author:t email:t num:t
 #+startup: content indent
 #+macro: latest-export-date (eval (format-time-string "%F %T %z"))
 
@@ -22,6 +22,7 @@ People who inspire me:
 - [[https://sachachua.com/dotemacs/index.html]]
 - [[https://gitlab.com/dwt1/configuring-emacs]]
 - [[https://cestlaz.github.io]]
+
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
 	;;; early-init.el --- Fet64's early-init.el file
