@@ -8,3 +8,4 @@ emacs-custom.el
 elpa/
 transient/
 savehist
+projectile-bookmarks.eld
