@@ -136,6 +136,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 * GUI settings
 
 ** Which-key
+[[https://github.com/justbur/emacs-which-key]]
 
 #+begin_src emacs-lisp
   (use-package which-key
