@@ -157,6 +157,36 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 
+* Evil mode
+[[https://github.com/emacs-evil/evil]]
+
+#+begin_src emacs-lisp
+  (use-package evil
+	:init
+	(setq evil-want-keybinding nil)
+	(setq evil-want-fine-undo t)
+	(setq evil-want-Y-yank-to-eol t)
+	:config
+	(evil-set-initial-state 'debugger-mode 'motion)
+	(evil-set-initial-state 'pdf-view-mode 'motion)
+	(evil-set-initial-state 'bufler-list-mode 'emacs)
+	(evil-set-initial-state 'calc-mode 'emacs)
+	(define-key evil-window-map "\C-q" 'evil-delete-buffer)
+	(define-key evil-window-map "\C-w" 'kill-this-buffer)
+	(define-key evil-motion-state-map "\C-b" 'evil-scroll-up)
+	(define-key evil-motion-state-map [?\s-\\] 'evil-execute-in-emacs-state)
+	(evil-mode 1))
+
+  (use-package evil-surround
+    :after evil
+    :defer 2
+    :config
+    (global-evil-surround-mode 1))
+
+#+end_src
+
+#+RESULTS:
+
 * Magit
 Magit is a complete text-based user interface to Git.
 [[https://magit.vc]]
