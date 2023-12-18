@@ -156,6 +156,70 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 
+* General
+
+#+begin_src emacs-lisp
+  (use-package general)
+
+#+end_src
+* Misc Packages
+#+begin_src emacs-lisp
+  (use-package ace-window :defer t)
+  (use-package unfill :defer t)
+  (use-package burly :defer t)
+  (use-package centered-cursor-mode :diminish centered-cursor-mode)
+  (use-package restart-emacs :defer t)
+  (use-package diminish)
+  (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
+  (use-package bufler
+	:config
+	(setq bufler-filter-buffer-modes nil
+		  bufler-filter-buffer-name-regexps nil)
+	(setf bufler-groups (bufler-defgroups
+						(group
+						 ;; Subgroup collecting all named workspaces.
+						 (auto-workspace))
+						(group
+						 ;; Subgroup collecting all `help-mode' and `info-mode' buffers.
+						 (group-or "*Help/Info*"
+								   (mode-match "*Help*" (rx bos "help-"))
+								   (mode-match "*Info*" (rx bos "info-"))))
+						(group
+						 ;; Subgroup collecting all special buffers (i.e. ones that are not
+						 ;; file-backed), except `magit-status-mode' buffers (which are allowed to fall
+						 ;; through to other groups, so they end up grouped with their project buffers).
+						 (group-and "*Special*"
+									(lambda (buffer)
+									  (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+														   buffer)
+												  (funcall (mode-match "Dired" (rx bos "dired"))
+														   buffer)
+												  (funcall (auto-file) buffer))
+										"*Special*")))
+						 (group
+						  ;; Subgroup collecting these "special special" buffers
+						  ;; separately for convenience.
+						  (name-match "**Special**"
+									  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
+						 (group
+						  ;; Subgroup collecting all other Magit buffers, grouped by directory.
+						  (mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-"))
+						  (auto-directory))
+						 ;; Remaining special buffers are grouped automatically by mode.
+						 ;; (auto-mode)
+						 )
+						(group (dir "~/Dropbox/notes/")
+							   (auto-mode)
+							   (auto-directory))
+						(group (dir "~/Dropbox/org/"))
+						;; Group remaining buffers by directory, then major mode.
+						(auto-directory)
+						(auto-mode)))
+	:general
+	(:keymaps 'bufler-list-mode-map "Q" 'kill-this-buffer))
+
+#+end_src
+
 * Evil mode
 [[https://github.com/emacs-evil/evil]]
 
@@ -179,7 +243,21 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 
-#+RESULTS:
+* Hydras
+[[https://github.com/abo-abo/hydra]]
+
+#+begin_src emacs-lisp
+  (use-package hydra :commands defhydra)
+  (use-package use-package-hydra)
+
+
+#+end_src
+
+** Hydra window movement
+#+begin_src emacs-lisp
+ 
+
+#+End_src
 
 * Magit
 Magit is a complete text-based user interface to Git.
