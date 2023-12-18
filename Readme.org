@@ -91,8 +91,10 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 #+end_src
 
 * Magit
-Migit is a complete text-based user interface to Git.
+Magit is a complete text-based user interface to Git.
 [[https://magit.vc]]
+
+A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
 
 #+begin_src emacs-lisp
   (use-package transient)
