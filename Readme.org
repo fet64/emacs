@@ -6,7 +6,7 @@ This is a work in progress...
 
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp
-    (setq mac-command-modifier       'meta
+    (setq mac-command-modifier   'meta
 	  mac-option-modifier         nil
 	  mac-control-modifier       'control
 	  mac-right-command-modifier 'super
