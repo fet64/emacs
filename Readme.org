@@ -170,6 +170,14 @@ People who inspire me:
 
 #+end_src
 
+* Avy
+#+begin_src emacs-lisp
+  (use-package avy
+    :defer t
+    :config
+    (setq avy-case-fold-search nil))
+
+#+end_src
 * Backups, history and trash
 By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
 
@@ -204,6 +212,12 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 
+* Clipboard
+#+begin_src emacs-lisp
+    (use-package simpleclip
+      :config (simpleclip-mode 1))
+
+#+end_src
 * Company
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package company
@@ -542,6 +556,23 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
           )
 
         ) 
+
+  (general-def
+    :keymaps 'override
+    ;; Emacs
+    "M-x" 'counsel-M-x
+    "s-b" 'counsel-switch-buffer ; super-b
+    ;; Editing
+    "M-v" 'simpleclip-paste
+    "M-V" 'evil-paste-after ; shift-paste uses the internal clipboard
+    "M-c" 'simpleclip-copy
+    ;; Utility
+    "C-c c" 'org-capture
+    "C-c a" 'org-agenda
+    "C-s" 'swiper
+    "M-=" 'count-words
+    "M-j" 'avy-goto-char-2
+    )
   ;; end of general-define-key
 #+end_src
 * Hydras
