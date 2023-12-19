@@ -318,7 +318,7 @@ By default, Emacs saves backup files in the current directory. These are files e
          "TAB TAB" '(comment-line :wk "Comment lines")
          "i" '(ibuffer :wk "Ibuffer")
          "d" '(dired :wk "Dired")
-         "t" '(org-babel-tangle :wk "org-babel-tangle")
+         "T" '(org-babel-tangle :wk "org-babel-tangle")
          "E" '(org-export-dispatch :wk "Export dispatch")
          "m" '(magit-status :wk "Magit status")
 
@@ -400,6 +400,80 @@ By default, Emacs saves backup files in the current directory. These are files e
           "g u" '(magit-unstage-file :wk "Git unstage file")
           )
 
+        (fet/leader-keys
+          "h" '(nil :wk "Help")
+          "h a" '(counsel-apropos :wk "Apropos")
+          "h b" '(counsel-bindings :wk "Desc. bindings")
+          "h c" '(describe-char :wk "Desc. char under cursor")
+          "h d" '(nil :wk "Emaccs documentation")
+          "h d a" '(about-emacs :wk "About Emacs")
+          "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
+          "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
+          "h d m" '(info-emacs-manual :wk "The Emacs manual")
+          "h d n" '(view-emacs-news :wk "View Emacs news")
+          "h d o" '(describe-distribution :wk "How to obtain Emacs")
+          "h d p" '(view-emacs-problems :wk "View Emacs problems")
+          "h d t" '(view-emacs-todo :wk "View Emacs todo")
+          "h d w" '(describe-no-warranty :wk "Describe no warranty")
+          "h e" '(view-echo-area-messages :wk "View echo area messages")
+          "h f" '(describe-function :wk "Desc. function")
+          "h F" '(describe-face :wk "Desc. face")
+          "h g" '(describe-gnu-project :wk "Desc. GNU Project")
+          "h i" '(info :wk "Info")
+          "h I" '(describe-input-method :wk "Desc. input method")
+          "h k" '(describe-key :wk "Desc. key")
+          "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
+          "h L" '(describe-language-environment :wk "Desc. language environment")
+          "h m" '(describe-mode :wk "Desc. mode")
+          "h t" '(load-theme :wk "Load theme")
+          "h v" '(describe-variable :wk "Desc. variable")
+          "h w" '(where-is :wk "Prints keybinding for command if set")
+          "h x" '(describe-command :wk "Display full documentation for command")
+          )
+
+        (fet/leader-keys
+          "m" '(nil :wk "Org")
+          "m a" '(org-agenda :wk "Org agenda")
+          "m e" '(org-export-dispatch :wk "Org export dispatch")
+          "m i" '(org-toggle-item :wk "Org toggle item")
+          "m t" '(org-todo :wk "Org todo")
+          "m T" '(org-babel-tangle :wk "Org babel tangle")
+          "m l" '(org-todo-list :wk "Org todo list")
+          "m b" '(nil :wk "Tables")
+          "m b -" '(org-table-insert-hline :wk "Insert hline in table")
+          "m d" '(nil :wk "Date/deadline")
+          "m d t" '(org-time-stamp :wk "Org time stamp")
+          )
+
+        (fet/leader-keys
+          "o" '(nil :wk "Open")
+          "o e" '(elfeed :wk "Elfeed RSS")
+          "o f" '(make-frame :wk "Open buffer in new frame")
+          "o F" '(select-frame-by-name :wk "Select frame by name")
+          )
+
+        (fet/leader-keys
+          "p" '(projectile-command-map :wk "Projectile")
+          )
+
+        (fet/leader-keys
+          "s" '(nil :wk "Search")
+          "s d" '(dictionary-search :wk "Search dictionary")
+          "s m" '(man :wk "Man pages")
+          "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
+          "s t" '(tldr :wk "Lookup TLDR docs for a command")
+          )
+
+        (fet/leader-keys
+          "t" '(nil :wk "Toggle")
+          "t e" '(eshell-toggle :wk "Toggle eshell")
+          "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+          "t n" '(neotree-toggle :wk "Toggle neotree file viewer")
+          "t o" '(org-mode :wk "Toggle org mode")
+          "t r" '(rainbow-mode :wk "Toggle rainbow mode")
+          "t t" '(visual-line-mode :wk "Toggle truncated lines")
+          )
+
         ) 
   ;; end of general-define-key
 #+end_src
@@ -437,6 +511,39 @@ By default, Emacs saves backup files in the current directory. These are files e
 
   #+end_src
 
+* ELFEED
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :config
+    (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
+                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
+                        ("https://hackaday.com/blog/feed/" hackaday linux)
+                        ("https://opensource.com/feed" opensource linux)
+                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                        ("https://itsfoss.com/feed/" itsfoss linux)
+                        ("https://www.zdnet.com/topic/linux/rss.xml" zdnet linux)
+                        ("https://www.phoronix.com/rss.php" phoronix linux)
+                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
+                        ("https://www.computerworld.com/index.rss" computerworld linux)
+                        ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
+                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                        ("https://betanews.com/feed" betanews linux)
+                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
+                        ("https://distrowatch.com/news/dwd.xml" distrowatch linux)))))
+ 
+
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
+#+end_src
 * Evil mode
 [[https://github.com/emacs-evil/evil]]
 
@@ -578,6 +685,45 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   )
+#+end_src
+
+* Rainbow mode
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :diminish
+    :hook org-mode prog-mode)
+
+  (use-package rainbow-delimiters
+    :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+           (clojure-mode . rainbow-delimiters-mode)))
+
+#+end_src
+* Eshell
+#+begin_src emacs-lisp
+  (use-package eshell-toggle
+    :custom
+    (eshell-toggle-size-fraction 3)
+    (eshell-toggle-use-projectile-root t)
+    (eshell-toggle-run-command nil)
+    (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
+
+  (use-package eshell-syntax-highlighting
+    :after esh-mode
+    :config
+    (eshell-syntax-highlighting-global-mode +1))
+
+  (setq eshell-history-size 5000
+        eshell-buffer-maximum-lines 5000
+        eshell-hist-ignoredups t
+        eshell-scroll-to-bottom-on-input t
+        eshell-destroy-buffer-when-process-dies t
+        eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
+
+#+end_src
+* TLDR
+#+begin_src emacs-lisp
+  (use-package tldr)
+
 #+end_src
 * Themes and visual stuff
 ** All the icons
