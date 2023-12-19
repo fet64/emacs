@@ -678,29 +678,45 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 * Org
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-    (require 'org-tempo)
+      (require 'org-tempo)
 
-    (use-package org-bullets)
-    (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+      (use-package org-bullets)
+      (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
 
-    ;(require 'org-make-toc)
-    (use-package org-make-toc)
+      ;(require 'org-make-toc)
+      (use-package org-make-toc)
 
-    (use-package ox-reveal
-      :defer 5)
+      (use-package ox-reveal
+        :defer 5)
 
-   ;; HTML-specific
-  (setq org-html-validation-link nil) ;; No validation button on HTML exports
+     ;; HTML-specific
+    (setq org-html-validation-link nil) ;; No validation button on HTML exports
 
-  ;; LaTeX Specific
-  (eval-after-load 'ox
-    '(add-to-list
-      'org-export-filter-timestamp-functions
-      'org-export-filter-timestamp-remove-brackets)
-    )
+    ;; LaTeX Specific
+    (eval-after-load 'ox
+      '(add-to-list
+        'org-export-filter-timestamp-functions
+        'org-export-filter-timestamp-remove-brackets)
+      )
 
+  (use-package org-modern
+    :hook (org-mode . org-modern-mode)
+    :config
+    (setq
+     ;; org-modern-star '("●" "○" "✸" "✿")
+     org-modern-star '( "⌾" "✸" "◈" "◇")
+     org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
+     org-modern-tag nil
+     org-modern-priority nil
+     org-modern-todo nil
+     org-modern-table nil))
 
-
+  (use-package org-super-agenda
+    :after org
+    :config
+    (setq org-super-agenda-header-map nil)
+    (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
+    (org-super-agenda-mode))
 #+end_src
 
 * PDF
