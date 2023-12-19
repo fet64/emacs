@@ -525,6 +525,22 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
           "t t" '(visual-line-mode :wk "Toggle truncated lines")
           )
 
+        (fet/leader-keys
+          "w" '(nil :wk "Windows/Words")
+          "w c" '(evil-window-delete :wk "Close window")
+          "w n" '(evil-window-new :wk "New window")
+          "w s" '(evil-window-split :wk "Horizontal split window")
+          "w v" '(evil-window-vsplit :wk "Vertical split window")
+          "w h" '(evil-window-left :wk "Window left")
+          "w j" '(evil-window-down :wk "Window down")
+          "w k" '(evil-window-up :wk "Window up")
+          "w l" '(evil-window-right :wk "Window right")
+          "w w" '(evil-window-next :wk "Goto next window")
+          "w d" '(downcase-word :wk "Downcase word")
+          "w u" '(upcase-word :wk "Upcase word")
+          "w =" '(count-words :wk "Count words/lines for buffer")
+          )
+
         ) 
   ;; end of general-define-key
 #+end_src
