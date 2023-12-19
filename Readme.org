@@ -366,213 +366,214 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 * General
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-      (use-package general
-        :config
-        (general-evil-setup)
+    (use-package general
+      :config
+      (general-evil-setup)
 
-        (general-create-definer fet/leader-keys
-          :states '(normal insert visual emacs)
-          :keymaps 'override
-          :prefix "SPC"
-          :global-prefix "C-SPC") ;; access leader in insert mode
+      (general-create-definer fet/leader-keys
+        :states '(normal insert visual emacs)
+        :keymaps 'override
+        :prefix "SPC"
+        :global-prefix "C-SPC") ;; access leader in insert mode
 
-        (fet/leader-keys
-         "SPC" '(counsel-M-x :wk "M-x")
-         "." '(counsel-find-file :wk "Find file")
-         "u" '(universal-argument :wk "Universal argument")
-         "TAB TAB" '(comment-line :wk "Comment lines")
-         "i" '(ibuffer :wk "Ibuffer")
-         "d" '(dired :wk "Dired")
-         "T" '(org-babel-tangle :wk "org-babel-tangle")
-         "E" '(org-export-dispatch :wk "Export dispatch")
-         "m" '(magit-status :wk "Magit status")
+      (fet/leader-keys
+       "SPC" '(counsel-M-x :wk "M-x")
+       "." '(counsel-find-file :wk "Find file")
+       "u" '(universal-argument :wk "Universal argument")
+       "TAB TAB" '(comment-line :wk "Comment lines")
+       "i" '(ibuffer :wk "Ibuffer")
+       "d" '(dired :wk "Dired")
+       "T" '(org-babel-tangle :wk "org-babel-tangle")
+       "E" '(org-export-dispatch :wk "Export dispatch")
+       "m" '(magit-status :wk "Magit status")
 
-         )
+       )
 
-        (fet/leader-keys
-          "b" '(nil :wk "Bookmarks/Buffers")
-          "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
-          "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
-          "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
-          "b d" '(bookmark-delete :wk "Delete bookmark")
-          "b i" '(ibuffer :wk "Ibuffer")
-          "b k" '(kill-current-buffer :wk "Kill current buffer")
-          "b K" '(kill-some-buffers :wk "Kill multiple buffers")
-          "b l" '(list-bookmarks :wk "List bookmarks")
-          "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
-          "b n" '(next-buffer :wk "Next buffer")
-          "b p" '(previous-buffer :wk "Prev buffer")
-          "b r" '(revert-buffer :wk "Reload buffer")
-          "b R" '(rename-buffer :wk "Rename buffer")
-          "b s" '(basic-save-buffer :wk "Save buffer")
-          "b S" '(save-some-buffers :wk "Save multiple buffers")
-          "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
-          )
+      (fet/leader-keys
+        "b" '(nil :wk "Bookmarks/Buffers")
+        "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
+        "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+        "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+        "b d" '(bookmark-delete :wk "Delete bookmark")
+        "b i" '(ibuffer :wk "Ibuffer")
+        "b k" '(kill-current-buffer :wk "Kill current buffer")
+        "b K" '(kill-some-buffers :wk "Kill multiple buffers")
+        "b l" '(list-bookmarks :wk "List bookmarks")
+        "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
+        "b n" '(next-buffer :wk "Next buffer")
+        "b p" '(previous-buffer :wk "Prev buffer")
+        "b r" '(revert-buffer :wk "Reload buffer")
+        "b R" '(rename-buffer :wk "Rename buffer")
+        "b s" '(basic-save-buffer :wk "Save buffer")
+        "b S" '(save-some-buffers :wk "Save multiple buffers")
+        "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
+        )
 
-        (fet/leader-keys
-          "d" '(nil :wk "Dired")
-          "d d" '(dired :wk "Open dired")
-          "d j" '(dired-jump :wk "Dired jump to current")
-          "d n" '(neotree-dir :wk "Open directory in neotree")
-          )
+      (fet/leader-keys
+        "d" '(nil :wk "Dired")
+        "d d" '(dired :wk "Open dired")
+        "d j" '(dired-jump :wk "Dired jump to current")
+        "d n" '(neotree-dir :wk "Open directory in neotree")
+        )
 
-        (fet/leader-keys
-          "e" '(nil :wk "Eshell/Evaluate")
-          "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-          "e d" '(eval-defun :wk "Evaluate defun containing or after point")
-          "e e" '(eval-expression :wk "Evaluate an elisp expression")
-          "e h" '(counsel-esh-history :wk "Eshell history")
-          "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-          "e r" '(eval-region :wk "Evaluate elisp in region")
-          "e R" '(eww-reload :wk "Reload current page in EWW")
-          "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
-          "e w" '(eww :wk "EWW emacs web broswer")
-          )
+      (fet/leader-keys
+        "e" '(nil :wk "Eshell/Evaluate")
+        "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+        "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+        "e e" '(eval-expression :wk "Evaluate an elisp expression")
+        "e h" '(counsel-esh-history :wk "Eshell history")
+        "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+        "e r" '(eval-region :wk "Evaluate elisp in region")
+        "e R" '(eww-reload :wk "Reload current page in EWW")
+        "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
+        "e w" '(eww :wk "EWW emacs web broswer")
+        )
 
-        (fet/leader-keys
-          "f" '(nil :wk "Files")
-          "f c" '((lambda () (interactive) (find-file "~/dev/emacs/Readme.org")) :wk "Open Readme.org")
-          "f d" '(find-grep-dired :wk "Search for string in files in DIR")
-          "f g" '(counsel-grep-or-swiper :wk "Search for string current file")
-          "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
-          "f l" '(counsel-locate :wk "Locate a file")
-          "f r" '(counsel-recentf :wk "Find recent files")
-          "f u" '(sudo-edit-find-file :wk "Sudo find file")
-          "f U" '(sudo-edit :wk "Sudo edit file")
-          )
+      (fet/leader-keys
+        "f" '(nil :wk "Files")
+        "f c" '((lambda () (interactive) (find-file "~/dev/emacs/Readme.org")) :wk "Open Readme.org")
+        "f d" '(find-grep-dired :wk "Search for string in files in DIR")
+        "f g" '(counsel-grep-or-swiper :wk "Search for string current file")
+        "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
+        "f l" '(counsel-locate :wk "Locate a file")
+        "f r" '(counsel-recentf :wk "Find recent files")
+        "f u" '(sudo-edit-find-file :wk "Sudo find file")
+        "f U" '(sudo-edit :wk "Sudo edit file")
+        )
 
-        (fet/leader-keys
-          "g" '(nil :wk "Git")
-          "g d" '(magit-dispatch :wk "Magit dispatch")
-          "g ." '(magit-file-disatch :wk "Magit file dispatch")
-          "g b" '(magit-branch-checkout :wk "Switch branch")
-          "g c" '(nil :wk "Create")
-          "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
-          "g c c" '(magit-commit-create : "Create commit")
-          "g c f" '(magit-commit-fixup :wk "Create fixup commit")
-          "g C" '(magit-clone :wk "Clone repo")
-          "g f" '(nil :wk "Find")
-          "g f c" '(magit-show-commit :wk "Show commit")
-          "g f f" '(magit-find-file :wk "Magit find file")
-          "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
-          "g F" '(magit-fetch :wk "Git fetch")
-          "g g" '(magit-status :wk "Magit status")
-          "g i" '(magit-init :wk "Initialize git repo")
-          "g l" '(magit-log-buffer-file :wk "Magit buffer log")
-          "g r" '(vc-revert :wk "Git revert file")
-          "g s" '(magit-stage-file :wk "Git stage file")
-          "g t" '(git-timemachine :wk "Git time machine")
-          "g u" '(magit-unstage-file :wk "Git unstage file")
-          )
+      (fet/leader-keys
+        "g" '(nil :wk "Git")
+        "g d" '(magit-dispatch :wk "Magit dispatch")
+        "g ." '(magit-file-disatch :wk "Magit file dispatch")
+        "g b" '(magit-branch-checkout :wk "Switch branch")
+        "g c" '(nil :wk "Create")
+        "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
+        "g c c" '(magit-commit-create : "Create commit")
+        "g c f" '(magit-commit-fixup :wk "Create fixup commit")
+        "g C" '(magit-clone :wk "Clone repo")
+        "g f" '(nil :wk "Find")
+        "g f c" '(magit-show-commit :wk "Show commit")
+        "g f f" '(magit-find-file :wk "Magit find file")
+        "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
+        "g F" '(magit-fetch :wk "Git fetch")
+        "g g" '(magit-status :wk "Magit status")
+        "g i" '(magit-init :wk "Initialize git repo")
+        "g l" '(magit-log-buffer-file :wk "Magit buffer log")
+        "g r" '(vc-revert :wk "Git revert file")
+        "g s" '(magit-stage-file :wk "Git stage file")
+        "g t" '(git-timemachine :wk "Git time machine")
+        "g u" '(magit-unstage-file :wk "Git unstage file")
+        )
 
-        (fet/leader-keys
-          "h" '(nil :wk "Help")
-          "h a" '(counsel-apropos :wk "Apropos")
-          "h b" '(counsel-bindings :wk "Desc. bindings")
-          "h c" '(describe-char :wk "Desc. char under cursor")
-          "h d" '(nil :wk "Emaccs documentation")
-          "h d a" '(about-emacs :wk "About Emacs")
-          "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
-          "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
-          "h d m" '(info-emacs-manual :wk "The Emacs manual")
-          "h d n" '(view-emacs-news :wk "View Emacs news")
-          "h d o" '(describe-distribution :wk "How to obtain Emacs")
-          "h d p" '(view-emacs-problems :wk "View Emacs problems")
-          "h d t" '(view-emacs-todo :wk "View Emacs todo")
-          "h d w" '(describe-no-warranty :wk "Describe no warranty")
-          "h e" '(view-echo-area-messages :wk "View echo area messages")
-          "h f" '(describe-function :wk "Desc. function")
-          "h F" '(describe-face :wk "Desc. face")
-          "h g" '(describe-gnu-project :wk "Desc. GNU Project")
-          "h i" '(info :wk "Info")
-          "h I" '(describe-input-method :wk "Desc. input method")
-          "h k" '(describe-key :wk "Desc. key")
-          "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
-          "h L" '(describe-language-environment :wk "Desc. language environment")
-          "h m" '(describe-mode :wk "Desc. mode")
-          "h t" '(load-theme :wk "Load theme")
-          "h v" '(describe-variable :wk "Desc. variable")
-          "h w" '(where-is :wk "Prints keybinding for command if set")
-          "h x" '(describe-command :wk "Display full documentation for command")
-          )
+      (fet/leader-keys
+        "h" '(nil :wk "Help")
+        "h a" '(counsel-apropos :wk "Apropos")
+        "h b" '(counsel-bindings :wk "Desc. bindings")
+        "h c" '(describe-char :wk "Desc. char under cursor")
+        "h d" '(nil :wk "Emaccs documentation")
+        "h d a" '(about-emacs :wk "About Emacs")
+        "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
+        "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
+        "h d m" '(info-emacs-manual :wk "The Emacs manual")
+        "h d n" '(view-emacs-news :wk "View Emacs news")
+        "h d o" '(describe-distribution :wk "How to obtain Emacs")
+        "h d p" '(view-emacs-problems :wk "View Emacs problems")
+        "h d t" '(view-emacs-todo :wk "View Emacs todo")
+        "h d w" '(describe-no-warranty :wk "Describe no warranty")
+        "h e" '(view-echo-area-messages :wk "View echo area messages")
+        "h f" '(describe-function :wk "Desc. function")
+        "h F" '(describe-face :wk "Desc. face")
+        "h g" '(describe-gnu-project :wk "Desc. GNU Project")
+        "h i" '(info :wk "Info")
+        "h I" '(describe-input-method :wk "Desc. input method")
+        "h k" '(describe-key :wk "Desc. key")
+        "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
+        "h L" '(describe-language-environment :wk "Desc. language environment")
+        "h m" '(describe-mode :wk "Desc. mode")
+        "h t" '(load-theme :wk "Load theme")
+        "h v" '(describe-variable :wk "Desc. variable")
+        "h w" '(where-is :wk "Prints keybinding for command if set")
+        "h x" '(describe-command :wk "Display full documentation for command")
+        )
 
-        (fet/leader-keys
-          "m" '(nil :wk "Org")
-          "m a" '(org-agenda :wk "Org agenda")
-          "m e" '(org-export-dispatch :wk "Org export dispatch")
-          "m i" '(org-toggle-item :wk "Org toggle item")
-          "m t" '(org-todo :wk "Org todo")
-          "m T" '(org-babel-tangle :wk "Org babel tangle")
-          "m l" '(org-todo-list :wk "Org todo list")
-          "m b" '(nil :wk "Tables")
-          "m b -" '(org-table-insert-hline :wk "Insert hline in table")
-          "m d" '(nil :wk "Date/deadline")
-          "m d t" '(org-time-stamp :wk "Org time stamp")
-          )
+      (fet/leader-keys
+        "m" '(nil :wk "Org")
+        "m a" '(org-agenda :wk "Org agenda")
+        "m e" '(org-export-dispatch :wk "Org export dispatch")
+        "m i" '(org-toggle-item :wk "Org toggle item")
+        "m t" '(org-todo :wk "Org todo")
+        "m T" '(org-babel-tangle :wk "Org babel tangle")
+        "m l" '(org-todo-list :wk "Org todo list")
+        "m b" '(nil :wk "Tables")
+        "m b -" '(org-table-insert-hline :wk "Insert hline in table")
+        "m d" '(nil :wk "Date/deadline")
+        "m d t" '(org-time-stamp :wk "Org time stamp")
+        )
 
-        (fet/leader-keys
-          "o" '(nil :wk "Open")
-          "o e" '(elfeed :wk "Elfeed RSS")
-          "o f" '(make-frame :wk "Open buffer in new frame")
-          "o F" '(select-frame-by-name :wk "Select frame by name")
-          )
+      (fet/leader-keys
+        "o" '(nil :wk "Open")
+        "o e" '(elfeed :wk "Elfeed RSS")
+        "o f" '(make-frame :wk "Open buffer in new frame")
+        "o F" '(select-frame-by-name :wk "Select frame by name")
+        )
 
-        (fet/leader-keys
-          "p" '(projectile-command-map :wk "Projectile")
-          )
+      (fet/leader-keys
+        "p" '(projectile-command-map :wk "Projectile")
+        )
 
-        (fet/leader-keys
-          "s" '(nil :wk "Search")
-          "s d" '(dictionary-search :wk "Search dictionary")
-          "s m" '(man :wk "Man pages")
-          "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
-          "s t" '(tldr :wk "Lookup TLDR docs for a command")
-          )
+      (fet/leader-keys
+        "s" '(nil :wk "Search")
+        "s d" '(dictionary-search :wk "Search dictionary")
+        "s m" '(man :wk "Man pages")
+        "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
+        "s t" '(tldr :wk "Lookup TLDR docs for a command")
+        )
 
-        (fet/leader-keys
-          "t" '(nil :wk "Toggle")
-          "t e" '(eshell-toggle :wk "Toggle eshell")
-          "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
-          "t n" '(neotree-toggle :wk "Toggle neotree file viewer")
-          "t o" '(org-mode :wk "Toggle org mode")
-          "t r" '(rainbow-mode :wk "Toggle rainbow mode")
-          "t t" '(visual-line-mode :wk "Toggle truncated lines")
-          )
+      (fet/leader-keys
+        "t" '(nil :wk "Toggle")
+        "t e" '(eshell-toggle :wk "Toggle eshell")
+        "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+        "t n" '(neotree-toggle :wk "Toggle neotree file viewer")
+        "t o" '(org-mode :wk "Toggle org mode")
+        "t r" '(rainbow-mode :wk "Toggle rainbow mode")
+        "t t" '(visual-line-mode :wk "Toggle truncated lines")
+        )
 
-        (fet/leader-keys
-          "w" '(nil :wk "Windows/Words")
-          "w c" '(evil-window-delete :wk "Close window")
-          "w n" '(evil-window-new :wk "New window")
-          "w s" '(evil-window-split :wk "Horizontal split window")
-          "w v" '(evil-window-vsplit :wk "Vertical split window")
-          "w h" '(evil-window-left :wk "Window left")
-          "w j" '(evil-window-down :wk "Window down")
-          "w k" '(evil-window-up :wk "Window up")
-          "w l" '(evil-window-right :wk "Window right")
-          "w w" '(evil-window-next :wk "Goto next window")
-          "w d" '(downcase-word :wk "Downcase word")
-          "w u" '(upcase-word :wk "Upcase word")
-          "w =" '(count-words :wk "Count words/lines for buffer")
-          )
+      (fet/leader-keys
+        "w" '(nil :wk "Windows/Words")
+        "w c" '(evil-window-delete :wk "Close window")
+        "w n" '(evil-window-new :wk "New window")
+        "w s" '(evil-window-split :wk "Horizontal split window")
+        "w v" '(evil-window-vsplit :wk "Vertical split window")
+        "w h" '(evil-window-left :wk "Window left")
+        "w j" '(evil-window-down :wk "Window down")
+        "w k" '(evil-window-up :wk "Window up")
+        "w l" '(evil-window-right :wk "Window right")
+        "w w" '(evil-window-next :wk "Goto next window")
+        "w d" '(downcase-word :wk "Downcase word")
+        "w u" '(upcase-word :wk "Upcase word")
+        "w =" '(count-words :wk "Count words/lines for buffer")
+        )
+      (general-def
+        :keymaps 'override
+        ;; Emacs
+        "M-x" 'counsel-M-x
+        "s-x" 'execute-extended-command
+        "s-b" 'counsel-switch-buffer ; super-b
+        ;; Editing
+        "M-v" 'simpleclip-paste
+        "M-V" 'evil-paste-after ; shift-paste uses the internal clipboard
+        "M-c" 'simpleclip-copy
+        ;; Utility
+        "C-c c" 'org-capture
+        "C-c a" 'org-agenda
+        "C-s" 'swiper
+        "M-=" 'count-words
+        "M-j" 'avy-goto-char-2
+        )
 
-        ) 
+      ) 
 
-  (general-def
-    :keymaps 'override
-    ;; Emacs
-    "M-x" 'counsel-M-x
-    "s-b" 'counsel-switch-buffer ; super-b
-    ;; Editing
-    "M-v" 'simpleclip-paste
-    "M-V" 'evil-paste-after ; shift-paste uses the internal clipboard
-    "M-c" 'simpleclip-copy
-    ;; Utility
-    "C-c c" 'org-capture
-    "C-c a" 'org-agenda
-    "C-s" 'swiper
-    "M-=" 'count-words
-    "M-j" 'avy-goto-char-2
-    )
   ;; end of general-define-key
 #+end_src
 * Hydras
@@ -587,40 +588,35 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 * Ivy, counsel
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (use-package counsel
-	:after ivy
-	:diminish
-	:config
-	(counsel-mode)
-	(setq ivy-initial-inputs-alist nil))
+    :after ivy
+    :diminish
+    :config
+    (counsel-mode)
+    (setq ivy-initial-inputs-alist nil))
 
   (use-package ivy
-	:bind
-	(("C-c C-r" . ivy-resume)
-	 ("C-x B" . ivy-switch-buffer-other-window))
-	:diminish
-	:custom
-	(setq ivy-use-virtual-buffers t)
-	(setq ivy-count-format "(%d/%d) ")
-	(setq enable-recursive-minibuffers t)
-	:config
-	(ivy-mode))
+    :bind
+    (("C-c C-r" . ivy-resume)
+     ("C-x B" . ivy-switch-buffer-other-window))
+    :diminish
+    :custom
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq enable-recursive-minibuffers t)
+    :config
+    (ivy-mode))
 
   (use-package all-the-icons-ivy-rich
-	:ensure t
-	:init (all-the-icons-ivy-rich-mode 1))
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
 
   (use-package ivy-rich
-	:after ivy
-	:ensure t
-	:init (ivy-rich-mode 1)
-	:custom
-	(ivy-virtual-abbreviate 'full
-							ivy-rich-switch-buffer-align-virtual-buffer t
-							ivy-rich-path-style 'abbrev)
-	:config
-	(ivy-set-display-transformer 'ivy-switch-buffer
-								 'ivy-rich-switch-buffer-transformer))
-
+    :after ivy
+    :init
+    (setq ivy-rich-path-style 'abbrev)
+    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+    :config
+    (ivy-rich-mode 1))
 #+end_src
 
 * LaTeX
