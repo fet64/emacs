@@ -55,8 +55,6 @@ People who inspire me:
 
 #+end_src
 
-
-
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
   (setq mac-command-modifier   'meta
@@ -303,68 +301,70 @@ By default, Emacs saves backup files in the current directory. These are files e
 * General
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-	  (use-package general
-		:config
-		(general-evil-setup)
+      (use-package general
+        :config
+        (general-evil-setup)
 
-		(general-create-definer fet/leader-keys
-		  :states '(normal insert visual emacs)
-		  :keymaps 'override
-		  :prefix "SPC"
-		  :global-prefix "C-SPC") ;; access leader in insert mode
+        (general-create-definer fet/leader-keys
+          :states '(normal insert visual emacs)
+          :keymaps 'override
+          :prefix "SPC"
+          :global-prefix "C-SPC") ;; access leader in insert mode
 
-		(fet/leader-keys
-		 "SPC" '(counsel-M-x :wk "M-x")
-		 "." '(counsel-find-file :wk "Find file")
-		 "u" '(universal-argument :wk "Universal argument")
-		 "TAB TAB" '(comment-line :wk "Comment lines")
-		 "i" '(ibuffer :wk "Ibuffer")
-		 "d" '(dired :wk "Dired")
-		 "t" '(org-babel-tangle :wk "org-babel-tangle")
+        (fet/leader-keys
+         "SPC" '(counsel-M-x :wk "M-x")
+         "." '(counsel-find-file :wk "Find file")
+         "u" '(universal-argument :wk "Universal argument")
+         "TAB TAB" '(comment-line :wk "Comment lines")
+         "i" '(ibuffer :wk "Ibuffer")
+         "d" '(dired :wk "Dired")
+         "t" '(org-babel-tangle :wk "org-babel-tangle")
+         "E" '(org-export-dispatch :wk "Export dispatch")
+         "m" '(magit-status :wk "Magit status")
 
-		 )
+         )
 
-		(fet/leader-keys
-		  "b" '(nil :wk "Bookmarks/Buffers")
-		  "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
-		  "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
-		  "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
-		  "b d" '(bookmark-delete :wk "Delete bookmark")
-		  "b i" '(ibuffer :wk "Ibuffer")
-		  "b k" '(kill-current-buffer :wk "Kill current buffer")
-		  "b K" '(kill-some-buffers :wk "Kill multiple buffers")
-		  "b l" '(list-bookmarks :wk "List bookmarks")
-		  "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
-		  "b n" '(next-buffer :wk "Next buffer")
-		  "b p" '(previous-buffer :wk "Prev buffer")
-		  "b r" '(revert-buffer :wk "Reload buffer")
-		  "b R" '(rename-buffer :wk "Rename buffer")
-		  "b s" '(basic-save-buffer :wk "Save buffer")
-		  "b S" '(save-some-buffers :wk "Save multiple buffers")
-		  "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
-		  )
+        (fet/leader-keys
+          "b" '(nil :wk "Bookmarks/Buffers")
+          "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
+          "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+          "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+          "b d" '(bookmark-delete :wk "Delete bookmark")
+          "b i" '(ibuffer :wk "Ibuffer")
+          "b k" '(kill-current-buffer :wk "Kill current buffer")
+          "b K" '(kill-some-buffers :wk "Kill multiple buffers")
+          "b l" '(list-bookmarks :wk "List bookmarks")
+          "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
+          "b n" '(next-buffer :wk "Next buffer")
+          "b p" '(previous-buffer :wk "Prev buffer")
+          "b r" '(revert-buffer :wk "Reload buffer")
+          "b R" '(rename-buffer :wk "Rename buffer")
+          "b s" '(basic-save-buffer :wk "Save buffer")
+          "b S" '(save-some-buffers :wk "Save multiple buffers")
+          "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
+          )
 
-		(fet/leader-keys
-		  "d" '(nil :wk "Dired")
-		  "d d" '(dired :wk "Open dired")
-		  "d j" '(dired-jump :wk "Dired jump to current")
-		  "d n" '(neotree-dir :wk "Open directory in neotree")
-		  )
+        (fet/leader-keys
+          "d" '(nil :wk "Dired")
+          "d d" '(dired :wk "Open dired")
+          "d j" '(dired-jump :wk "Dired jump to current")
+          "d n" '(neotree-dir :wk "Open directory in neotree")
+          )
 
-		(fet/leader-keys
-		  "e" '(nil :wk "Eshell/Evaluate")
-		  "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-		  "e d" '(eval-defun :wk "Evaluate defun containing or after point")
-		  "e e" '(eval-expression :wk "Evaluate an elisp expression")
-		  "e h" '(counsel-esh-history :wk "Eshell history")
-		  "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-		  "e r" '(eval-region :wk "Evaluate elisp in region")
-		  "e R" '(eww-reload :wk "Reload current page in EWW")
-		  "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
-		  "e w" '(eww :wk "EWW emacs web broswer")
-		  )
+        (fet/leader-keys
+          "e" '(nil :wk "Eshell/Evaluate")
+          "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+          "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+          "e e" '(eval-expression :wk "Evaluate an elisp expression")
+          "e h" '(counsel-esh-history :wk "Eshell history")
+          "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+          "e r" '(eval-region :wk "Evaluate elisp in region")
+          "e R" '(eww-reload :wk "Reload current page in EWW")
+          "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
+          "e w" '(eww :wk "EWW emacs web broswer")
+          )
 
-		) 
+        ) 
   ;; end of general-define-key
 #+end_src
 
@@ -453,18 +453,85 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 #+end_src
 
-
 * Org
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-  (require 'org-tempo)
+    (require 'org-tempo)
 
-  (use-package org-bullets)
-  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+    (use-package org-bullets)
+    (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
 
-  ;(require 'org-make-toc)
-  (use-package org-make-toc)
+    ;(require 'org-make-toc)
+    (use-package org-make-toc)
+
+    (use-package ox-reveal
+      :defer 5)
+
+   ;; HTML-specific
+  (setq org-html-validation-link nil) ;; No validation button on HTML exports
+
+  ;; LaTeX Specific
+  (eval-after-load 'ox
+    '(add-to-list
+      'org-export-filter-timestamp-functions
+      'org-export-filter-timestamp-remove-brackets)
+    )
+
+
+
 #+end_src
 
+* PDF
+#+begin_src emacs-lisp
+    (use-package pdf-tools
+  :defer t
+  ;;:pin manual
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-loader-install)
+  (setq-default pdf-view-display-size 'fit-height)
+  (setq pdf-view-contiuous nil)
+  (setq pdf-view-midnight-colors '("#ffffff" . "#121212" ))
+  :general
+  (general-define-key :states 'motion :keymaps 'pdf-view-mode-map
+                      "j" 'pdf-view-next-page
+                      "k" 'pdf-view-previous-page
+                      "C-j" 'pdf-view-next-line-or-next-page
+                      "C-k" 'pdf-view-previous-line-or-previous-page
+                      (kbd "<down>") 'pdf-view-next-line-or-next-page
+                      (kbd "<up>") 'pdf-view-previous-line-or-previous-page
+                      (kbd "<left>") 'image-backward-hscroll
+                      (kbd "<right>") 'image-forward-hscroll
+                      "H" 'pdf-view-fit-height-to-window
+                      "0" 'pdf-view-fit-height-to-window
+                      "W" 'pdf-view-fit-width-to-window
+                      "+" 'pdf-view-enlarge
+                      "-" 'pdf-view-shrink
+                      "q" 'quit-window
+                      "Q" 'kill-this-buffer
+                      "g" 'revert-buffer
+                      "C-s" 'isearch-forward
+                      )
+)
+
+#+end_src
+* LaTeX
+#+begin_src emacs-lisp
+  (setq org-latex-listings t)
+  (setq org-latex-compiler "xelatex")
+  (with-eval-after-load 'ox-latex
+    (add-to-list 'org-latex-classes
+                 '("org-plain-latex"
+                   "\\documentclass{extarticle}
+  [NO-DEFAULT-PACKAGES]
+  [PACKAGES]
+  [EXTRA]"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  )
+#+end_src
 * Themes and visual stuff
 ** All the icons
 [[https://github.com/domtronn/all-the-icons.el]]
