@@ -248,7 +248,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
     :config
     (setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
-    (load-theme 'doom-one t)
+    (load-theme 'doom-solarized-light t)
     ;;(doom-themes-neotree-config)
     (doom-themes-org-config))
 
@@ -490,7 +490,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
         "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
         "h L" '(describe-language-environment :wk "Desc. language environment")
         "h m" '(describe-mode :wk "Desc. mode")
-        "h t" '(load-theme :wk "Load theme")
+        "h t" '(fet/themes-hydra/body :wk "Change theme")
         "h v" '(describe-variable :wk "Desc. variable")
         "h w" '(where-is :wk "Prints keybinding for command if set")
         "h x" '(describe-command :wk "Display full documentation for command")
@@ -583,7 +583,44 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (use-package hydra :commands defhydra)
   (use-package use-package-hydra)
 
-
+  (defhydra fet/themes-hydra (:hint nil :color pink)
+    "
+  Change theme
+  ^
+  ^Dark themes^             ^Light themes^
+  _1_: doom-1337            _a_: doom-acario-light
+  _2_: doom-solarized-dark  _b_: doom-ayu-light
+  _3_: doom-ayu-dark        _c_: doom-bluloco-light
+  _4_: doom-ayu-mirage      _d_: doom-nord-light
+  _5_: doom-one             _e_: doom-one-light
+  _6_: doom-nord            _f_: doom-oksolar-light
+  _7_: doom-nord-aurora     _g_: doom-solarized-light
+  _8_: doom-nova            _h_: doom-tomorrow-day
+  _9_: doom-oksolar-dark    _i_: doom-xcode
+  _0_: doom-opera
+  ^
+  "
+    ("1" (load-theme 'doom-1337 t))
+    ("2" (load-theme 'doom-solarized-dark t))
+    ("3" (load-theme 'doom-ayu-dark t))
+    ("4" (load-theme 'doom-ayu-mirage t))
+    ("5" (load-theme 'doom-one t))
+    ("6" (load-theme 'doom-nord t))
+    ("7" (load-theme 'doom-nord-aurora t))
+    ("8" (load-theme 'doom-nova t))
+    ("9" (load-theme 'doom-oksolar-dark t))
+    ("0" (load-theme 'doom-opera t))
+    ("a" (load-theme 'doom-acario-light t))
+    ("b" (load-theme 'doom-ayu-light t))
+    ("c" (load-theme 'doom-bluloco-light t))
+    ("d" (load-theme 'doom-nord-light t))
+    ("e" (load-theme 'doom-one-light t))
+    ("f" (load-theme 'doom-oksolar-light t))
+    ("g" (load-theme 'doom-solarized-light t))
+    ("h" (load-theme 'doom-tomorrow-day t))
+    ("i" (load-theme 'doom-xcode t))
+    
+    ("RET" nil "done" :color blue))
 #+end_src
 * Ivy, counsel
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
@@ -874,6 +911,20 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 
 #+end_src
 
+* Scripts
+#+begin_src emacs-lisp
+  (defun fet/duplicate-line ()
+    "Duplicate current line"
+    (interactive)
+    (move-beginning-of-line 1)
+    (kill-line)
+    (yank)
+    (open-line 1)
+    (next-line 1)
+    (yank))
+
+  (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
+#+end_src
 * Sudo Edit
 #+begin_src emacs-lisp
   (use-package sudo-edit)
