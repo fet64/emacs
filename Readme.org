@@ -15,6 +15,17 @@ To tangle this file into =early-init.el= and =init.el= in the emacs-user-directo
 (org-babel-tangle)
 #+end_src
 
+After you have created =early-init.el= and =init.el= you need to copy all the snippets from
+this git directory to =~/.config/emacs/snippets/= directory.
+
+You can do that by running (C-c C-c) in this code block:
+
+#+begin_src sh :tangle no :results none
+  cp -rvp snippets ~/.config/emacs/
+
+#+end_src
+
+
 * Early-init.el
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
@@ -391,6 +402,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
        "T" '(org-babel-tangle :wk "org-babel-tangle")
        "E" '(org-export-dispatch :wk "Export dispatch")
        "m" '(magit-status :wk "Magit status")
+       "S" '(yas-insert-snippet :wk "Insert yasnippet")
 
        )
 
@@ -746,6 +758,10 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
     (setq org-super-agenda-header-map nil)
     (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
     (org-super-agenda-mode))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell .t)))
 #+end_src
 
 * PDF
@@ -948,5 +964,19 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 	  which-key-max-description-length 25
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
+
+#+end_src
+
+* Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :defer 5
+    :config
+    (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+    (yas-global-mode 1))
+
+  (require 'warnings)
+  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
 
 #+end_src
