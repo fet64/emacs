@@ -171,7 +171,8 @@ People who inspire me:
 #+end_src
 
 * Avy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
+
   (use-package avy
     :defer t
     :config
@@ -213,7 +214,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Clipboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
     (use-package simpleclip
       :config (simpleclip-mode 1))
 
@@ -239,7 +241,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Counsel
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package counsel
     :diminish
     :config
@@ -273,7 +276,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 
 * Highlight todo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package hl-todo
     :hook ((org-mode . hl-todo-mode)
            (prog-mode . hl-todo-mode))
@@ -289,7 +293,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+end_src
 * ELFEED
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package elfeed
     :config
     (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
@@ -350,7 +355,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 
 * Eshell
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package eshell-toggle
     :custom
     (eshell-toggle-size-fraction 3)
@@ -624,7 +630,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 
 * LaTeX
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (setq org-latex-listings t)
   (setq org-latex-compiler "xelatex")
   (with-eval-after-load 'ox-latex
@@ -751,7 +758,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * PDF
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
     (use-package pdf-tools
   :defer t
   ;;:pin manual
@@ -798,7 +806,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Rainbow mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package rainbow-mode
     :diminish
     :hook org-mode prog-mode)
@@ -879,7 +888,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 #+end_src
 
 * Scripts
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (defun fet/duplicate-line ()
     "Duplicate current line"
     (interactive)
@@ -893,26 +903,38 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
   (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
 #+end_src
 * Sudo Edit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package sudo-edit)
 
 #+end_src
 * TLDR
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package tldr)
 
 #+end_src
 * Vertico
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp  :tangle "~/.config/emacs/init.el"
+
   (use-package vertico
     :init
     (vertico-mode)
     (setq vertico-count 20)
     (setq vertico-resize t)
     (setq vertico-cycle t)
+    (keymap-set vertico-map "?" #'minibuffer-completion-help)
+    (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
+    (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
+
   )
 
-#+end_src
+  (use-package marginalia
+    :bind
+    (:map minibuffer-local-map ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
+ #+end_src
 * Which-key
 [[https://github.com/justbur/emacs-which-key]]
 
