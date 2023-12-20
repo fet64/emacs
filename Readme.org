@@ -277,6 +277,11 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+end_src
 
+* Embark
+#+BEGIN_SRC emacs-lisp
+  ;; TODO install and setup
+#+END_SRC
+
 * Highlight todo
 #+begin_src emacs-lisp  
 
@@ -403,6 +408,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
        "E" '(org-export-dispatch :wk "Export dispatch")
        "m" '(magit-status :wk "Magit status")
        "S" '(yas-insert-snippet :wk "Insert yasnippet")
+       "," '(fet-config-command :wk "Options")
 
        )
 
@@ -928,6 +934,32 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
   (use-package tldr)
 
 #+end_src
+* Transient stuff
+#+BEGIN_SRC emacs-lisp
+  (require 'transient)
+
+  (transient-define-prefix fet-config-command ()
+    "Config options"
+    [["Configuration files"
+      ("r" "Edit emacs config file" (lambda () (interactive) (
+                                                  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
+                                                  )))
+      ("c" "Copy snippets" (lambda () (interactive) (
+                                                     message "hello"
+                                                     )))
+      ("g" "Git status" (lambda () (interactive) (magit-status)))]
+
+     ["Theme options"
+      ("1" "doom-solarized-light" (lambda () (interactive) (
+                                                            load-theme 'doom-solarized-light
+                                                            )))
+      ("2" "doom-solarized-dark" (lambda () (interactive) (
+                                                           load-theme 'doom-solarized-dark
+                                                           )))]
+     ])
+
+  (fet-config-command)
+#+END_SRC
 * Vertico
 #+begin_src emacs-lisp  
 
