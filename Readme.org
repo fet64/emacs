@@ -17,13 +17,6 @@ To tangle this file into =early-init.el= and =init.el= in the emacs-user-directo
 (org-babel-tangle)
 #+end_src
 
-People who inspire me:
-- [[https://protesilaos.com]]
-- [[https://github.com/jakebox/jake-emacs/tree/main]]
-- [[https://sachachua.com/dotemacs/index.html]]
-- [[https://gitlab.com/dwt1/configuring-emacs]]
-- [[https://cestlaz.github.io]]
-
 * Early-init.el
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
