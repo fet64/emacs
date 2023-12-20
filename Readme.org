@@ -580,47 +580,6 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 [[https://github.com/abo-abo/hydra]]
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-  (use-package hydra :commands defhydra)
-  (use-package use-package-hydra)
-
-  (defhydra fet/themes-hydra (:hint nil :color pink)
-    "
-  Change theme
-  ^
-  ^Dark themes^             ^Light themes^
-  _1_: doom-1337            _a_: doom-acario-light
-  _2_: doom-solarized-dark  _b_: doom-ayu-light
-  _3_: doom-ayu-dark        _c_: doom-bluloco-light
-  _4_: doom-ayu-mirage      _d_: doom-nord-light
-  _5_: doom-one             _e_: doom-one-light
-  _6_: doom-nord            _f_: doom-oksolar-light
-  _7_: doom-nord-aurora     _g_: doom-solarized-light
-  _8_: doom-nova            _h_: doom-tomorrow-day
-  _9_: doom-oksolar-dark    _i_: doom-xcode
-  _0_: doom-opera
-  ^
-  "
-    ("1" (load-theme 'doom-1337 t))
-    ("2" (load-theme 'doom-solarized-dark t))
-    ("3" (load-theme 'doom-ayu-dark t))
-    ("4" (load-theme 'doom-ayu-mirage t))
-    ("5" (load-theme 'doom-one t))
-    ("6" (load-theme 'doom-nord t))
-    ("7" (load-theme 'doom-nord-aurora t))
-    ("8" (load-theme 'doom-nova t))
-    ("9" (load-theme 'doom-oksolar-dark t))
-    ("0" (load-theme 'doom-opera t))
-    ("a" (load-theme 'doom-acario-light t))
-    ("b" (load-theme 'doom-ayu-light t))
-    ("c" (load-theme 'doom-bluloco-light t))
-    ("d" (load-theme 'doom-nord-light t))
-    ("e" (load-theme 'doom-one-light t))
-    ("f" (load-theme 'doom-oksolar-light t))
-    ("g" (load-theme 'doom-solarized-light t))
-    ("h" (load-theme 'doom-tomorrow-day t))
-    ("i" (load-theme 'doom-xcode t))
-    
-    ("RET" nil "done" :color blue))
 #+end_src
 * Ivy, counsel
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
