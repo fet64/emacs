@@ -238,6 +238,14 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 
+* Counsel
+#+begin_src emacs-lisp
+  (use-package counsel
+    :diminish
+    :config
+    (counsel-mode))
+
+#+end_src
 * Doom theme and modeline
 Doom themes: [[https://github.com/doomemacs/themes]]
 
@@ -378,7 +386,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
       (fet/leader-keys
        "SPC" '(counsel-M-x :wk "M-x")
-       "." '(counsel-find-file :wk "Find file")
+       "." '(find-file :wk "Find file")
        "u" '(universal-argument :wk "Universal argument")
        "TAB TAB" '(comment-line :wk "Comment lines")
        "i" '(ibuffer :wk "Ibuffer")
@@ -583,36 +591,36 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 * Ivy, counsel
 #+begin_src emacs-lisp :tangle "~/.config/emacs/init.el"
-  (use-package counsel
-    :after ivy
-    :diminish
-    :config
-    (counsel-mode)
-    (setq ivy-initial-inputs-alist nil))
+  ;; (use-package counsel
+  ;;   :after ivy
+  ;;   :diminish
+  ;;   :config
+  ;;   (counsel-mode)
+  ;;   (setq ivy-initial-inputs-alist nil))
 
-  (use-package ivy
-    :bind
-    (("C-c C-r" . ivy-resume)
-     ("C-x B" . ivy-switch-buffer-other-window))
-    :diminish
-    :custom
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) ")
-    (setq enable-recursive-minibuffers t)
-    :config
-    (ivy-mode))
+  ;; (use-package ivy
+  ;;   :bind
+  ;;   (("C-c C-r" . ivy-resume)
+  ;;    ("C-x B" . ivy-switch-buffer-other-window))
+  ;;   :diminish
+  ;;   :custom
+  ;;   (setq ivy-use-virtual-buffers t)
+  ;;   (setq ivy-count-format "(%d/%d) ")
+  ;;   (setq enable-recursive-minibuffers t)
+  ;;   :config
+  ;;   (ivy-mode))
 
-  (use-package all-the-icons-ivy-rich
-    :ensure t
-    :init (all-the-icons-ivy-rich-mode 1))
+  ;; (use-package all-the-icons-ivy-rich
+  ;;   :ensure t
+  ;;   :init (all-the-icons-ivy-rich-mode 1))
 
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (setq ivy-rich-path-style 'abbrev)
-    (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-    :config
-    (ivy-rich-mode 1))
+  ;; (use-package ivy-rich
+  ;;   :after ivy
+  ;;   :init
+  ;;   (setq ivy-rich-path-style 'abbrev)
+  ;;   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  ;;   :config
+  ;;   (ivy-rich-mode 1))
 #+end_src
 
 * LaTeX
@@ -892,6 +900,17 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 * TLDR
 #+begin_src emacs-lisp
   (use-package tldr)
+
+#+end_src
+* Vertico
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode)
+    (setq vertico-count 20)
+    (setq vertico-resize t)
+    (setq vertico-cycle t)
+  )
 
 #+end_src
 * Which-key
