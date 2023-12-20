@@ -5,7 +5,7 @@
 #+options: ':t toc:nil author:t email:t num:nil
 #+startup: content indent
 #+macro: latest-export-date (eval (format-time-string "%F %T %z"))
-
+ 
 
 *Last revised and exported on {{{latest-export-date}}}.*
 
