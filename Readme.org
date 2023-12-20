@@ -9,6 +9,7 @@
  
 This is a work in progress...
 
+* Intruduction
 To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory:
 #+begin_src emacs-lisp :tangle no
 (org-babel-tangle)
