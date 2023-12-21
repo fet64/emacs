@@ -260,6 +260,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
   (line-number-mode)
   (column-number-mode)
+  (setq display-time-24-hr-format 't)
+  (setq display-time-format "%H:%M CET")
   (display-time-mode 't)
   (size-indication-mode 0)
 
