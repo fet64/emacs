@@ -86,7 +86,7 @@ You can do that by running (C-c C-c) in this code block:
 #+END_SRC
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp
-  (setq mac-command-modifier   'meta
+  (setq mac-command-modifier  'meta
 	mac-option-modifier         nil
 	mac-control-modifier       'control
 	mac-right-command-modifier 'super
@@ -118,6 +118,8 @@ You can do that by running (C-c C-c) in this code block:
     (setq load-prefer-newer t)
 #+END_SRC
 * Garbage Collections and Collector
+[[https://github.com/emacsmirror/gcmh]]
+
 #+begin_src emacs-lisp 
   (use-package gcmh
     :diminish gcmh-mode
@@ -143,6 +145,7 @@ You can do that by running (C-c C-c) in this code block:
 
 * All the icons
 [[https://github.com/domtronn/all-the-icons.el]]
+[[https://github.com/jtbm37/all-the-icons-dired]]
 
 #+begin_src emacs-lisp 
   (use-package all-the-icons
@@ -155,6 +158,8 @@ You can do that by running (C-c C-c) in this code block:
 #+end_src
 
 * Avy
+[[https://github.com/abo-abo/avy]]
+
 #+begin_src emacs-lisp 
 
   (use-package avy
@@ -198,6 +203,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Clipboard
+[[https://github.com/rolandwalker/simpleclip]]
+
 #+begin_src emacs-lisp 
 
     (use-package simpleclip
@@ -205,6 +212,9 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 * Company
+[[https://github.com/company-mode/company-mode]]
+[[https://github.com/sebastiencs/company-box]]
+
 #+begin_src emacs-lisp 
   (use-package company
 	:defer 2
@@ -225,6 +235,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+end_src
 
 * Counsel
+[[https://github.com/abo-abo/swiper]]
+
 #+begin_src emacs-lisp 
 
   (use-package counsel
@@ -234,6 +246,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 
 #+end_src
 * Dashboard
+[[https://github.com/emacs-dashboard/emacs-dashboard]]
+
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
     :init
@@ -258,6 +272,8 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+END_SRC
 * Doom theme and modeline
 Doom themes: [[https://github.com/doomemacs/themes]]
+
+Hide-mode-line: [[https://github.com/hlissner/emacs-hide-mode-line]]
 
 Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
@@ -293,11 +309,15 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 
 * Embark
+[[https://github.com/oantolin/embark]]
+
 #+BEGIN_SRC emacs-lisp
   ;; TODO install and setup
 #+END_SRC
 
 * Highlight todo
+[[https://github.com/tarsius/hl-todo]]
+
 #+begin_src emacs-lisp  
 
   (use-package hl-todo
@@ -315,6 +335,8 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+end_src
 * ELFEED
+[[https://github.com/skeeto/elfeed]]
+
 #+begin_src emacs-lisp  
 
   (use-package elfeed
@@ -350,6 +372,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 * Evil mode
 [[https://github.com/emacs-evil/evil]]
+[[https://github.com/emacs-evil/evil-collection]]
 
 #+begin_src emacs-lisp 
   (use-package evil
@@ -377,6 +400,9 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 #+end_src
 
 * Eshell
+[[https://github.com/4DA/eshell-toggle]]
+[[https://github.com/akreisher/eshell-syntax-highlighting]]
+
 #+begin_src emacs-lisp  
 
   (use-package eshell-toggle
@@ -400,6 +426,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+end_src
 * General
+[[https://github.com/noctuid/general.el]]
 
 #+begin_src emacs-lisp 
     (use-package general
@@ -712,40 +739,6 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     ;; Exit
     ("q" nil))
 #+end_src
-* Ivy, counsel
-#+begin_src emacs-lisp 
-  ;; (use-package counsel
-  ;;   :after ivy
-  ;;   :diminish
-  ;;   :config
-  ;;   (counsel-mode)
-  ;;   (setq ivy-initial-inputs-alist nil))
-
-  ;; (use-package ivy
-  ;;   :bind
-  ;;   (("C-c C-r" . ivy-resume)
-  ;;    ("C-x B" . ivy-switch-buffer-other-window))
-  ;;   :diminish
-  ;;   :custom
-  ;;   (setq ivy-use-virtual-buffers t)
-  ;;   (setq ivy-count-format "(%d/%d) ")
-  ;;   (setq enable-recursive-minibuffers t)
-  ;;   :config
-  ;;   (ivy-mode))
-
-  ;; (use-package all-the-icons-ivy-rich
-  ;;   :ensure t
-  ;;   :init (all-the-icons-ivy-rich-mode 1))
-
-  ;; (use-package ivy-rich
-  ;;   :after ivy
-  ;;   :init
-  ;;   (setq ivy-rich-path-style 'abbrev)
-  ;;   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  ;;   :config
-  ;;   (ivy-rich-mode 1))
-#+end_src
-
 * LaTeX
 #+begin_src emacs-lisp  
 
@@ -799,6 +792,11 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Misc Packages
+[[https://github.com/abo-abo/ace-window]]
+[[https://github.com/iqbalansari/restart-emacs]]
+[[https://github.com/emacsmirror/diminish]]
+[[https://github.com/kaz-yos/reveal-in-osx-finder]]
+
 #+begin_src emacs-lisp 
   (use-package ace-window :defer t)
   (use-package restart-emacs :defer t)
@@ -808,6 +806,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
   #+end_src
 
 * Neotree
+[[https://github.com/jaypei/emacs-neotree]]
+
 #+begin_src emacs-lisp 
   (use-package neotree
 	:config
@@ -828,10 +828,14 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Nerd icons
+[[https://github.com/rainstormstudio/nerd-icons.el]]
+
 #+BEGIN_SRC emacs-lisp
 (use-package nerd-icons)
 #+END_SRC
 * Orderless
+[[https://github.com/oantolin/orderless]]
+
 #+begin_src emacs-lisp 
   (use-package orderless
 	:ensure t
@@ -842,6 +846,12 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Org
+[[https://orgmode.org]]
+[[https://github.com/oantolin/orderless]]
+[[https://github.com/alphapapa/org-make-toc]]
+[[https://github.com/minad/org-modern]]
+[[https://github.com/hexmode/ox-reveal]]
+
 #+begin_src emacs-lisp
       (require 'org-tempo)
 
@@ -889,6 +899,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * PDF
+[[https://github.com/politza/pdf-tools]]
+
 #+begin_src emacs-lisp  
 
     (use-package pdf-tools
@@ -924,6 +936,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 #+end_src
 * Projectile
+[[https://docs.projectile.mx/projectile/index.html]]
+
 #+begin_src emacs-lisp 
   (use-package projectile
 	:ensure t
@@ -937,6 +951,9 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Rainbow mode
+[[https://github.com/emacsmirror/rainbow-mode]]
+[[https://github.com/Fanael/rainbow-delimiters]]
+
 #+begin_src emacs-lisp  
 
   (use-package rainbow-mode
@@ -949,6 +966,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 #+end_src
 * Registers
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html]]
+
 #+begin_src emacs-lisp 
   (setq register-preview-delay 0)
   (set-register ?C (cons 'file "~/dev/emacs/Readme.org"))
@@ -1045,6 +1064,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
     (load-theme theme t))
 #+end_src
 * Sudo Edit
+[[https://github.com/nflath/sudo-edit/blob/master/sudo-edit.el]]
+
 #+begin_src emacs-lisp  
 
   (use-package sudo-edit)
@@ -1066,6 +1087,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
     (super-save-mode +1))
 #+END_SRC
 * Thesaurus
+[[https://github.com/agzam/mw-thesaurus.el]]
+
 #+BEGIN_SRC emacs-lisp
   (use-package mw-thesaurus
     :defer t
@@ -1074,6 +1097,8 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
               (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
 #+END_SRC
 * TLDR
+[[https://github.com/kuanyui/tldr.el]]
+
 #+begin_src emacs-lisp  
 
   (use-package tldr)
@@ -1119,6 +1144,9 @@ Packages from ELPA will be stored in a temporary directory by default.
   (use-package try)
 #+END_SRC
 * Vertico
+[[https://github.com/minad/vertico]]
+[[https://github.com/minad/marginalia]]
+
 #+begin_src emacs-lisp  
 
   (use-package vertico
@@ -1165,6 +1193,8 @@ Packages from ELPA will be stored in a temporary directory by default.
 #+end_src
 
 * Yasnippet
+[[https://github.com/joaotavora/yasnippet]]
+
 #+begin_src emacs-lisp
   (use-package yasnippet
     :diminish yas-minor-mode
