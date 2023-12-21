@@ -35,6 +35,7 @@ You can do that by running (C-c C-c) in this code block:
 | snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
 | scripts                               | -> | /Users/au/.config/emacs/scripts                               |
 | scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
+| emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
 
 
 * Early-init.el
@@ -570,6 +571,12 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 [[https://github.com/abo-abo/hydra]]
 
 #+begin_src emacs-lisp 
+  (use-package hydra)
+
+  (defhydra hydra-zoom (global-map "<f2>")
+            "zoom"
+            ("g" text-scale-increase "in")
+            ("l" text-scale-decrease "out"))
 #+end_src
 * Ivy, counsel
 #+begin_src emacs-lisp 
