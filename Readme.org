@@ -86,6 +86,7 @@ You can do that by running (C-c C-c) in this code block:
 #+END_SRC
 * MacOS Keyboard Configuration
 
+My keyboard bindings:
 |---------------+--------------------------------------------|
 | key-binding   | Does what                                  |
 |---------------+--------------------------------------------|
