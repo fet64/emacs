@@ -229,7 +229,7 @@ By default, Emacs saves backup files in the current directory. These are files e
     (setq dashboard-set-heading-icons t
           dashboard-set-file-icons t
           dashboard-display-icons-p t
-          dashboard-icon-type 'nerd-icons
+          dashboard-icon-type 'all-the-icons
           dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
           dashboard-startup-banner "~/.config/emacs/images/emacs.png"
           dashboard-center-content nil ;; set to 't' to center dashboard
@@ -648,6 +648,43 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     ("q" quit-window "quit" :color blue))
 
   (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
+
+  (defhydra fet-hydra-theme-switcher (:hint nil)
+    "
+       Dark             ^Light^
+  -------------------------------------------
+  _1_ one               _z_ one-light
+  _2_ vivendi           _x_ operandi
+  _3_ molokai           _c_ solarized-light
+  _4_ snazzy            _v_ flatwhite
+  _5_ old-hope          _b_ tomorrow-day
+  _6_ henna                 ^
+  _7_ peacock               ^
+  _8_ monokai-machine       ^
+  _9_ xcode                 ^
+  _q_ quit                  ^
+  ^                         ^
+  "
+    ;; Dark
+    ("1" (load-theme 'doom-one) "one")
+    ("2" (load-theme 'modus-vivendi) "modus-vivendi")
+    ("3" (load-theme 'doom-molokai) "molokai")
+    ("4" (load-theme 'doom-snazzy) "snazzy")
+    ("5" (load-theme 'doom-old-hope) "old-hope")
+    ("6" (load-theme 'doom-henna) "henna")
+    ("7" (load-theme 'doom-peacock) "peacock")
+    ("8" (load-theme 'doom-monokai-machine) "monokai-machine")
+    ("9" (load-theme 'doom-xcode) "xcode")
+
+    ;; Light
+    ("z" (load-theme 'doom-one-light) "one-light")
+    ("x" (load-theme 'modus-operandi) "modus-operandi")
+    ("c" (load-theme 'doom-solarized-light) "solarized-light")
+    ("v" (load-theme 'doom-flatwhite) "flatwhite")
+    ("b" (load-theme 'doom-opera-light) "tomorrow-day")
+
+    ;; Exit
+    ("q" nil))
 #+end_src
 * Ivy, counsel
 #+begin_src emacs-lisp 
