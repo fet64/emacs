@@ -631,6 +631,10 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
   (use-package transient)
   (use-package magit)
 
+  (use-package git-gutter
+    :ensure t
+    :init (global-git-gutter-mode +1))
+  
   (use-package git-timemachine
     :after git-timemachine
     :hook (evil-normalize-keymaps . git-timemachine-hook)
@@ -638,6 +642,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
     )
+
+
 #+end_src
 
 * Misc Packages
