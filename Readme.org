@@ -44,31 +44,34 @@ You can do that by running (C-c C-c) in this code block:
 * Early-init.el
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
-	;;; early-init.el --- Fet64's early-init.el file
-	;;; Commentary:
-	;;; Code:
+  ;;; early-init.el --- Fet64's early-init.el file
+  ;;; Commentary:
+  ;;; Code:
 
-	(setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil)
 
-	;; Garbage collections
-	(setq gc-cons-percentage 0.6)
+  ;; Garbage collections
+  (setq gc-cons-percentage 0.6)
 
-	;; Compile warnings
-	(setq warning-minimum-level :emergency)
-	(setq native-comp-async-report-warnings-errors 'silent)
-	(setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
+  ;; Compile warnings
+  (setq warning-minimum-level :emergency)
+  (setq native-comp-async-report-warnings-errors 'silent)
+  (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
 
-	;; Misc optimizations
-	(setq idle-update-delay 1.0)
-	(setq-default bidi-display-reordering 'left-to-right
-				  bidi-paragraph-direction 'left-to-right)
+  ;; Misc optimizations
+  (setq idle-update-delay 1.0)
+  (setq-default bidi-display-reordering 'left-to-right
+                bidi-paragraph-direction 'left-to-right)
 
-	(setq-default cursor-in-non-selected-windows nil)
-	(setq highlight-nonselected-windows nil)
-	(setq fast-but-imprecise-scrolling t)
-	(setq inhibit-compacting-font-caches t)
+  (setq-default cursor-in-non-selected-windows nil)
+  (setq highlight-nonselected-windows nil)
+  (setq fast-but-imprecise-scrolling t)
+  (setq inhibit-compacting-font-caches t)
 
-	;;; early-init.el ends here
+  ;; This makes the Aqua titlebar color the same as Emacs
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+
+  ;;; early-init.el ends here
 
 #+end_src
 
@@ -1043,6 +1046,14 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
           '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
           super-save-max-buffer-size 10000000)
     (super-save-mode +1))
+#+END_SRC
+* Thesaurus
+#+BEGIN_SRC emacs-lisp
+  (use-package mw-thesaurus
+    :defer t
+    :config
+    (add-hook 'mw-thesaurus-mode-hook
+              (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
 #+END_SRC
 * TLDR
 #+begin_src emacs-lisp  
