@@ -253,10 +253,18 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t
-	  doom-themes-enable-italic t)
+      doom-themes-enable-italic t)
     (load-theme 'doom-solarized-light t)
     ;;(doom-themes-neotree-config)
     (doom-themes-org-config))
+
+  (line-number-mode)
+  (column-number-mode)
+  (display-time-mode 't)
+  (size-indication-mode 0)
+
+  (use-package hide-mode-line
+    :commands (hide-mode-line-mode))
 
   (use-package doom-modeline
     :ensure t
@@ -264,9 +272,9 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
     (doom-modeline-mode 1)
     :config
     (setq doom-modeline-height 35
-	  doom-modeline-bar-width 5
-	  doom-modeline-persp-name t
-	  doom-modeline-persp-icon t))
+      doom-modeline-bar-width 5
+      doom-modeline-persp-name t
+      doom-modeline-persp-icon t))
 
 #+end_src
 
