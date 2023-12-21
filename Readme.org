@@ -29,6 +29,8 @@ You can do that by running (C-c C-c) in this code block:
 
 #+end_src
 
+Results from copy command:
+
 #+RESULTS:
 | snippets                              | -> | /Users/au/.config/emacs/snippets                              |
 | snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
