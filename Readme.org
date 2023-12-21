@@ -697,7 +697,7 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
   (use-package git-gutter
     :ensure t
     :init (global-git-gutter-mode +1))
-  
+
   (use-package git-timemachine
     :after git-timemachine
     :hook (evil-normalize-keymaps . git-timemachine-hook)
@@ -986,6 +986,16 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
      ])
 
   ;;(fet-config-command)
+#+END_SRC
+* Try
+Try is a package that allows you to try out Emacs packages without installing them. If you pass a URL to a plaint text .el -file it evaluates the content, without storing the file.
+
+Packages from ELPA will be stored in a temporary directory by default.
+
+[[https://github.com/larstvei/Try]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package try)
 #+END_SRC
 * Vertico
 #+begin_src emacs-lisp  
