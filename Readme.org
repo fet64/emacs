@@ -68,73 +68,28 @@ You can do that by running (C-c C-c) in this code block:
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 #+end_src
-* Elpaca Package Manager
+* Package Management
+#+BEGIN_SRC emacs-lisp
+  (setq warning-suppress-log-types '((package reinitialization)))
+  (package-initialize)
+  (unless (assoc-default "melpa" package-archives)
+      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-[[https://github.com/progfolio/elpaca]]
-|------------------------------------+--------------------+--------------------------------------------------|
-| Operation                          | Keys               | Commmands                                        |
-|------------------------------------+--------------------+--------------------------------------------------|
-| Finding packages                   | M-x elpaca-manager | elpaca-try                                       |
-| Trying packages                    | i x                | elpaca-try                                       |
-| Fetching package updates           | f x                | elpaca-fetch or elpaca-fetch-all                 |
-| Merging updates                    | u x                | elpaca-merge or elpaca-merge-all                 |
-| Pulling updates                    | Cu u x             | C-u M-x elpaca-merge or C-u M-x elpaca-merge-all |
-| Rebuilding packages                | r x                | elpaca-rebuild                                   |
-| Deleting packages                  | d x                | elpaca-delete                                    |
-| View package logs                  | l                  | elpaca-log                                       |
-| View package statuses              | t                  | elpaca-status                                    |
-| Visit package repository directory | v                  | elpaca-visit                                     |
-| Visit package build directory      | C-u v              | C-u M-x elpaca-visit                             |
-| Browse package website             | b                  | elpaca-browse                                    |
-|------------------------------------+--------------------+--------------------------------------------------|
+    (unless (assoc-default "nongnu" package-archives)
+      (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
 
-
-
-#+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.6)
-  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-  (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                :ref nil
-                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                :build (:not elpaca--activate-package)))
-  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-     (build (expand-file-name "elpaca/" elpaca-builds-directory))
-     (order (cdr elpaca-order))
-     (default-directory repo))
-    (add-to-list 'load-path (if (file-exists-p build) build repo))
-    (unless (file-exists-p repo)
-      (make-directory repo t)
-      (when (< emacs-major-version 28) (require 'subr-x))
-      (condition-case-unless-debug err
-      (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-           ((zerop (call-process "git" nil buffer t "clone"
-                     (plist-get order :repo) repo)))
-           ((zerop (call-process "git" nil buffer t "checkout"
-                     (or (plist-get order :ref) "--"))))
-           (emacs (concat invocation-directory invocation-name))
-           ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                     "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-           ((require 'elpaca))
-           ((elpaca-generate-autoloads "elpaca" repo)))
-          (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-        (error "%s" (with-current-buffer buffer (buffer-string))))
-    ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-    (unless (require 'elpaca-autoloads nil t)
-      (require 'elpaca)
-      (elpaca-generate-autoloads "elpaca" repo)
-      (load "./elpaca-autoloads")))
-  (add-hook 'after-init-hook #'elpaca-process-queues)
-  (elpaca `(,@elpaca-order))
-
-  (elpaca elpaca-use-package
-      (elpaca-use-package-mode)
-      (setq elpaca-use-package-by-default t))
-  (elpaca-wait)
-
-#+end_src
-
+    (unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+    (setq use-package-verbose t)
+    (setq use-package-always-ensure t)
+    (require 'use-package)
+    (use-package quelpa)
+    (use-package quelpa-use-package)
+    (quelpa-use-package-activate-advice)
+    (use-package auto-compile
+      :config (auto-compile-on-load-mode))
+    (setq load-prefer-newer t)
+#+END_SRC
 * Garbage Collections and Collector
 #+begin_src emacs-lisp 
   (use-package gcmh
@@ -936,7 +891,7 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 #+end_src
 * Transient stuff
 #+BEGIN_SRC emacs-lisp
-  (require 'transient)
+  ;;(require 'transient)
 
   (transient-define-prefix fet-config-command ()
     "Config options"
@@ -947,7 +902,9 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
       ("c" "Copy snippets" (lambda () (interactive) (
                                                      message "hello"
                                                      )))
-      ("g" "Git status" (lambda () (interactive) (magit-status)))]
+      ("g" "Git status" (lambda () (interactive) (magit-status)))
+      ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
+      ]
 
      ["Theme options"
       ("1" "doom-solarized-light" (lambda () (interactive) (
@@ -955,10 +912,11 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
                                                             )))
       ("2" "doom-solarized-dark" (lambda () (interactive) (
                                                            load-theme 'doom-solarized-dark
-                                                           )))]
+                                                           )))
+      ]
      ])
 
-  (fet-config-command)
+  ;;(fet-config-command)
 #+END_SRC
 * Vertico
 #+begin_src emacs-lisp  
