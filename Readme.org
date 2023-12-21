@@ -15,15 +15,26 @@ To tangle this file into =early-init.el= and =init.el= in the emacs-user-directo
 (org-babel-tangle)
 #+end_src
 
-After you have created =early-init.el= and =init.el= you need to copy all the snippets from
-this git directory to =~/.config/emacs/snippets/= directory.
+After you have created =early-init.el= and =init.el= you need to copy all supporting code from this git
+to where you have your emacs config, usually =~/.config/emacs/=.
+
 
 You can do that by running (C-c C-c) in this code block:
 
-#+begin_src sh :tangle no :results none
+#+begin_src sh :tangle no
   cp -rvp snippets ~/.config/emacs/
+  cp -rvp scripts ~/.config/emacs/
+  cp -rvp emacs-custom.el ~/.config/emacs/
 
 #+end_src
+
+#+RESULTS:
+| snippets                              | -> | /Users/au/.config/emacs/snippets                              |
+| snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
+| snippets/org-mode/org_src_block       | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block       |
+| snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
+| scripts                               | -> | /Users/au/.config/emacs/scripts                               |
+| scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
 
 
 * Early-init.el
@@ -720,12 +731,12 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
      org-modern-todo nil
      org-modern-table nil))
 
-  (use-package org-super-agenda
-    :after org
-    :config
-    (setq org-super-agenda-header-map nil)
-    (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
-    (org-super-agenda-mode))
+  ;; (use-package org-super-agenda
+  ;;   :after org
+  ;;   :config
+  ;;   (setq org-super-agenda-header-map nil)
+  ;;   (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
+  ;;   (org-super-agenda-mode))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
