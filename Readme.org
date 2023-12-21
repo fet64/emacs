@@ -570,6 +570,20 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 * Hydras
 [[https://github.com/abo-abo/hydra]]
 
+The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the following way:
+
+|----------+----------------------------|
+| color    | toggle                     |
+|----------+----------------------------|
+| red      |                            |
+| blue     | :exit t                    |
+| amaranth | :foreign-keys warn         |
+| teal     | :foreign-keys-warn :exit t |
+| ping     | :foreign-keys run          |
+|----------+----------------------------|
+
+
+
 #+begin_src emacs-lisp 
   (use-package hydra)
 
