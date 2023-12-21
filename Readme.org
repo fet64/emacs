@@ -25,6 +25,7 @@ You can do that by running (C-c C-c) in this code block:
   cp -rvp snippets ~/.config/emacs/
   cp -rvp scripts ~/.config/emacs/
   cp -rvp emacs-custom.el ~/.config/emacs/
+  cp -rvp images ~/.config/emacs/
 
 #+end_src
 
@@ -36,6 +37,8 @@ You can do that by running (C-c C-c) in this code block:
 | scripts                               | -> | /Users/au/.config/emacs/scripts                               |
 | scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
 | emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
+| images                                | -> | /Users/au/.config/emacs/images                                |
+| images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
 
 
 * Early-init.el
@@ -218,6 +221,29 @@ By default, Emacs saves backup files in the current directory. These are files e
     (counsel-mode))
 
 #+end_src
+* Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-display-icons-p t
+          dashboard-icon-type 'nerd-icons
+          dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
+          dashboard-startup-banner "~/.config/emacs/images/emacs.png"
+          dashboard-center-content nil ;; set to 't' to center dashboard
+          dashboard-items '((recents . 5)
+                            (agenda . 5)
+                            (bookmarks . 5)
+                            (projects . 5)
+                            (registers . 5)))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
+#+END_SRC
 * Doom theme and modeline
 Doom themes: [[https://github.com/doomemacs/themes]]
 
@@ -738,6 +764,10 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
 #+end_src
 
+* Nerd icons
+#+BEGIN_SRC emacs-lisp
+(use-package nerd-icons)
+#+END_SRC
 * Orderless
 #+begin_src emacs-lisp 
   (use-package orderless
