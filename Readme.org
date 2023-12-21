@@ -70,6 +70,10 @@ You can do that by running (C-c C-c) in this code block:
 
   ;; This makes the Aqua titlebar color the same as Emacs
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  ;; Remove icon in Aqua titlebar
+  (setq ns-use-proxy-icon nil)
+  ;; Remove fram title from Aqua titlebar
+  (setq frame-title-format nil)
 
   ;;; early-init.el ends here
 
@@ -264,7 +268,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (line-number-mode)
   (column-number-mode)
   (setq display-time-24-hr-format 't)
-  (setq display-time-format "%H:%M CET")
+  (setq display-time-format "%Y-%m-%d week: %U %H:%M CET")
   (display-time-mode 't)
   (size-indication-mode 0)
 
@@ -520,7 +524,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
         "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
         "h L" '(describe-language-environment :wk "Desc. language environment")
         "h m" '(describe-mode :wk "Desc. mode")
-        "h t" '(fet/themes-hydra/body :wk "Change theme")
+        "h t" '(fet-hydra-theme-switcher/body :wk "Change theme")
         "h v" '(describe-variable :wk "Desc. variable")
         "h w" '(where-is :wk "Prints keybinding for command if set")
         "h x" '(describe-command :wk "Display full documentation for command")
@@ -583,6 +587,10 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
         "w d" '(downcase-word :wk "Downcase word")
         "w u" '(upcase-word :wk "Upcase word")
         "w =" '(count-words :wk "Count words/lines for buffer")
+        "w t" '(nil :wk "Thesaurus")
+        "w t p" '(mw-thesaurus-lookup-at-point :wk "Lookup word at point")
+        "w t m" '(mw-thesaurus-mode :wk "Merriam-Webster minor mode")
+        "w t l" '(mw-thesaurus-lookup :wk "Lookup word")
         )
       (general-def
         :keymaps 'override
@@ -679,22 +687,22 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   ^                         ^
   "
     ;; Dark
-    ("1" (load-theme 'doom-one) "one")
-    ("2" (load-theme 'modus-vivendi) "modus-vivendi")
-    ("3" (load-theme 'doom-molokai) "molokai")
-    ("4" (load-theme 'doom-snazzy) "snazzy")
-    ("5" (load-theme 'doom-old-hope) "old-hope")
-    ("6" (load-theme 'doom-henna) "henna")
-    ("7" (load-theme 'doom-peacock) "peacock")
-    ("8" (load-theme 'doom-monokai-machine) "monokai-machine")
-    ("9" (load-theme 'doom-xcode) "xcode")
+    ("1" (fet/load-theme 'doom-one) "one")
+    ("2" (fet/load-theme 'modus-vivendi) "modus-vivendi")
+    ("3" (fet/load-theme 'doom-molokai) "molokai")
+    ("4" (fet/load-theme 'doom-snazzy) "snazzy")
+    ("5" (fet/load-theme 'doom-old-hope) "old-hope")
+    ("6" (fet/load-theme 'doom-henna) "henna")
+    ("7" (fet/load-theme 'doom-peacock) "peacock")
+    ("8" (fet/load-theme 'doom-monokai-machine) "monokai-machine")
+    ("9" (fet/load-theme 'doom-xcode) "xcode")
 
     ;; Light
-    ("z" (load-theme 'doom-one-light) "one-light")
-    ("x" (load-theme 'modus-operandi) "modus-operandi")
-    ("c" (load-theme 'doom-solarized-light) "solarized-light")
-    ("v" (load-theme 'doom-flatwhite) "flatwhite")
-    ("b" (load-theme 'doom-opera-light) "tomorrow-day")
+    ("z" (fet/load-theme 'doom-one-light) "one-light")
+    ("x" (fet/load-theme 'modus-operandi) "modus-operandi")
+    ("c" (fet/load-theme 'doom-solarized-light) "solarized-light")
+    ("v" (fet/load-theme 'doom-flatwhite) "flatwhite")
+    ("b" (fet/load-theme 'doom-opera-light) "tomorrow-day")
 
     ;; Exit
     ("q" nil))
@@ -1025,6 +1033,11 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
     (yank))
 
   (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
+
+  (defun fet/load-theme (theme)
+    "Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme t))
 #+end_src
 * Sudo Edit
 #+begin_src emacs-lisp  
