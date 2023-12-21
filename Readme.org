@@ -15,7 +15,7 @@ To tangle this file into =early-init.el= and =init.el= in the emacs-user-directo
 (org-babel-tangle)
 #+end_src
 
-After you have created =early-init.el= and =init.el= you need to copy all supporting code from this git
+After you have tangled =early-init.el= and =init.el= you need to copy all supporting code from this git
 to where you have your emacs config, usually =~/.config/emacs/=.
 
 
