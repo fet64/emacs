@@ -108,7 +108,7 @@ You can do that by running (C-c C-c) in this code block:
   (global-set-key (kbd "s-o") 'mac-open-file)
   (global-set-key (kbd "s-s") 'save-buffer)
   (global-set-key (kbd "s-S") 'mac-save-file-as)
-  (global-set-key (kbd "s-p") 'mac-preview)
+  ;;(global-set-key (kbd "s-p") 'mac-preview)
   (global-set-key (kbd "s-w") 'kill-buffer)
   (global-set-key (kbd "s-m") 'iconify-frame)
   (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
