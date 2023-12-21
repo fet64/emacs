@@ -86,11 +86,41 @@ You can do that by running (C-c C-c) in this code block:
 #+END_SRC
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp
-  (setq mac-command-modifier  'meta
-	mac-option-modifier         nil
-	mac-control-modifier       'control
-	mac-right-command-modifier 'super
-	mac-right-control-modifier 'hyper)
+
+  ;; (setq mac-command-modifier  'meta
+  ;;   mac-option-modifier         nil
+  ;;   mac-control-modifier       'control
+  ;;   mac-right-command-modifier 'super
+  ;;   mac-right-control-modifier 'hyper)
+
+  (setq mac-option-modifier 'meta
+		mac-command-modifier 'super
+		mac-right-option-modifier 'none
+		)
+
+  (global-set-key (kbd "s-c") 'kill-ring-save)
+  (global-set-key (kbd "s-v") 'yank)
+  (global-set-key (kbd "s-x") 'kill-region)
+  (global-set-key (kbd "s-a") 'mark-whole-buffer)
+  (global-set-key (kbd "s-z") 'undo)
+  (global-set-key (kbd "s-f") 'isearch-forward)
+  (global-set-key (kbd "s-g") 'isearch-repeat-forward)
+  (global-set-key (kbd "s-o") 'mac-open-file)
+  (global-set-key (kbd "s-s") 'save-buffer)
+  (global-set-key (kbd "s-S") 'mac-save-file-as)
+  (global-set-key (kbd "s-p") 'mac-preview)
+  (global-set-key (kbd "s-w") 'kill-buffer)
+  (global-set-key (kbd "s-m") 'iconify-frame)
+  (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
+  (global-set-key (kbd "s-.") 'keyboard-quit)
+  (global-set-key (kbd "s-l") 'goto-line)
+  (global-set-key (kbd "s-k") 'kill-buffer)
+  (global-set-key (kbd "s-<up>") 'beginning-of-buffer)
+  (global-set-key (kbd "s-<down>") 'end-of-buffer)
+  (global-set-key (kbd "s-<left>") 'beginning-of-line)
+  (global-set-key (kbd "s-<right>") 'end-of-line)
+  (global-set-key [(meta down)] 'forward-paragraph)
+  (global-set-key [(meta up)] 'backward-paragraph)
 
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -1047,21 +1077,39 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 #+begin_src emacs-lisp  
 
   (defun fet/duplicate-line ()
-    "Duplicate current line"
-    (interactive)
-    (move-beginning-of-line 1)
-    (kill-line)
-    (yank)
-    (open-line 1)
-    (next-line 1)
-    (yank))
+	"Duplicate current line"
+	(interactive)
+	(move-beginning-of-line 1)
+	(kill-line)
+	(yank)
+	(open-line 1)
+	(next-line 1)
+	(yank))
 
   (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
 
   (defun fet/load-theme (theme)
-    "Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme theme t))
+	"Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
+	(mapc #'disable-theme custom-enabled-themes)
+	(load-theme theme t))
+
+  (defun mac-open-file ()
+	(interactive)
+	(let ((file (do-applescript "POSIX path of (choose file)")))
+	  (if (< (length file) 3)
+		  (setq file
+				(substring file 1 (- (length file) 1))))
+	  (if (and (not (equal file "")) (file-readable-p file))
+		  (find-file file))))
+
+  (defun mac-save-file-as ()
+	(interactive)
+	(let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
+	  (if (> (length file) 3)
+		  (setq file
+				(substring file 1 (- (length file) 1))))
+	  (if (not (equal file ""))
+		  (write-file file))))
 #+end_src
 * Sudo Edit
 [[https://github.com/nflath/sudo-edit/blob/master/sudo-edit.el]]
