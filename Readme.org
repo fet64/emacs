@@ -579,7 +579,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 | blue     | :exit t                    |
 | amaranth | :foreign-keys warn         |
 | teal     | :foreign-keys-warn :exit t |
-| ping     | :foreign-keys run          |
+| pink     | :foreign-keys run          |
 |----------+----------------------------|
 
 
