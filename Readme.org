@@ -1019,6 +1019,21 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
   (use-package sudo-edit)
 
 #+end_src
+* Super Save
+[[https://github.com/bbatsov/super-save]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package super-save
+    :diminish super-save-mode
+    :defer 2
+    :config
+    (setq super-save-auto-save-when-idle t
+          super-save-idle-duration 5
+          super-save-triggers
+          '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
+          super-save-max-buffer-size 10000000)
+    (super-save-mode +1))
+#+END_SRC
 * TLDR
 #+begin_src emacs-lisp  
 
