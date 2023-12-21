@@ -3,7 +3,7 @@
 #+email: fet64@outlook.com
 #+language: en
 #+options: ':t toc:nil author:t email:t num:nil
-#+startup: content indent
+#+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
  
