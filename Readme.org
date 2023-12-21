@@ -45,7 +45,7 @@ You can do that by running (C-c C-c) in this code block:
 
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   ;;; early-init.el --- Fet64's early-init.el file
-  ;;; Commentary:
+  ;;; Commentary: auto generated (tangled) from Readme.org
   ;;; Code:
 
   (setq package-enable-at-startup nil)
@@ -78,7 +78,12 @@ You can do that by running (C-c C-c) in this code block:
   ;;; early-init.el ends here
 
 #+end_src
-
+* Header in init.el
+#+BEGIN_SRC emacs-lisp
+  ;;; init.el --- Fet64's init.el
+  ;;; Commentary: auto generated (tangled) from Readme.org
+  ;;; Code:
+#+END_SRC
 * MacOS Keyboard Configuration
 #+begin_src emacs-lisp
   (setq mac-command-modifier   'meta
@@ -1172,3 +1177,8 @@ Packages from ELPA will be stored in a temporary directory by default.
   (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
 
 #+end_src
+
+* Footer in init.el
+#+BEGIN_SRC emacs-lisp
+;;; init.el ends here
+#+END_SRC
