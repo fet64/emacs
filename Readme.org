@@ -6,7 +6,9 @@
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
- 
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [a4paper]
+
 This is a work in progress...
 
 * Intruduction/How to use
@@ -343,12 +345,13 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
 #+begin_src emacs-lisp 
   (use-package doom-themes
-    :config
-    (setq doom-themes-enable-bold t
-      doom-themes-enable-italic t)
-    (load-theme 'doom-solarized-light t)
-    ;;(doom-themes-neotree-config)
-    (doom-themes-org-config))
+	:config
+	(setq doom-themes-enable-bold t
+	  doom-themes-enable-italic t)
+	;;(load-theme 'doom-solarized-light t)
+	(load-theme 'doom-one)
+	;;(doom-themes-neotree-config)
+	(doom-themes-org-config))
 
   (line-number-mode)
   (column-number-mode)
@@ -358,17 +361,17 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (size-indication-mode 0)
 
   (use-package hide-mode-line
-    :commands (hide-mode-line-mode))
+	:commands (hide-mode-line-mode))
 
   (use-package doom-modeline
-    :ensure t
-    :init
-    (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-height 35
-      doom-modeline-bar-width 5
-      doom-modeline-persp-name t
-      doom-modeline-persp-icon t))
+	:ensure t
+	:init
+	(doom-modeline-mode 1)
+	:config
+	(setq doom-modeline-height 35
+	  doom-modeline-bar-width 5
+	  doom-modeline-persp-name t
+	  doom-modeline-persp-icon t))
 
 #+end_src
 
@@ -847,8 +850,30 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   (add-to-list 'org-latex-classes
 			   '("article"
 				 "\\documentclass{article}"
-				 ("\\section{%s}" . "\\section*{%s}")))
-
+				 ("\\section{%s}" . "\\section*{%s}")
+				 ("\\subsection{%s}" . "\\subsection*{%s}")
+				 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+				 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+				 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+				 )
+			   )
+  (add-to-list 'org-latex-classes
+			   '("book"
+				 "\\documentclass{book}"
+				 ("\\part{%s}" . "\\part*{%s}")
+				 ("\\chapter{%s}" . "\\chapter*{%s}")
+				 ("\\section{%s}" . "\\section*{%s}")
+				 ("\\subsection{%s}" . "\\subsection*{%s}")
+				 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+			   )
+  (add-to-list 'org-latex-classes
+			'("koma-article"
+			   "\\documentclass{scrartcl}"
+			   ("\\section{%s}" . "\\section*{%s}")
+			   ("\\subsection{%s}" . "\\subsection*{%s}")
+			   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+			   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+			   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-listings t)
   (setq org-latex-compiler "/Library/TeX/texbin/xelatex")
 #+end_src
