@@ -8,7 +8,6 @@
 #+PROPERTY: header-args+ :mkdirp yes
  
 This is a work in progress...
-Visar för någon som inte är intresserad
 
 * Intruduction/How to use
 To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory:
