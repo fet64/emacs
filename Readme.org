@@ -61,7 +61,7 @@ You can do that by running (C-c C-c) in this code block:
   ;; Misc optimizations
   (setq idle-update-delay 1.0)
   (setq-default bidi-display-reordering 'left-to-right
-                bidi-paragraph-direction 'left-to-right)
+				bidi-paragraph-direction 'left-to-right)
 
   (setq-default cursor-in-non-selected-windows nil)
   (setq highlight-nonselected-windows nil)
@@ -175,6 +175,11 @@ My keyboard bindings:
     (use-package auto-compile
       :config (auto-compile-on-load-mode))
     (setq load-prefer-newer t)
+#+END_SRC
+* Load system path variables
+#+BEGIN_SRC emacs-lisp
+  (exec-path)
+  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
 #+END_SRC
 * Garbage Collections and Collector
 [[https://github.com/emacsmirror/gcmh]]
@@ -801,22 +806,51 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+end_src
 * LaTeX
 #+begin_src emacs-lisp  
+  (use-package latex
+	:ensure nil
+	:defer t
+	:init
+	(setq TeX-engine 'xetex
+		  latex-run-command "/Library/TeX/texbin/xetex")
+	(setq TeX-parse-self t
+		  TeX-auto-save t
+		  TeX-auto-local (concat user-emacs-directory "auctex/auto/")
+		  TeX-style-local (concat user-emacs-directory "auctex/style/")
+		  TeX-source-correlate-mode t
+		  TeX-source-correlate-method 'synctex
+		  TeX-show-compilation nil
+		  TeX-source-correlate-start-server nil
+		  TeX-electirc-sub-and-superscript t
+		  TeX-save-query nil)
+	(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+		  TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+		  TeX-source--correlate-start-server t)
+	:general
+	(general-define-key
+	 :prefix ","
+	 :states 'normal
+	 :keymaps 'LaTeX-mode-map
+	 "" nil
+	 "a" '(TeX-command-run-all :wk "TeX run all")
+	 "c" '(TeX-command-master :wk "TeX-command-master")
+	 "e" '(LaTeX-environment :wk "Insert environment")
+	 "s" '(LaTeX-section :wk "Insert section")
+	 "m" '(TeX-insert-macro :wk "Insert macro")
+	 )
+	)
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+
+
+  (require 'ox-latex)
+  (unless (boundp 'org-latex-classes)
+	(setq org-latex-classes nil))
+  (add-to-list 'org-latex-classes
+			   '("article"
+				 "\\documentclass{article}"
+				 ("\\section{%s}" . "\\section*{%s}")))
 
   (setq org-latex-listings t)
-  (setq org-latex-compiler "xelatex")
-  (with-eval-after-load 'ox-latex
-    (add-to-list 'org-latex-classes
-                 '("org-plain-latex"
-                   "\\documentclass{extarticle}
-  [NO-DEFAULT-PACKAGES]
-  [PACKAGES]
-  [EXTRA]"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  )
+  (setq org-latex-compiler "/Library/TeX/texbin/xelatex")
 #+end_src
 
 * Load local scripts
@@ -906,6 +940,8 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 #+end_src
 
 * Org
+TODO: fix this section
+
 [[https://orgmode.org]]
 [[https://github.com/oantolin/orderless]]
 [[https://github.com/alphapapa/org-make-toc]]
@@ -913,38 +949,39 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 [[https://github.com/hexmode/ox-reveal]]
 
 #+begin_src emacs-lisp
-      (require 'org-tempo)
+  (setq org-directory "~/Org")
+  (require 'org-tempo)
 
-      (use-package org-bullets)
-      (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
 
-      ;(require 'org-make-toc)
-      (use-package org-make-toc)
+  ;(require 'org-make-toc)
+  (use-package org-make-toc)
 
-      (use-package ox-reveal
-        :defer 5)
+  (use-package ox-reveal
+	:defer 5)
 
-     ;; HTML-specific
-    (setq org-html-validation-link nil) ;; No validation button on HTML exports
+  ;; HTML-specific
+  (setq org-html-validation-link nil) ;; No validation button on HTML exports
 
-    ;; LaTeX Specific
-    (eval-after-load 'ox
-      '(add-to-list
-        'org-export-filter-timestamp-functions
-        'org-export-filter-timestamp-remove-brackets)
-      )
+  ;; LaTeX Specific
+  (eval-after-load 'ox
+	'(add-to-list
+	  'org-export-filter-timestamp-functions
+	  'org-export-filter-timestamp-remove-brackets)
+	)
 
   (use-package org-modern
-    :hook (org-mode . org-modern-mode)
-    :config
-    (setq
-     ;; org-modern-star '("●" "○" "✸" "✿")
-     org-modern-star '( "⌾" "✸" "◈" "◇")
-     org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
-     org-modern-tag nil
-     org-modern-priority nil
-     org-modern-todo nil
-     org-modern-table nil))
+	:hook (org-mode . org-modern-mode)
+	:config
+	(setq
+	 ;; org-modern-star '("●" "○" "✸" "✿")
+	 org-modern-star '( "⌾" "✸" "◈" "◇")
+	 org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
+	 org-modern-tag nil
+	 org-modern-priority nil
+	 org-modern-todo nil
+	 org-modern-table nil))
 
   ;; (use-package org-super-agenda
   ;;   :after org
@@ -1047,7 +1084,7 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 
   (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
   (global-display-line-numbers-mode 1)
-  (setq-default display-line-numbers-width 3)
+  (setq-default display-line-numbers-width 5)
   (global-visual-line-mode t)   ;; Enable truncated lines
   (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
 
