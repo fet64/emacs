@@ -12,10 +12,18 @@
 This is a work in progress...
 
 * Intruduction/How to use
-To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory:
+To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory. You can do that by running (C-c C-c) in this code block:
+
 #+begin_src emacs-lisp :tangle no
-(org-babel-tangle)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell .t)))
+
+  (org-babel-tangle)
 #+end_src
+
+#+RESULTS:
+| ~/.config/emacs/init.el | ~/.config/emacs/early-init.el |
 
 After you have tangled =early-init.el= and =init.el= you need to copy all supporting code from this git
 to where you have your emacs config, usually =~/.config/emacs/=.
@@ -41,6 +49,7 @@ You can do that by running (C-c C-c) in this code block:
 | emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
 | images                                | -> | /Users/au/.config/emacs/images                                |
 | images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
+
 
 
 * Early-init.el
@@ -161,22 +170,26 @@ My keyboard bindings:
   (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
   (unless (assoc-default "melpa" package-archives)
-      (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+	  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-    (unless (assoc-default "nongnu" package-archives)
-      (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+	(unless (assoc-default "nongnu" package-archives)
+	  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
 
-    (unless (package-installed-p 'use-package)
-      (package-install 'use-package))
-    (setq use-package-verbose t)
-    (setq use-package-always-ensure t)
-    (require 'use-package)
-    (use-package quelpa)
-    (use-package quelpa-use-package)
-    (quelpa-use-package-activate-advice)
-    (use-package auto-compile
-      :config (auto-compile-on-load-mode))
-    (setq load-prefer-newer t)
+	(unless (package-installed-p 'use-package)
+	  (package-install 'use-package))
+	(setq use-package-verbose t)
+	(setq use-package-always-ensure t)
+	(require 'use-package)
+	(use-package quelpa)
+	(use-package quelpa-use-package)
+	(quelpa-use-package-activate-advice)
+	(use-package auto-compile
+	  :config (auto-compile-on-load-mode))
+	(setq load-prefer-newer t)
+
+  (use-package async
+	:config
+	(setq async-bytecomp-package-mode 1))
 #+END_SRC
 * Load system path variables
 #+BEGIN_SRC emacs-lisp
@@ -349,7 +362,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 	(setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
 	;;(load-theme 'doom-solarized-light t)
-	(load-theme 'doom-one)
+	(load-theme 'doom-one-light)
 	;;(doom-themes-neotree-config)
 	(doom-themes-org-config))
 
@@ -1015,9 +1028,6 @@ TODO: fix this section
   ;;   (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
   ;;   (org-super-agenda-mode))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell .t)))
 #+end_src
 
 * PDF
