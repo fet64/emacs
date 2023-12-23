@@ -362,7 +362,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 	(setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
 	;;(load-theme 'doom-solarized-light t)
-	(load-theme 'doom-one-light)
+	(load-theme 'doom-one-light t)
 	;;(doom-themes-neotree-config)
 	(doom-themes-org-config))
 
@@ -1292,6 +1292,12 @@ Packages from ELPA will be stored in a temporary directory by default.
 
 #+BEGIN_SRC emacs-lisp
   (use-package try)
+#+END_SRC
+* Typography
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
+  (setq-default fill-column 90)
+  (use-package fontawesome)
 #+END_SRC
 * Vertico
 [[https://github.com/minad/vertico]]
