@@ -930,7 +930,15 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 [[https://github.com/kaz-yos/reveal-in-osx-finder]]
 
 #+begin_src emacs-lisp 
-  (use-package ace-window :defer t)
+  (use-package ace-window
+	:config
+	(set-face-attribute
+	 'aw-leading-char-face nil
+	 :weight 'bold
+	 :height 2.0)
+	(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+	)
+
   (use-package restart-emacs :defer t)
   (use-package diminish)
   (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
@@ -1067,6 +1075,12 @@ TODO: fix this section
 )
 
 #+end_src
+* Prescient
+#+BEGIN_SRC emacs-lisp
+  (use-package prescient
+	:config
+	(prescient-persist-mode))
+#+END_SRC
 * Projectile
 [[https://docs.projectile.mx/projectile/index.html]]
 
