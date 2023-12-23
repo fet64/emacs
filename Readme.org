@@ -10,9 +10,6 @@
 #+LaTeX_CLASS_OPTIONS: [a4paper]
 
 This is a work in progress...
-- [ ] Early-init.el
-- [ ] Header and footer in *.el files
-
 
 * Do this first - How to use
 To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory. You can do that by running (C-c C-c) in this code block:
@@ -54,6 +51,8 @@ You can do that by running (C-c C-c) in this code block:
 | images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
 
 You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config.
+
+
 
 * Early-init.el
 
