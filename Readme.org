@@ -364,7 +364,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 	(setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
 	;;(load-theme 'doom-solarized-light t)
-	(load-theme 'doom-one-light t)
+	(load-theme 'doom-one t)
 	;;(doom-themes-neotree-config)
 	(doom-themes-org-config))
 
@@ -997,7 +997,23 @@ TODO: fix this section
 [[https://github.com/hexmode/ox-reveal]]
 
 #+begin_src emacs-lisp
-  (setq org-directory "~/Org")
+  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org"))
+  (setq org-directory "~/Org"
+		org-agenda-files (mapcar
+						  (lambda (f) (concat (file-name-as-directory org-directory) f))
+						  my-agenda-files)
+		org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
+
+
+
+  (use-package org-cliplink
+	:defer t
+	:after org)
+
+
+
+
+
   (require 'org-tempo)
 
   (use-package org-bullets)
@@ -1039,6 +1055,9 @@ TODO: fix this section
   ;;   (org-super-agenda-mode))
 
 #+end_src
+
+#+RESULTS:
+| rainbow-mode | org-modern-mode | (lambda nil (org-bullets-mode 1)) | org-tempo-setup | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | hl-todo-mode |
 
 * PDF
 [[https://github.com/politza/pdf-tools]]
