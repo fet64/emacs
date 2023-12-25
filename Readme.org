@@ -2,7 +2,7 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:nil author:t email:t num:nil
+#+options: ':t toc:t author:t email:t num:nil
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
@@ -13,8 +13,8 @@ This is a work in progress...
 
 * Do this first - How to use
 To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory. You can do that by running (C-c C-c) in this code block:
-
-#+begin_src emacs-lisp :tangle no
+#+ATTR-LATEX: :options minted
+#+begin_src emacs-lisp :tangle no 
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell .t)))
@@ -22,6 +22,7 @@ To tangle this file into =early-init.el= and =init.el= in the emacs-user-directo
   (org-babel-tangle)
 #+end_src
 
+#+CAPTION: Results from evaluating the elisp code to generate =early-init.el= and =init.el=.
 #+RESULTS:
 | ~/.config/emacs/init.el | ~/.config/emacs/early-init.el |
 
@@ -30,8 +31,8 @@ to where you have your emacs config, usually =~/.config/emacs/=.
 
 
 You can do that by running (C-c C-c) in this code block:
-
 #+begin_src sh :tangle no
+
   cp -rvp snippets ~/.config/emacs/
   cp -rvp scripts ~/.config/emacs/
   cp -rvp emacs-custom.el ~/.config/emacs/
@@ -39,6 +40,7 @@ You can do that by running (C-c C-c) in this code block:
 
 #+end_src
 
+#+CAPTION: Results from running copying supporting files.
 #+RESULTS:
 | snippets                              | -> | /Users/au/.config/emacs/snippets                              |
 | snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
@@ -55,7 +57,6 @@ You can now restart Emacs. It will take some time to download all the packages a
 
 
 * Early-init.el
-
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   ;;; early-init.el --- Fet64's early-init.el file
   ;;; Commentary: auto generated (tangled) from Readme.org
@@ -91,15 +92,46 @@ You can now restart Emacs. It will take some time to download all the packages a
   ;;; early-init.el ends here
 
 #+end_src
+
 * Header in init.el
 #+BEGIN_SRC emacs-lisp
   ;;; init.el --- Fet64's init.el
   ;;; Commentary: auto generated (tangled) from Readme.org
   ;;; Code:
 #+END_SRC
-* MacOS Keyboard Configuration
+* My variables
+#+BEGIN_SRC emacs-lisp
+  ;;; fet-variables
+  ;; File and directory locations
+  (defvar fet/home (concat (getenv "HOME") "/") "My home directory.")
+  (defvar fet/emacs (concat fet/home ".config/emacs/") "Emacs home directory.")
+  (setq org-directory (concat fet/home "Org"))
+  (defvar fet/emacs-stuff (concat fet/home "emacs-stuff") "Personal emacs files goes here.")
+  (defvar fet/scripts (concat user-emacs-directory "scripts"))
+  (defvar fet/snippets (concat user-emacs-directory "snippets"))
+  (defvar fet/images (concat user-emacs-directory "images"))
+  (defvar fet/backups (concat user-emacs-directory "backups"))
+  (defvar fet/auto-save-list (concat user-emacs-directory "auto-save-list"))
 
-My keyboard bindings:
+  ;; Internal variables
+  (defvar fet/computer 'macbook "Which computer I am on -- 'macbook or 'linux.")
+  (defvar fet-text-height nil "My preferred default text height.")
+  (defvar fet-doom-modeline-text-height nil "My preferred modeline text height.")
+  (defvar fet-default-line-spacing 0 "Baseline line spacing")
+  (setq-default fet-default-line-spacing 0)
+
+  ;;; fet-variables ends here
+#+END_SRC
+* Load local scripts
+#+begin_src emacs-lisp 
+  (add-to-list 'load-path "~/.config/emacs/scripts/")
+  (add-to-list 'load-path "~/.config/emacs/")
+  (require 'fet-variables)
+#+end_src
+* MacOS Keyboard Configuration
+TODO This config is for mac os only, fix for linux
+
+#+CAPTION: Mac keyboard bindings:
 |---------------+--------------------------------------------|
 | key-binding   | Does what                                  |
 |---------------+--------------------------------------------|
@@ -729,11 +761,16 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
   ;; end of general-define-key
 #+end_src
+* GPTel
+#+BEGIN_SRC emacs-lisp
+ ;; (use-package gptel) ;; TODO create an api-key to get going
+#+END_SRC
 * Hydras
 [[https://github.com/abo-abo/hydra]]
 
 The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the following way:
 
+#+CAPTION: Color keys for hydra.
 |----------+----------------------------|
 | color    | toggle                     |
 |----------+----------------------------|
@@ -891,14 +928,37 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 			   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-listings t)
   (setq org-latex-compiler "/Library/TeX/texbin/xelatex")
+
+  (setq org-latex-default-packages-alist
+		'(("AUTO" "inputenc" t ("pdflatex"))
+		  ("T1" "fontenc" t ("pdflatex"))
+		  ("" "graphics" t)
+		  ("" "grffile" t)
+		  ("" "longtable" nil)
+		  ("" "wrapfig" nil)
+		  ("" "rotating" nil)
+		  ("normalem" "ulem" t)
+		  ("" "amsmath" t)
+		  ("" "textcomp" t)
+		  ("" "amssymb" t)
+		  ("" "capt-of" nil)
+		  ("dvipsnames" "xcolor" nil)
+		  ("dolorlinks=true, linkcolor=Blue, citecolor=BrickRed, urlcolor=PineGreen" "hyperref" nil)
+		  ("" "indentfirst" nil)))
+
+  (setq org-latex-listings 'minited
+		org-latex-packages-alist '(("" "minted"))
+		org-latex-minted-options '(("breaklines" "true")
+								   ("breakanywhere" "true")
+								   ("mathescape")
+								   ("frame" "lines")
+								   ("byccolor" "yellow!5")))
+
+  (setq org-latex-pdf-process '("xelatex -pdflatex='%latex -shell-escape -interaction nonstopmode' -pdf -output-directory=%o -f %f"))
 #+end_src
 
-* Load local scripts
-#+begin_src emacs-lisp 
-  (add-to-list 'load-path "~/.config/emacs/scripts/")
-  (require 'buffer-move)
-
-#+end_src
+#+RESULTS:
+| xelatex -pdflatex='%latex -shell-escape -interaction nonstopmode' -pdf -output-directory=%o -f %f |
 
 * Magit
 Magit is a complete text-based user interface to Git.
@@ -1009,8 +1069,6 @@ TODO: fix this section
   (use-package org-cliplink
 	:defer t
 	:after org)
-
-
 
 
 
