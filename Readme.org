@@ -1,4 +1,5 @@
 #+TITLE: Fet64's Emacs Configuration File
+:PROPERTIES:
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
@@ -6,8 +7,7 @@
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
-#+LaTeX_CLASS: article
-#+LaTeX_CLASS_OPTIONS: [a4paper]
+:END:
 
 This is a work in progress...
 
@@ -55,8 +55,8 @@ You can do that by running (C-c C-c) in this code block:
 You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config.
 
 
-
-* Early-init.el
+* Start
+** Early-init.el
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   ;;; early-init.el --- Fet64's early-init.el file
   ;;; Commentary: auto generated (tangled) from Readme.org
@@ -93,13 +93,71 @@ You can now restart Emacs. It will take some time to download all the packages a
 
 #+end_src
 
-* Header in init.el
+** Header in init.el
 #+BEGIN_SRC emacs-lisp
   ;;; init.el --- Fet64's init.el
   ;;; Commentary: auto generated (tangled) from Readme.org
   ;;; Code:
 #+END_SRC
-* My variables
+** Package Management
+#+BEGIN_SRC emacs-lisp
+  (setq warning-suppress-log-types '((package reinitialization)))
+  (package-initialize)
+  (unless (assoc-default "melpa" package-archives)
+	  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+
+	(unless (assoc-default "nongnu" package-archives)
+	  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+
+	(unless (package-installed-p 'use-package)
+	  (package-install 'use-package))
+	(setq use-package-verbose t)
+	(setq use-package-always-ensure t)
+	(require 'use-package)
+	(use-package quelpa)
+	(use-package quelpa-use-package)
+	(quelpa-use-package-activate-advice)
+	(use-package auto-compile
+	  :config (auto-compile-on-load-mode))
+	(setq load-prefer-newer t)
+
+  (use-package async
+	:config
+	(setq async-bytecomp-package-mode 1))
+#+END_SRC
+** Garbage Collections and Collector
+[[https://github.com/emacsmirror/gcmh]]
+
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
+  (use-package gcmh
+    :diminish gcmh-mode
+    :config
+    (setq gcmh-idle-delay 5
+          gcmh-high-cons-threshold (* 16 1024 1024)) ; 16mb
+    (gcmh-mode 1)
+    )
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-percentage 0.1)))
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "Emacs ready in %s with %d garbage collections."
+                       (format "%.2f seconds"
+                               (float-time
+                                (time-subtract after-init-time before-init-time)))
+                       gcs-done)))
+
+
+#+end_src
+
+** Load system path variables
+#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
+  (exec-path)
+  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
+#+END_SRC
+* Files, registers and variables
+** My variables
 #+BEGIN_SRC emacs-lisp
   ;;; fet-variables
   ;; File and directory locations
@@ -122,13 +180,171 @@ You can now restart Emacs. It will take some time to download all the packages a
 
   ;;; fet-variables ends here
 #+END_SRC
-* Load local scripts
+** Load local scripts
 #+begin_src emacs-lisp 
-  (add-to-list 'load-path "~/.config/emacs/scripts/")
-  (add-to-list 'load-path "~/.config/emacs/")
-  (require 'fet-variables)
+  (load (expand-file-name "buffer-move.el" fet/scripts))
 #+end_src
-* MacOS Keyboard Configuration
+
+** Registers
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html]]
+
+#+begin_src emacs-lisp 
+  (setq register-preview-delay 0)
+  (set-register ?C (cons 'file "~/dev/emacs/Readme.org"))
+  (set-register ?G (cons 'file "~/dev/emacs/.gitignore"))
+
+#+end_src
+
+** Scripts
+#+begin_src emacs-lisp  
+
+  (defun fet/duplicate-line ()
+	"Duplicate current line"
+	(interactive)
+	(move-beginning-of-line 1)
+	(kill-line)
+	(yank)
+	(open-line 1)
+	(next-line 1)
+	(yank))
+
+  (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
+
+  (defun fet/load-theme (theme)
+	"Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
+	(mapc #'disable-theme custom-enabled-themes)
+	(load-theme theme t))
+
+  (defun mac-open-file ()
+	(interactive)
+	(let ((file (do-applescript "POSIX path of (choose file)")))
+	  (if (< (length file) 3)
+		  (setq file
+				(substring file 1 (- (length file) 1))))
+	  (if (and (not (equal file "")) (file-readable-p file))
+		  (find-file file))))
+
+  (defun mac-save-file-as ()
+	(interactive)
+	(let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
+	  (if (> (length file) 3)
+		  (setq file
+				(substring file 1 (- (length file) 1))))
+	  (if (not (equal file ""))
+		  (write-file file))))
+#+end_src
+* General configuration
+** Sane defaults
+*** Disable toolbar and scrollbar, keep menubar
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode 1)             ;; I like having access to the menu-bar
+#+END_SRC
+*** Misc settings
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode 1)     ;; You can select text and delete it by typing
+  (electric-indent-mode 1)      ;; Turn off the weird indenting that Emacs does by default
+  (electric-pair-mode -1)       ;; turns on the automatic parens pairing, I don't like it
+
+  (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
+  (global-display-line-numbers-mode 1)
+  (setq-default display-line-numbers-width 5)
+  (global-visual-line-mode t)   ;; Enable truncated lines
+  (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
+
+  ;; INTERACTION
+  (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
+  (setq confirm-kill-emacs 'yes-or-no-p)  ;; confirm to quit
+  (setq initial-major-mode 'org-mode
+    initial-scratch-message ""
+    initial-buffer-choice t)
+
+  ;; Window
+  (setq frame-resize-pixelwise t)
+  (setq ns-pop-up-frames nil)
+  (setq window-resize-pixelwise nil)
+  ;;(setq split-width-threshold 80)
+
+  ;; Lines
+  (setq-default truncate-lines t)
+  (setq-default tab-width 4)
+  (setq-default fill-column 80)
+  (setq line-move-visual t)
+
+  ;; BELL/WARNING
+  (setq visible-bell nil)
+  (setq ring-bell-function 'ignore)
+
+  ;; SCROLLING
+  (setq scroll-conservatively 101)
+  (setq mouse-wheel-follow-mouse 't
+        mouse-wheel-progressive-speed nil)
+  (setq mac-redisplay-dont-reset-vscroll t
+        mac-mouse-wheel-smooth-scroll nil)
+
+  (setq what-cursor-show-names t) ;; improves C-x =
+
+  ;; DIRED
+  (setq dired-kill-when-opening-new-dired-buffer t)
+
+  ;; MacOS stuff
+  (when (string= system-type "darwin")
+    (setq dired-use-ls-dired t
+          insert-directory-program "/opt/homebrew/bin/gls"
+          dired-listing-switches "-aBhl --group-directories-first"))
+#+end_src
+
+** Backups, recent files, history and trash
+By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
+*** Backups
+#+begin_src emacs-lisp 
+  ;; Backup
+  (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
+  (setq delete-old-versions -1)
+  (setq version-control t)
+  (setq vc-make-backup-files t)
+  (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)))
+#+END_SRC
+*** History
+#+BEGIN_SRC emacs-lisp
+  ;; History
+  (setq savehist-file "~/.config/emacs/savehist")
+  (savehist-mode 1)
+  (setq history-length t)
+  (setq history-delete-duplicates t)
+  (setq savehist-save-minibuffer-history 1)
+  (setq savehist-additional-variables
+		'(kill-ring
+		  search-ring
+		  regexp-search-ring))
+#+END_SRC
+*** Trash
+#+BEGIN_SRC emacs-lisp
+  ;; Trash
+  (setq trash-directory "~/.Trash")
+  (setq delete-by-moving-to-trash t)
+#+END_SRC
+*** Recent files
+#+BEGIN_SRC emacs-lisp
+  ;; recent files
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 25)
+  (setq recentf-max-saved-items 25)
+  (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+#+end_src
+
+** Saving customizations
+I don't want saved customizations in my init.el file.
+Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
+
+#+begin_src emacs-lisp 
+  (setq custom-file "~/.config/emacs/emacs-custom.el")
+  (load custom-file)
+
+#+end_src
+
+* MacOS Configuration and stuff
 TODO This config is for mac os only, fix for linux
 
 #+CAPTION: Mac keyboard bindings:
@@ -199,292 +415,25 @@ TODO This config is for mac os only, fix for linux
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 #+end_src
-* Package Management
-#+BEGIN_SRC emacs-lisp
-  (setq warning-suppress-log-types '((package reinitialization)))
-  (package-initialize)
-  (unless (assoc-default "melpa" package-archives)
-	  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-
-	(unless (assoc-default "nongnu" package-archives)
-	  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
-
-	(unless (package-installed-p 'use-package)
-	  (package-install 'use-package))
-	(setq use-package-verbose t)
-	(setq use-package-always-ensure t)
-	(require 'use-package)
-	(use-package quelpa)
-	(use-package quelpa-use-package)
-	(quelpa-use-package-activate-advice)
-	(use-package auto-compile
-	  :config (auto-compile-on-load-mode))
-	(setq load-prefer-newer t)
-
-  (use-package async
-	:config
-	(setq async-bytecomp-package-mode 1))
-#+END_SRC
-* Load system path variables
-#+BEGIN_SRC emacs-lisp
-  (exec-path)
-  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
-#+END_SRC
-* Garbage Collections and Collector
-[[https://github.com/emacsmirror/gcmh]]
+* Keyboard
+** Which-key
+[[https://github.com/justbur/emacs-which-key]]
 
 #+begin_src emacs-lisp 
-  (use-package gcmh
-    :diminish gcmh-mode
-    :config
-    (setq gcmh-idle-delay 5
-          gcmh-high-cons-threshold (* 16 1024 1024)) ; 16mb
-    (gcmh-mode 1)
-    )
-
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (setq gc-cons-percentage 0.1)))
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "Emacs ready in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
-
-
-#+end_src
-
-* All the icons
-[[https://github.com/domtronn/all-the-icons.el]]
-[[https://github.com/jtbm37/all-the-icons-dired]]
-
-#+begin_src emacs-lisp 
-  (use-package all-the-icons
-    :ensure t
-    :if (display-graphic-p))
-
-  (use-package all-the-icons-dired
-    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
-
-#+end_src
-
-* Avy
-[[https://github.com/abo-abo/avy]]
-
-#+begin_src emacs-lisp 
-
-  (use-package avy
-    :defer t
-    :config
-    (setq avy-case-fold-search nil))
-
-#+end_src
-* Backups, history and trash
-By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
-
-#+begin_src emacs-lisp 
-  ;; Backup
-  (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
-  (setq delete-old-versions -1)
-  (setq version-control t)
-  (setq vc-make-backup-files t)
-  (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)))
-
-  ;; History
-  (setq savehist-file "~/.config/emacs/savehist")
-  (savehist-mode 1)
-  (setq history-length t)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history 1)
-  (setq savehist-additional-variables
-		'(kill-ring
-		  search-ring
-		  regexp-search-ring))
-
-  ;; Trash
-  (setq trash-directory "~/.Trash")
-  (setq delete-by-moving-to-trash t)
-
-  ;; recent files
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 25)
-  (setq recentf-max-saved-items 25)
-  (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-
-#+end_src
-
-* Clipboard
-[[https://github.com/rolandwalker/simpleclip]]
-
-#+begin_src emacs-lisp 
-
-    (use-package simpleclip
-      :config (simpleclip-mode 1))
-
-#+end_src
-* Company
-[[https://github.com/company-mode/company-mode]]
-[[https://github.com/sebastiencs/company-box]]
-
-#+begin_src emacs-lisp 
-  (use-package company
-	:defer 2
-	:diminish
-	:custom
-	(company-begin-commands '(self-insert-command))
-	(company-idle-delay .1)
-	(company-minimum-prefix-length 2)
-	(company-show-numbers t)
-	(company-tooltip-align-annotations 't)
-	(global-company-mode t))
-
-  (use-package company-box
-	:after company
-	:diminish
-	:hook (company-mode . company-box-mode))
-
-#+end_src
-
-* Counsel
-[[https://github.com/abo-abo/swiper]]
-
-#+begin_src emacs-lisp 
-
-  (use-package counsel
-    :diminish
-    :config
-    (counsel-mode))
-
-#+end_src
-* Dashboard
-[[https://github.com/emacs-dashboard/emacs-dashboard]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dashboard
-    :init
-    (setq initial-buffer-choice 'dashboard-open)
-    (setq dashboard-set-heading-icons t
-          dashboard-set-file-icons t
-          dashboard-display-icons-p t
-          dashboard-icon-type 'all-the-icons
-          dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
-          dashboard-startup-banner "~/.config/emacs/images/emacs.png"
-          dashboard-center-content nil ;; set to 't' to center dashboard
-          dashboard-items '((recents . 5)
-                            (agenda . 5)
-                            (bookmarks . 5)
-                            (projects . 5)
-                            (registers . 5)))
-    :custom
-    (dashboard-modify-heading-icons '((recents . "file-text")
-                                      (bookmarks . "book")))
-    :config
-    (dashboard-setup-startup-hook))
-#+END_SRC
-* Doom theme and modeline
-Doom themes: [[https://github.com/doomemacs/themes]]
-
-Hide-mode-line: [[https://github.com/hlissner/emacs-hide-mode-line]]
-
-Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
-
-#+begin_src emacs-lisp 
-  (use-package doom-themes
-	:config
-	(setq doom-themes-enable-bold t
-	  doom-themes-enable-italic t)
-	;;(load-theme 'doom-solarized-light t)
-	(load-theme 'doom-one t)
-	;;(doom-themes-neotree-config)
-	(doom-themes-org-config))
-
-  (line-number-mode)
-  (column-number-mode)
-  (setq display-time-24-hr-format 't)
-  (setq display-time-format "%Y-%m-%d week: %U %H:%M CET")
-  (display-time-mode 't)
-  (size-indication-mode 0)
-
-  (use-package hide-mode-line
-	:commands (hide-mode-line-mode))
-
-  (use-package doom-modeline
-	:ensure t
+  (use-package which-key
+	:diminish which-key-mode
 	:init
-	(doom-modeline-mode 1)
+	(which-key-mode)
+	(which-key-setup-minibuffer)
 	:config
-	(setq doom-modeline-height 35
-	  doom-modeline-bar-width 5
-	  doom-modeline-persp-name t
-	  doom-modeline-persp-icon t))
-
+	(setq which-key-idle-delay 0.3
+		  which-key-prefix-prefix " → "
+		  which-key-sort-order 'which-key-key-order-alpha
+		  which-key-min-display-lines 10
+		  which-key-max-display-columns nil))
 #+end_src
 
-* Embark
-[[https://github.com/oantolin/embark]]
-
-#+BEGIN_SRC emacs-lisp
-  ;; TODO install and setup
-#+END_SRC
-
-* Highlight todo
-[[https://github.com/tarsius/hl-todo]]
-
-#+begin_src emacs-lisp  
-
-  (use-package hl-todo
-    :hook ((org-mode . hl-todo-mode)
-           (prog-mode . hl-todo-mode))
-    :config
-    (setq hl-todo-highlight-punctuation ":"
-          hl-todo-keyword-faces
-          '(("TODO" warning bold)
-            ("FIXME" error bold)
-            ("HACK" font-lock-constant-face bold)
-            ("REVIEW" font-lock-constant-face bold)
-            ("NOTE" success bold)
-            ("DEPRECATED" font-lock-doc-face bold))))
-
-#+end_src
-* ELFEED
-[[https://github.com/skeeto/elfeed]]
-
-#+begin_src emacs-lisp  
-
-  (use-package elfeed
-    :config
-    (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
-        elfeed-feeds (quote
-                       (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
-                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
-                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
-                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
-                        ("https://hackaday.com/blog/feed/" hackaday linux)
-                        ("https://opensource.com/feed" opensource linux)
-                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
-                        ("https://itsfoss.com/feed/" itsfoss linux)
-                        ("https://www.zdnet.com/topic/linux/rss.xml" zdnet linux)
-                        ("https://www.phoronix.com/rss.php" phoronix linux)
-                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
-                        ("https://www.computerworld.com/index.rss" computerworld linux)
-                        ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
-                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
-                        ("https://betanews.com/feed" betanews linux)
-                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
-                        ("https://distrowatch.com/news/dwd.xml" distrowatch linux)))))
- 
-
-(use-package elfeed-goodies
-  :init
-  (elfeed-goodies/setup)
-  :config
-  (setq elfeed-goodies/entry-pane-size 0.5))
-
-#+end_src
-* Evil mode
+** Evil mode
 [[https://github.com/emacs-evil/evil]]
 [[https://github.com/emacs-evil/evil-collection]]
 
@@ -492,54 +441,38 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (use-package evil
 	 :init
 	 (setq evil-want-integration t
-		evil-want-keybinding nil
-		evil-vsplit-window-right t
-		evil-split-window-below t
-		evil-undo-system 'undo-redo)
+		   evil-want-keybinding nil
+		   evil-want-fine-undo t
+		   evil-want-Y-yank-to-eol t)
+	 :config
+	 (evil-set-initial-state 'dashboard-mode 'motion)
+	 (evil-set-initial-state 'debugger-mode 'motion)
+	 (evil-set-initial-state 'pdf-view-mode 'motion)
+	 (evil-set-initial-state 'term-mode 'emacs)
+	 (evil-set-initial-state 'calc-mode 'emacs)
+	 ;; keybinding
+	 (define-key evil-window-map "\C-q" 'evil-delete-buffer)
+	 (define-key evil-window-map "\C-w" 'kill-this-buffer)
+	 (define-key evil-motion-state-map "\C-b" 'evil-scroll-up)
+	 (define-key evil-motion-state-map [?\s-\\] 'evil-execute-in-emacs-state) ;; super-\ TODO change binding for this
 	 (evil-mode 1))
 
-   (use-package evil-collection
-	 :after evil
-	 :config
-	 (add-to-list 'evil-collection-mode-list 'help)
-	 (evil-collection-init))
+  (use-package evil-surround
+	:after evil
+	:defer 2
+	:config
+	(global-evil-surround-mode 1))
 
   (with-eval-after-load 'evil-maps
+	(evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
+	(evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
 	(define-key evil-motion-state-map (kbd "SPC") nil)
 	(define-key evil-motion-state-map (kbd "RET") nil)
 	(define-key evil-motion-state-map (kbd "TAB") nil))
 
-  (setq org-return-follows-link t)
-
 #+end_src
 
-* Eshell
-[[https://github.com/4DA/eshell-toggle]]
-[[https://github.com/akreisher/eshell-syntax-highlighting]]
-
-#+begin_src emacs-lisp  
-
-  (use-package eshell-toggle
-    :custom
-    (eshell-toggle-size-fraction 3)
-    (eshell-toggle-use-projectile-root t)
-    (eshell-toggle-run-command nil)
-    (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
-
-  (use-package eshell-syntax-highlighting
-    :after esh-mode
-    :config
-    (eshell-syntax-highlighting-global-mode +1))
-
-  (setq eshell-history-size 5000
-        eshell-buffer-maximum-lines 5000
-        eshell-hist-ignoredups t
-        eshell-scroll-to-bottom-on-input t
-        eshell-destroy-buffer-when-process-dies t
-        eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
-
-#+end_src
-* General
+** General
 [[https://github.com/noctuid/general.el]]
 
 #+begin_src emacs-lisp 
@@ -761,11 +694,7 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
 
   ;; end of general-define-key
 #+end_src
-* GPTel
-#+BEGIN_SRC emacs-lisp
- ;; (use-package gptel) ;; TODO create an api-key to get going
-#+END_SRC
-* Hydras
+** Hydras
 [[https://github.com/abo-abo/hydra]]
 
 The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the following way:
@@ -859,7 +788,652 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     ;; Exit
     ("q" nil))
 #+end_src
-* LaTeX
+* Interaction and editing files
+** Company
+[[https://github.com/company-mode/company-mode]]
+[[https://github.com/sebastiencs/company-box]]
+
+#+begin_src emacs-lisp 
+  (use-package company
+	:diminish company-mode
+	:general
+	(general-define-key :keymaps 'company-active-map
+						"C-j" 'company-select-next
+						"C-k" 'company-select-previous)
+	:init
+	(add-hook 'after-init-hook 'global-company-mode)
+	(setq company-minimum-prefix-length 2
+		  company-tooltip-limit 14
+		  company-tooltip-align-annotations t
+		  company-require-match 'never
+		  company-global-modes '(not erc-mode message-mode help-mode gud-mode)
+		  company-frontends '(company-pseudo-tooltip-frontend
+							  company-echo-metadata-frontend)
+		  company-backends '(company-capf company-files company-keywords)
+		  company-insertion-on-trigger nil
+		  company-dabbrev-other-buffers nil
+		  company-dabbrev-ignore-case nil
+		  company-dabbrev-downcase nil)
+	:config
+	(setq company-idle-delay 0.3)
+	:custom-face
+	(company-tooltip ((t (:family "Roboto Mono")))))
+#+end_src
+*** Corfu
+#+BEGIN_SRC emacs-lisp
+  (use-package corfu
+	:init
+	(global-corfu-mode)
+	:config
+	(setq corfu-auto t
+		  corfu-echo-documentation t
+		  corfu-scroll-margin 0
+		  corfu-count 8
+		  corfu-max-width 50
+		  corfu-min-width corfu-max-width
+		  corfu-auto-prefix 2)
+	(evil-make-overriding-map corfu-map)
+	(advice-add 'corfu--setup :after 'evil-normalize-keymaps)
+	(advice-add 'corfu--teardown :after 'evil-normalize-keymaps)
+	(corfu-history-mode 1)
+	(savehist-mode 1)
+	(add-to-list 'savehist-additional-variables 'corfu-history)
+	(defun corfu-enable-always-in-minibuffer ()
+	  (setq-local corfu-auto nil)
+	  (corfu-mode 1))
+	(add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1)
+	:general
+	(:keymaps 'corfu-map
+			  :states 'insert
+			  "C-n" 'corfu-next
+			  "C-p" 'corfu-previous
+			  "C-j" 'corfu-next
+			  "C-k" 'corfu-previous
+			  "RET" 'corfu-complete
+			  "<escape>" 'corfu-quit
+			  ))
+
+  (use-package cape
+	:init
+	(add-to-list 'completion-at-point-functions #'cape-file)
+	(add-to-list 'completion-at-point-functions #'cape-keyword)
+	)
+
+  (use-package kind-icon
+	:config
+	(setq kind-icon-default-face 'corfu-default
+		  kind-icon-default-style '(:padding 0 :stroke 0 :margin 0 :radius 0 :height 0.9 :scale 1)
+		  kind-icon-blend-frac 0.08)
+	(add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+	(add-hook 'counsel-load-theme #'(lambda () (interactive) (kind-icon-reset-cache)))
+	(add-hook 'load-theme #'(lambda () (interactive) (kind-icon-reset-cache)))
+	)
+#+END_SRC
+** Counsel
+[[https://github.com/abo-abo/swiper]]
+
+#+begin_src emacs-lisp 
+
+  (use-package counsel
+    :diminish
+    :config
+    (counsel-mode))
+
+#+end_src
+** Ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+	:diminish ivy-mode
+	:config
+	(setq ivy-extra-directories nil       ;; hides . and ..
+		  ivy-initial-inputs-alist nil)    ;; removes the ^ in ivy searches
+	(setq-default ivy-height 11)
+	(setq ivy-fixed-height-minibuffer t)
+	(add-to-list 'ivy-height-alist '(counsel-M-x . 10)) ;; show 10 lines for M-x
+	(ivy-mode 1)
+	(add-to-list 'ivy-format-functions-alist '(counsel-describe-face . counsel--faces-format-function))
+	:general
+	(general-define-key
+	 :keymaps '(ivy-minibuffer-map ivy-switch-buffer-map)
+	 "S-SPC" 'nil
+	 "C-SPC" 'ivy-restrict-to-matches
+	 "C-k" 'ivy-previous-line
+	 "C-j" 'ivy-next-line)
+	)
+
+  (use-package all-the-icons-ivy-rich
+	:init (all-the-icons-ivy-rich-mode 1)
+	:config
+	(setq all-the-icons-ivy-rich-icon-size 1.0))
+
+  (use-package ivy-rich
+	:after ivy
+	:init
+	(setq ivy-rich-path-style 'abbrev)
+	(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+	:config
+	(ivy-rich-mode 1))
+#+END_SRC
+** Vertico
+[[https://github.com/minad/vertico]]
+[[https://github.com/minad/marginalia]]
+
+#+begin_src emacs-lisp  
+
+  ;; (use-package vertico
+  ;;   :init
+  ;;   (vertico-mode)
+  ;;   (setq vertico-count 20)
+  ;;   (setq vertico-resize t)
+  ;;   (setq vertico-cycle t)
+  ;;   (keymap-set vertico-map "?" #'minibuffer-completion-help)
+  ;;   (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
+  ;;   (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
+
+  ;; )
+
+  ;; (use-package marginalia
+  ;;   :bind
+  ;;   (:map minibuffer-local-map ("M-A" . marginalia-cycle))
+  ;;   :init
+  ;;   (marginalia-mode))
+ #+end_src
+** Prescient
+#+BEGIN_SRC emacs-lisp
+  (use-package prescient
+	:config
+	(prescient-persist-mode))
+#+END_SRC
+** Rainbow mode
+[[https://github.com/emacsmirror/rainbow-mode]]
+[[https://github.com/Fanael/rainbow-delimiters]]
+
+#+begin_src emacs-lisp  
+
+  (use-package rainbow-mode
+    :diminish
+    :hook org-mode prog-mode)
+
+  (use-package rainbow-delimiters
+    :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+           (clojure-mode . rainbow-delimiters-mode)))
+
+#+end_src
+** Clipboard
+[[https://github.com/rolandwalker/simpleclip]]
+
+#+begin_src emacs-lisp 
+
+    (use-package simpleclip
+      :config (simpleclip-mode 1))
+
+#+end_src
+** Avy
+[[https://github.com/abo-abo/avy]]
+
+#+begin_src emacs-lisp 
+
+  (use-package avy
+    :defer t
+    :config
+    (setq avy-case-fold-search nil))
+
+#+end_src
+** Neotree
+[[https://github.com/jaypei/emacs-neotree]]
+
+#+begin_src emacs-lisp 
+  (use-package neotree
+	:config
+	(setq neo-smart-open t
+		  neo-show-hidden-files t
+		  neo-window-width 55
+		  neo-window-fixed-size nil
+		  inhibit-compacting-font-caches t
+		  projectile-switch-project-action 'neotree-projectile-action)
+	(add-hook 'neo-after-create-hook
+			  #'(lambda (_)
+				  (with-current-buffer (get-buffer neo-buffer-name)
+					(setq truncate-lines t)
+					(setq word-wrap nil)
+					(make-local-variable 'auto-hscroll-mode)
+					(setq auto-hscroll-mode nil)))))
+
+#+end_src
+
+** Sudo Edit
+[[https://github.com/nflath/sudo-edit/blob/master/sudo-edit.el]]
+
+#+begin_src emacs-lisp  
+
+  (use-package sudo-edit)
+
+#+end_src
+** Super Save
+[[https://github.com/bbatsov/super-save]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package super-save
+    :diminish super-save-mode
+    :defer 2
+    :config
+    (setq super-save-auto-save-when-idle t
+          super-save-idle-duration 5
+          super-save-triggers
+          '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
+          super-save-max-buffer-size 10000000)
+    (super-save-mode +1))
+#+END_SRC
+** Projectile
+[[https://docs.projectile.mx/projectile/index.html]]
+
+#+begin_src emacs-lisp 
+  (use-package projectile
+	:ensure t
+	:init
+	(projectile-mode +1)
+	:bind
+	(:map projectile-mode-map
+		  ("s-p" . projectile-command-map)
+		  ("C-c p" . projectile-command-map)))
+
+#+end_src
+
+** Yasnippet
+[[https://github.com/joaotavora/yasnippet]]
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :defer 5
+    :config
+    (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+    (yas-global-mode 1))
+
+  (require 'warnings)
+  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
+
+#+end_src
+
+* Visuals
+** All the icons
+[[https://github.com/domtronn/all-the-icons.el]]
+[[https://github.com/jtbm37/all-the-icons-dired]]
+
+#+begin_src emacs-lisp 
+  (use-package all-the-icons
+    :ensure t
+    :if (display-graphic-p))
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+
+#+end_src
+
+** Ace window
+[[https://github.com/abo-abo/ace-window]]
+[[https://github.com/iqbalansari/restart-emacs]]
+[[https://github.com/emacsmirror/diminish]]
+[[https://github.com/kaz-yos/reveal-in-osx-finder]]
+
+#+begin_src emacs-lisp 
+  (use-package ace-window
+	:config
+	(set-face-attribute
+	 'aw-leading-char-face nil
+	 :weight 'bold
+	 :height 2.0)
+	(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+	)
+#+END_SRC
+
+** Dashboard
+[[https://github.com/emacs-dashboard/emacs-dashboard]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-display-icons-p t
+          dashboard-icon-type 'all-the-icons
+          dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
+          dashboard-startup-banner "~/.config/emacs/images/emacs.png"
+          dashboard-center-content nil ;; set to 't' to center dashboard
+          dashboard-items '((recents . 5)
+                            (agenda . 5)
+                            (bookmarks . 5)
+                            (projects . 5)
+                            (registers . 5)))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
+#+END_SRC
+** Themes 
+Doom themes: [[https://github.com/doomemacs/themes]]
+
+#+begin_src emacs-lisp 
+  (use-package doom-themes
+	:config
+	(setq doom-themes-enable-bold t
+	  doom-themes-enable-italic t)
+	;;(load-theme 'doom-solarized-light t)
+	(load-theme 'doom-one t)
+	;;(doom-themes-neotree-config)
+	(doom-themes-org-config))
+
+  (line-number-mode)
+  (column-number-mode)
+  (setq display-time-24-hr-format 't)
+  (setq display-time-format "%Y-%m-%d week: %U %H:%M CET")
+  (display-time-mode 't)
+  (size-indication-mode 0)
+
+#+END_SRC
+** Modeline
+Hide-mode-line: [[https://github.com/hlissner/emacs-hide-mode-line]]
+
+Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package hide-mode-line
+	:commands (hide-mode-line-mode))
+
+  (use-package doom-modeline
+	:ensure t
+	:init
+	(doom-modeline-mode 1)
+	:config
+	(setq doom-modeline-height 35
+	  doom-modeline-bar-width 5
+	  doom-modeline-persp-name t
+	  doom-modeline-persp-icon t))
+
+#+end_src
+
+** Highlight todo
+[[https://github.com/tarsius/hl-todo]]
+
+#+begin_src emacs-lisp  
+
+  (use-package hl-todo
+    :hook ((org-mode . hl-todo-mode)
+           (prog-mode . hl-todo-mode))
+    :config
+    (setq hl-todo-highlight-punctuation ":"
+          hl-todo-keyword-faces
+          '(("TODO" warning bold)
+            ("FIXME" error bold)
+            ("HACK" font-lock-constant-face bold)
+            ("REVIEW" font-lock-constant-face bold)
+            ("NOTE" success bold)
+            ("DEPRECATED" font-lock-doc-face bold))))
+
+#+end_src
+** Nerd icons
+[[https://github.com/rainstormstudio/nerd-icons.el]]
+
+#+BEGIN_SRC emacs-lisp
+(use-package nerd-icons)
+#+END_SRC
+** Orderless
+[[https://github.com/oantolin/orderless]]
+
+#+begin_src emacs-lisp 
+  (use-package orderless
+	:ensure t
+	:custom
+	(completion-styles '(orderless basic))
+	(completion-category-overrides '((file (styles basic partial-completion)))))
+
+#+end_src
+
+** Typography
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
+  (setq-default fill-column 90)
+  (use-package fontawesome)
+#+END_SRC
+** Transient stuff
+#+BEGIN_SRC emacs-lisp
+  ;;(require 'transient)
+
+  (transient-define-prefix fet-config-command ()
+    "Config options"
+    [["Configuration files"
+      ("r" "Edit emacs config file" (lambda () (interactive) (
+                                                  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
+                                                  )))
+      ("c" "Copy snippets" (lambda () (interactive) (
+                                                     message "hello"
+                                                     )))
+      ("g" "Git status" (lambda () (interactive) (magit-status)))
+      ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
+      ]
+
+     ["Theme options"
+      ("1" "doom-solarized-light" (lambda () (interactive) (
+                                                            load-theme 'doom-solarized-light
+                                                            )))
+      ("2" "doom-solarized-dark" (lambda () (interactive) (
+                                                           load-theme 'doom-solarized-dark
+                                                           )))
+      ]
+     ])
+
+  ;;(fet-config-command)
+#+END_SRC
+* Work in progress
+** Embark
+[[https://github.com/oantolin/embark]]
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO install and setup
+#+END_SRC
+
+* Applications
+** ELFEED
+[[https://github.com/skeeto/elfeed]]
+
+#+begin_src emacs-lisp  
+
+  (use-package elfeed
+    :config
+    (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+        elfeed-feeds (quote
+                       (("https://www.reddit.com/r/linux.rss" reddit linux)
+                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
+                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
+                        ("https://hackaday.com/blog/feed/" hackaday linux)
+                        ("https://opensource.com/feed" opensource linux)
+                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                        ("https://itsfoss.com/feed/" itsfoss linux)
+                        ("https://www.zdnet.com/topic/linux/rss.xml" zdnet linux)
+                        ("https://www.phoronix.com/rss.php" phoronix linux)
+                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
+                        ("https://www.computerworld.com/index.rss" computerworld linux)
+                        ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
+                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                        ("https://betanews.com/feed" betanews linux)
+                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
+                        ("https://distrowatch.com/news/dwd.xml" distrowatch linux)))))
+ 
+
+(use-package elfeed-goodies
+  :init
+  (elfeed-goodies/setup)
+  :config
+  (setq elfeed-goodies/entry-pane-size 0.5))
+
+#+end_src
+** Eshell
+[[https://github.com/4DA/eshell-toggle]]
+[[https://github.com/akreisher/eshell-syntax-highlighting]]
+
+#+begin_src emacs-lisp  
+
+  (use-package eshell-toggle
+    :custom
+    (eshell-toggle-size-fraction 3)
+    (eshell-toggle-use-projectile-root t)
+    (eshell-toggle-run-command nil)
+    (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
+
+  (use-package eshell-syntax-highlighting
+    :after esh-mode
+    :config
+    (eshell-syntax-highlighting-global-mode +1))
+
+  (setq eshell-history-size 5000
+        eshell-buffer-maximum-lines 5000
+        eshell-hist-ignoredups t
+        eshell-scroll-to-bottom-on-input t
+        eshell-destroy-buffer-when-process-dies t
+        eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
+
+#+end_src
+** GPTel
+#+BEGIN_SRC emacs-lisp
+ ;; (use-package gptel) ;; TODO create an api-key to get going
+#+END_SRC
+** Magit
+Magit is a complete text-based user interface to Git.
+[[https://magit.vc]]
+
+A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
+
+#+begin_src emacs-lisp 
+  (use-package transient)
+  (use-package magit)
+
+  (use-package git-gutter
+    :ensure t
+    :init (global-git-gutter-mode +1))
+
+  (use-package git-timemachine
+    :after git-timemachine
+    :hook (evil-normalize-keymaps . git-timemachine-hook)
+    :config
+    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+    )
+
+
+#+end_src
+
+** Thesaurus
+[[https://github.com/agzam/mw-thesaurus.el]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package mw-thesaurus
+    :defer t
+    :config
+    (add-hook 'mw-thesaurus-mode-hook
+              (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
+#+END_SRC
+* Misc packages
+#+BEGIN_SRC emacs-lisp
+  (use-package restart-emacs :defer t)
+  (use-package diminish)
+  (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
+
+  #+end_src
+
+** TLDR
+[[https://github.com/kuanyui/tldr.el]]
+
+#+begin_src emacs-lisp  
+
+  (use-package tldr)
+
+#+end_src
+** Try
+Try is a package that allows you to try out Emacs packages without installing them. If you pass a URL to a plaint text .el -file it evaluates the content, without storing the file.
+
+Packages from ELPA will be stored in a temporary directory by default.
+
+[[https://github.com/larstvei/Try]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package try)
+#+END_SRC
+* Org Mode
+TODO: fix this section
+
+[[https://orgmode.org]]
+[[https://github.com/oantolin/orderless]]
+[[https://github.com/alphapapa/org-make-toc]]
+[[https://github.com/minad/org-modern]]
+[[https://github.com/hexmode/ox-reveal]]
+
+#+begin_src emacs-lisp
+  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org"))
+  (setq org-directory "~/Org"
+		org-agenda-files (mapcar
+						  (lambda (f) (concat (file-name-as-directory org-directory) f))
+						  my-agenda-files)
+		org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
+
+
+
+  (use-package org-cliplink
+	:defer t
+	:after org)
+
+
+
+  (require 'org-tempo)
+
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+
+  ;(require 'org-make-toc)
+  (use-package org-make-toc)
+
+  (use-package ox-reveal
+	:defer 5)
+
+  ;; HTML-specific
+  (setq org-html-validation-link nil) ;; No validation button on HTML exports
+
+  ;; LaTeX Specific
+  (eval-after-load 'ox
+	'(add-to-list
+	  'org-export-filter-timestamp-functions
+	  'org-export-filter-timestamp-remove-brackets)
+	)
+
+  (use-package org-modern
+	:hook (org-mode . org-modern-mode)
+	:config
+	(setq
+	 ;; org-modern-star '("●" "○" "✸" "✿")
+	 org-modern-star '( "⌾" "✸" "◈" "◇")
+	 org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
+	 org-modern-tag nil
+	 org-modern-priority nil
+	 org-modern-todo nil
+	 org-modern-table nil))
+
+  ;; (use-package org-super-agenda
+  ;;   :after org
+  ;;   :config
+  ;;   (setq org-super-agenda-header-map nil)
+  ;;   (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
+  ;;   (org-super-agenda-mode))
+
+#+end_src
+
+#+RESULTS:
+| rainbow-mode | org-modern-mode | (lambda nil (org-bullets-mode 1)) | org-tempo-setup | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | hl-todo-mode |
+
+* Org Mode Config
+** LaTeX
 #+begin_src emacs-lisp  
   (use-package latex
 	:ensure nil
@@ -960,164 +1534,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+RESULTS:
 | xelatex -pdflatex='%latex -shell-escape -interaction nonstopmode' -pdf -output-directory=%o -f %f |
 
-* Magit
-Magit is a complete text-based user interface to Git.
-[[https://magit.vc]]
-
-A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
-
-#+begin_src emacs-lisp 
-  (use-package transient)
-  (use-package magit)
-
-  (use-package git-gutter
-    :ensure t
-    :init (global-git-gutter-mode +1))
-
-  (use-package git-timemachine
-    :after git-timemachine
-    :hook (evil-normalize-keymaps . git-timemachine-hook)
-    :config
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
-    )
-
-
-#+end_src
-
-* Misc Packages
-[[https://github.com/abo-abo/ace-window]]
-[[https://github.com/iqbalansari/restart-emacs]]
-[[https://github.com/emacsmirror/diminish]]
-[[https://github.com/kaz-yos/reveal-in-osx-finder]]
-
-#+begin_src emacs-lisp 
-  (use-package ace-window
-	:config
-	(set-face-attribute
-	 'aw-leading-char-face nil
-	 :weight 'bold
-	 :height 2.0)
-	(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-	)
-
-  (use-package restart-emacs :defer t)
-  (use-package diminish)
-  (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
-
-  #+end_src
-
-* Neotree
-[[https://github.com/jaypei/emacs-neotree]]
-
-#+begin_src emacs-lisp 
-  (use-package neotree
-	:config
-	(setq neo-smart-open t
-		  neo-show-hidden-files t
-		  neo-window-width 55
-		  neo-window-fixed-size nil
-		  inhibit-compacting-font-caches t
-		  projectile-switch-project-action 'neotree-projectile-action)
-	(add-hook 'neo-after-create-hook
-			  #'(lambda (_)
-				  (with-current-buffer (get-buffer neo-buffer-name)
-					(setq truncate-lines t)
-					(setq word-wrap nil)
-					(make-local-variable 'auto-hscroll-mode)
-					(setq auto-hscroll-mode nil)))))
-
-#+end_src
-
-* Nerd icons
-[[https://github.com/rainstormstudio/nerd-icons.el]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package nerd-icons)
-#+END_SRC
-* Orderless
-[[https://github.com/oantolin/orderless]]
-
-#+begin_src emacs-lisp 
-  (use-package orderless
-	:ensure t
-	:custom
-	(completion-styles '(orderless basic))
-	(completion-category-overrides '((file (styles basic partial-completion)))))
-
-#+end_src
-
-* Org
-TODO: fix this section
-
-[[https://orgmode.org]]
-[[https://github.com/oantolin/orderless]]
-[[https://github.com/alphapapa/org-make-toc]]
-[[https://github.com/minad/org-modern]]
-[[https://github.com/hexmode/ox-reveal]]
-
-#+begin_src emacs-lisp
-  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org"))
-  (setq org-directory "~/Org"
-		org-agenda-files (mapcar
-						  (lambda (f) (concat (file-name-as-directory org-directory) f))
-						  my-agenda-files)
-		org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
-
-
-
-  (use-package org-cliplink
-	:defer t
-	:after org)
-
-
-
-  (require 'org-tempo)
-
-  (use-package org-bullets)
-  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
-
-  ;(require 'org-make-toc)
-  (use-package org-make-toc)
-
-  (use-package ox-reveal
-	:defer 5)
-
-  ;; HTML-specific
-  (setq org-html-validation-link nil) ;; No validation button on HTML exports
-
-  ;; LaTeX Specific
-  (eval-after-load 'ox
-	'(add-to-list
-	  'org-export-filter-timestamp-functions
-	  'org-export-filter-timestamp-remove-brackets)
-	)
-
-  (use-package org-modern
-	:hook (org-mode . org-modern-mode)
-	:config
-	(setq
-	 ;; org-modern-star '("●" "○" "✸" "✿")
-	 org-modern-star '( "⌾" "✸" "◈" "◇")
-	 org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
-	 org-modern-tag nil
-	 org-modern-priority nil
-	 org-modern-todo nil
-	 org-modern-table nil))
-
-  ;; (use-package org-super-agenda
-  ;;   :after org
-  ;;   :config
-  ;;   (setq org-super-agenda-header-map nil)
-  ;;   (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
-  ;;   (org-super-agenda-mode))
-
-#+end_src
-
-#+RESULTS:
-| rainbow-mode | org-modern-mode | (lambda nil (org-bullets-mode 1)) | org-tempo-setup | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | hl-todo-mode |
-
-* PDF
+** PDF
 [[https://github.com/politza/pdf-tools]]
 
 #+begin_src emacs-lisp  
@@ -1154,309 +1571,6 @@ TODO: fix this section
 )
 
 #+end_src
-* Prescient
-#+BEGIN_SRC emacs-lisp
-  (use-package prescient
-	:config
-	(prescient-persist-mode))
-#+END_SRC
-* Projectile
-[[https://docs.projectile.mx/projectile/index.html]]
-
-#+begin_src emacs-lisp 
-  (use-package projectile
-	:ensure t
-	:init
-	(projectile-mode +1)
-	:bind
-	(:map projectile-mode-map
-		  ("s-p" . projectile-command-map)
-		  ("C-c p" . projectile-command-map)))
-
-#+end_src
-
-* Rainbow mode
-[[https://github.com/emacsmirror/rainbow-mode]]
-[[https://github.com/Fanael/rainbow-delimiters]]
-
-#+begin_src emacs-lisp  
-
-  (use-package rainbow-mode
-    :diminish
-    :hook org-mode prog-mode)
-
-  (use-package rainbow-delimiters
-    :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
-           (clojure-mode . rainbow-delimiters-mode)))
-
-#+end_src
-* Registers
-[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html]]
-
-#+begin_src emacs-lisp 
-  (setq register-preview-delay 0)
-  (set-register ?C (cons 'file "~/dev/emacs/Readme.org"))
-  (set-register ?G (cons 'file "~/dev/emacs/.gitignore"))
-
-#+end_src
-
-* Sane defaults
-#+begin_src emacs-lisp 
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (menu-bar-mode 1)             ;; I like having access to the menu-bar
-
-  (delete-selection-mode 1)     ;; You can select text and delete it by typing
-  (electric-indent-mode 1)      ;; Turn off the weird indenting that Emacs does by default
-  (electric-pair-mode -1)       ;; turns on the automatic parens pairing, I don't like it
-
-  (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
-  (global-display-line-numbers-mode 1)
-  (setq-default display-line-numbers-width 5)
-  (global-visual-line-mode t)   ;; Enable truncated lines
-  (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
-
-  ;; INTERACTION
-  (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
-  (setq confirm-kill-emacs 'yes-or-no-p)  ;; confirm to quit
-  (setq initial-major-mode 'org-mode
-    initial-scratch-message ""
-    initial-buffer-choice t)
-
-  ;; Window
-  (setq frame-resize-pixelwise t)
-  (setq ns-pop-up-frames nil)
-  (setq window-resize-pixelwise nil)
-  ;;(setq split-width-threshold 80)
-
-  ;; Lines
-  (setq-default truncate-lines t)
-  (setq-default tab-width 4)
-  (setq-default fill-column 80)
-  (setq line-move-visual t)
-
-  ;; BELL/WARNING
-  (setq visible-bell nil)
-  (setq ring-bell-function 'ignore)
-
-  ;; SCROLLING
-  (setq scroll-conservatively 101)
-  (setq mouse-wheel-follow-mouse 't
-        mouse-wheel-progressive-speed nil)
-  (setq mac-redisplay-dont-reset-vscroll t
-        mac-mouse-wheel-smooth-scroll nil)
-
-  (setq what-cursor-show-names t) ;; improves C-x =
-
-  ;; DIRED
-  (setq dired-kill-when-opening-new-dired-buffer t)
-
-  ;; MacOS stuff
-  (when (string= system-type "darwin")
-    (setq dired-use-ls-dired t
-          insert-directory-program "/opt/homebrew/bin/gls"
-          dired-listing-switches "-aBhl --group-directories-first"))
-#+end_src
-
-* Saving customizations
-I don't want saved customizations in my init.el file.
-Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
-
-#+begin_src emacs-lisp 
-  (setq custom-file "~/.config/emacs/emacs-custom.el")
-  (load custom-file)
-
-#+end_src
-
-* Scripts
-#+begin_src emacs-lisp  
-
-  (defun fet/duplicate-line ()
-	"Duplicate current line"
-	(interactive)
-	(move-beginning-of-line 1)
-	(kill-line)
-	(yank)
-	(open-line 1)
-	(next-line 1)
-	(yank))
-
-  (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
-
-  (defun fet/load-theme (theme)
-	"Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
-	(mapc #'disable-theme custom-enabled-themes)
-	(load-theme theme t))
-
-  (defun mac-open-file ()
-	(interactive)
-	(let ((file (do-applescript "POSIX path of (choose file)")))
-	  (if (< (length file) 3)
-		  (setq file
-				(substring file 1 (- (length file) 1))))
-	  (if (and (not (equal file "")) (file-readable-p file))
-		  (find-file file))))
-
-  (defun mac-save-file-as ()
-	(interactive)
-	(let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
-	  (if (> (length file) 3)
-		  (setq file
-				(substring file 1 (- (length file) 1))))
-	  (if (not (equal file ""))
-		  (write-file file))))
-#+end_src
-* Sudo Edit
-[[https://github.com/nflath/sudo-edit/blob/master/sudo-edit.el]]
-
-#+begin_src emacs-lisp  
-
-  (use-package sudo-edit)
-
-#+end_src
-* Super Save
-[[https://github.com/bbatsov/super-save]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package super-save
-    :diminish super-save-mode
-    :defer 2
-    :config
-    (setq super-save-auto-save-when-idle t
-          super-save-idle-duration 5
-          super-save-triggers
-          '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
-          super-save-max-buffer-size 10000000)
-    (super-save-mode +1))
-#+END_SRC
-* Thesaurus
-[[https://github.com/agzam/mw-thesaurus.el]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package mw-thesaurus
-    :defer t
-    :config
-    (add-hook 'mw-thesaurus-mode-hook
-              (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
-#+END_SRC
-* TLDR
-[[https://github.com/kuanyui/tldr.el]]
-
-#+begin_src emacs-lisp  
-
-  (use-package tldr)
-
-#+end_src
-* Transient stuff
-#+BEGIN_SRC emacs-lisp
-  ;;(require 'transient)
-
-  (transient-define-prefix fet-config-command ()
-    "Config options"
-    [["Configuration files"
-      ("r" "Edit emacs config file" (lambda () (interactive) (
-                                                  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
-                                                  )))
-      ("c" "Copy snippets" (lambda () (interactive) (
-                                                     message "hello"
-                                                     )))
-      ("g" "Git status" (lambda () (interactive) (magit-status)))
-      ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
-      ]
-
-     ["Theme options"
-      ("1" "doom-solarized-light" (lambda () (interactive) (
-                                                            load-theme 'doom-solarized-light
-                                                            )))
-      ("2" "doom-solarized-dark" (lambda () (interactive) (
-                                                           load-theme 'doom-solarized-dark
-                                                           )))
-      ]
-     ])
-
-  ;;(fet-config-command)
-#+END_SRC
-* Try
-Try is a package that allows you to try out Emacs packages without installing them. If you pass a URL to a plaint text .el -file it evaluates the content, without storing the file.
-
-Packages from ELPA will be stored in a temporary directory by default.
-
-[[https://github.com/larstvei/Try]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package try)
-#+END_SRC
-* Typography
-#+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
-  (setq-default fill-column 90)
-  (use-package fontawesome)
-#+END_SRC
-* Vertico
-[[https://github.com/minad/vertico]]
-[[https://github.com/minad/marginalia]]
-
-#+begin_src emacs-lisp  
-
-  (use-package vertico
-    :init
-    (vertico-mode)
-    (setq vertico-count 20)
-    (setq vertico-resize t)
-    (setq vertico-cycle t)
-    (keymap-set vertico-map "?" #'minibuffer-completion-help)
-    (keymap-set vertico-map "M-RET" #'minibuffer-force-complete-and-exit)
-    (keymap-set vertico-map "M-TAB" #'minibuffer-complete)
-
-  )
-
-  (use-package marginalia
-    :bind
-    (:map minibuffer-local-map ("M-A" . marginalia-cycle))
-    :init
-    (marginalia-mode))
- #+end_src
-* Which-key
-[[https://github.com/justbur/emacs-which-key]]
-
-#+begin_src emacs-lisp 
-  (use-package which-key
-  :init
-    (which-key-mode 1)
-  :diminish
-  :config
-  (setq which-key-side-window-location 'bottom
-	  which-key-sort-order #'which-key-key-order-alpha
-	  which-key-allow-imprecise-window-fit nil
-	  which-key-sort-uppercase-first nil
-	  which-key-add-column-padding 1
-	  which-key-max-display-columns nil
-	  which-key-min-display-lines 6
-	  which-key-side-window-slot -10
-	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.5
-	  which-key-max-description-length 25
-	  which-key-allow-imprecise-window-fit nil
-	  which-key-separator " → " ))
-
-#+end_src
-
-* Yasnippet
-[[https://github.com/joaotavora/yasnippet]]
-
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :diminish yas-minor-mode
-    :defer 5
-    :config
-    (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
-    (yas-global-mode 1))
-
-  (require 'warnings)
-  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
-
-#+end_src
-
 * Footer in init.el
 #+BEGIN_SRC emacs-lisp
 ;;; init.el ends here
