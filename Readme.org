@@ -875,9 +875,21 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+begin_src emacs-lisp 
 
   (use-package counsel
-    :diminish
-    :config
-    (counsel-mode))
+	:config
+	(setq default-directory fet/home
+		  counsel-switch-buffer-preview-virtual-buffers nil)
+	(setq counsel-find-file-ignore-regexp
+		  (concat "\\(Icon\\\)"
+				  "\\|\\(?:\\`[#.]\\)"))
+	(add-to-list 'ivy-sort-functions-alist '(counsel-recentf . file-newer-than-file-p))
+	(add-to-list 'recentf-exclude (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+	(setq find-program "fd")
+	(setq counsel-file-jump-args (split-string "-L --type f -H"))
+	:general
+	(general-define-key :keymaps 'counsel-find-file-map
+						"C-c f" 'counsel-file-jump-from-find)
+	)
+		
 
 #+end_src
 ** Ivy
@@ -942,7 +954,47 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+BEGIN_SRC emacs-lisp
   (use-package prescient
 	:config
-	(prescient-persist-mode))
+	(setq-default history-length 1000)
+	(setq-default prescient-history-length 1000)
+	(prescient-persist-mode +1))
+
+  (use-package ivy-prescient
+	:after ivy
+	:config
+	(dolist (command '(org-ql-view counsel-find-file fontaine-set-preset))
+	  (setq ivy-prescient-sort-commands (append ivy-prescient-sort-commands (list command))))
+	(ivy-prescient-mode +1))
+#+END_SRC
+** Smartparens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+	:diminish smartparens-mode
+	:defer 1
+	:config
+	(require 'smartparens-config)
+	(setq sp-max-prefix-length 25
+		  sp-max-pair-length 4
+		  sp-highlight-pair-overlay nil
+		  sp-highlight-wrap-overlay nil
+		  sp-highlight-wrap-tag-overlay nil)
+	(with-eval-after-load 'evil
+	  (setq sp-show-pair-from-inside t
+			sp-cancel-autoskip-on-backward-movement nil
+			sp-pair-overlay-keymap (make-sparse-keymap)))
+	(let ((unless-list '(sp-point-before-word-p
+						 sp-point-after-word-p
+						 sp-point-before-same-p)))
+	  (sp-pair "'" nil :unless unless-list)
+	  (sp-pair "\"" nil :unless unless-list))
+	(sp-local-pair sp-lisp-modes "(" ")" :unless '(:rem sp-point-before-same-p))
+	(sp-local-pair '(emacs-lisp-mode org-mode markdown-mode gfm-mode)
+				   "[" nil :post-handlers '(:rem ("| " "SPC")))
+	(dolist (brace '("(" "{" "["))
+	  (sp-pair brace nil
+			   :post-handlers '(("||\n[i]" "RET") ("| " "SPC"))
+			   :unless '(sp-point-before-word-p sp-point-before-same-p)))
+	(smartparens-global-mode t))
+
 #+END_SRC
 ** Rainbow mode
 [[https://github.com/emacsmirror/rainbow-mode]]
@@ -959,13 +1011,21 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
            (clojure-mode . rainbow-delimiters-mode)))
 
 #+end_src
+** Search and replace
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-anzu :defer t)
+#+END_SRC
 ** Clipboard
 [[https://github.com/rolandwalker/simpleclip]]
 
 #+begin_src emacs-lisp 
 
-    (use-package simpleclip
-      :config (simpleclip-mode 1))
+  (use-package simpleclip
+	:config (simpleclip-mode 1))
+
+  (defun fet/paste-in-minibuffer ()
+	(local-set-key (kbd "M-v") 'simpleclip-paste))
+  (add-hook 'minibuffer-setup-hook 'fet/paste-in-minibuffer) ;; allows pasting in minibuffer with M-v (Jake B)
 
 #+end_src
 ** Avy
@@ -974,11 +1034,15 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+begin_src emacs-lisp 
 
   (use-package avy
-    :defer t
-    :config
-    (setq avy-case-fold-search nil))
+	:defer t
+	:config
+	(setq avy-case-fold-search nil))
 
 #+end_src
+** Undo and redo
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-fu)
+#+END_SRC
 ** Neotree
 [[https://github.com/jaypei/emacs-neotree]]
 
@@ -1023,6 +1087,12 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
           '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
           super-save-max-buffer-size 10000000)
     (super-save-mode +1))
+#+END_SRC
+** Saveplace
+#+BEGIN_SRC emacs-lisp
+  (use-package saveplace
+	:init (setq save-place-limit 100)
+	:config (save-place-mode))
 #+END_SRC
 ** Projectile
 [[https://docs.projectile.mx/projectile/index.html]]
@@ -1069,7 +1139,25 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
 #+end_src
+** Fonts
+*** Font configuration
+#+BEGIN_SRC emacs-lisp
+  (setq text-scale-mode-step 1.2)
+  (setq fet-default-line-spacing 1)
+  (setq-default line-spacing fet-default-line-spacing)
+  (setq fet-text-height 150)
+  (set-frame-font "RobotoMono Nerd Font:size=14" nil t)
 
+#+END_SRC
+*** Mixed pitch
+#+BEGIN_SRC emacs-lisp
+  (use-package mixed-pitch
+	:defer t
+	:config
+	(setq mixed-pitch-set-height nil)
+	(dolist (face '(org-date org-priority org-tag org-special-keyword))
+	  (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
+#+END_SRC
 ** Ace window
 [[https://github.com/abo-abo/ace-window]]
 [[https://github.com/iqbalansari/restart-emacs]]
@@ -1120,8 +1208,8 @@ Doom themes: [[https://github.com/doomemacs/themes]]
 	:config
 	(setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
-	;;(load-theme 'doom-solarized-light t)
-	(load-theme 'doom-one t)
+	(load-theme 'doom-solarized-light t)
+	;;(load-theme 'doom-one t)
 	;;(doom-themes-neotree-config)
 	(doom-themes-org-config))
 
@@ -1142,17 +1230,53 @@ Doom modeline: [[https://github.com/seagle0128/doom-modeline]]
   (use-package hide-mode-line
 	:commands (hide-mode-line-mode))
 
+  (line-number-mode)
+  (column-number-mode)
+  (size-indication-mode t)
+
   (use-package doom-modeline
 	:ensure t
 	:init
-	(doom-modeline-mode 1)
+	(doom-modeline-mode)
 	:config
-	(setq doom-modeline-height 35
-	  doom-modeline-bar-width 5
-	  doom-modeline-persp-name t
-	  doom-modeline-persp-icon t))
+	(setq doom-modeline-buffer-file-name-style 'relative-from-project
+		  doom-modeline-enable-word-count t
+		  doom-modeline-buffer-encoding nil
+		  doom-modeline-icon t
+		  doom-modeline-modal-icon t
+		  doom-modeline-major-mode-icon t
+		  doom-modeline-major-mode-color-icon t
+		  doom-modeline-buffer-state-icon t
+		  doom-modeline-bar-width 3))
 
+  (setq fet-doom-modeline-text-height 140)
+  (setq doom-modeline-height 28)
 #+end_src
+** Frame
+#+BEGIN_SRC emacs-lisp
+  (setq default-frame-alist '((left . 170)
+							  (width . 170)
+							  (top . 64)
+							  (height . 100)
+							  (fullscreen . fullheight)
+							  (internal-border-width . 8)))
+
+   (setq frame-inhibit-implied-resize t) ;; is startup faster with this?
+
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+#+END_SRC
+** Line numbers, fringe and hl-line
+#+BEGIN_SRC emacs-lisp
+  (setq-default fringes-outside-margins nil)
+  (setq-default indicate-buffer-boundaries nil)
+  (setq-default indicate-empty-lines nil)
+
+  (set-face-attribute 'fringe nil :background nil)
+  (set-face-attribute 'header-line nil :background nil :inherit 'default)
+
+  (add-hook 'prog-mode-hook 'hl-line-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
 
 ** Highlight todo
 [[https://github.com/tarsius/hl-todo]]
@@ -1420,6 +1544,8 @@ TODO: fix this section
 	 org-modern-todo nil
 	 org-modern-table nil))
 
+  (setq org-return-follows-link t)
+  
   ;; (use-package org-super-agenda
   ;;   :after org
   ;;   :config
@@ -1429,10 +1555,7 @@ TODO: fix this section
 
 #+end_src
 
-#+RESULTS:
-| rainbow-mode | org-modern-mode | (lambda nil (org-bullets-mode 1)) | org-tempo-setup | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | hl-todo-mode |
-
-* Org Mode Config
+#+* Org Mode Config
 ** LaTeX
 #+begin_src emacs-lisp  
   (use-package latex
