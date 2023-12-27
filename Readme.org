@@ -3,11 +3,11 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:t author:t email:t num:nil \n:t
+#+options: ':t toc:t author:t email:t num:nil 
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
-#+HTML_HEAD: <link href="~/.config/emacs/leuven_theme.css" rel="stylesheet">
+#+SETUPFILE: "~/.config/emacs/setupfiles_html/readtheorg.setup"
 :END:
 
 This is a work in progress...
@@ -38,6 +38,8 @@ You can do that by running (C-c C-c) in this code block:
   cp -rvp scripts ~/.config/emacs/
   cp -rvp emacs-custom.el ~/.config/emacs/
   cp -rvp images ~/.config/emacs/
+  cp -rvp setupfiles_html ~/.config/emacs/
+  cp -rvp setupfiles_latex ~/.config/emacs/
   cp -v leuven_theme.css ~/.config/emacs/
 #+end_src
 
@@ -51,6 +53,13 @@ You can do that by running (C-c C-c) in this code block:
 | emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
 | images                                | -> | /Users/au/.config/emacs/images                                |
 | images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
+| setupfiles_html                       | -> | /Users/au/.config/emacs/setupfiles_html                       |
+| setupfiles_html/readtheorg.setup      | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup      |
+| setupfiles_html/org.min_css.setup     | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup     |
+| setupfiles_html/bigblow.setup         | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup         |
+| setupfiles_html/latex_css.setup       | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup       |
+| setupfiles_latex                      | -> | /Users/au/.config/emacs/setupfiles_latex                      |
+| setupfiles_latex/fet-beamer.setup     | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup     |
 | leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
 
 
