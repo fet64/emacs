@@ -1229,11 +1229,11 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
           dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
           dashboard-startup-banner "~/.config/emacs/images/emacs.png"
           dashboard-center-content nil ;; set to 't' to center dashboard
-          dashboard-items '((recents . 5)
-                            (agenda . 5)
-                            (bookmarks . 5)
-                            (projects . 5)
-                            (registers . 5)))
+          dashboard-items '((recents . 15)
+                            (agenda . 10)
+                            (bookmarks . 10)
+                            (projects . 10)
+                            (registers . 10)))
     :custom
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
