@@ -3,10 +3,11 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:t author:t email:t num:nil
+#+options: ':t toc:t author:t email:t num:nil \n:t
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
+#+HTML_HEAD: <link href="~/.config/emacs/leuven_theme.css" rel="stylesheet">
 :END:
 
 This is a work in progress...
@@ -37,10 +38,9 @@ You can do that by running (C-c C-c) in this code block:
   cp -rvp scripts ~/.config/emacs/
   cp -rvp emacs-custom.el ~/.config/emacs/
   cp -rvp images ~/.config/emacs/
-
+  cp -v leuven_theme.css ~/.config/emacs/
 #+end_src
 
-#+CAPTION: Results from running copying supporting files.
 #+RESULTS:
 | snippets                              | -> | /Users/au/.config/emacs/snippets                              |
 | snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
@@ -51,6 +51,9 @@ You can do that by running (C-c C-c) in this code block:
 | emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
 | images                                | -> | /Users/au/.config/emacs/images                                |
 | images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
+| leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
+
+
 
 You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config.
 
@@ -2000,6 +2003,9 @@ TODO: fix this section
 #+END_SRC
 *** Org-exporting
 #+BEGIN_SRC emacs-lisp
+  (setq org-html-htmlize-output-type 'css)
+  (setq org-html-htmlize-font-prefix "org-")
+
   (setq org-export-with-broken-links t
 		org-export-with-smart-quotes t
 		org-export-allow-bind-keywords t)
@@ -2050,8 +2056,8 @@ TODO: fix this section
 #+end_src
 
 #+RESULTS:
-| xelatex -pdflatex='%latex -shell-escape -interaction nonstopmode' -pdf -output-directory=%o -f %f |
-** Misc Org Mode
+| org-plain-latex | \documentclass{extarticle} |
+*** Misc Org Mode
 #+BEGIN_SRC emacs-lisp
   (setq org-clock-mode-line-total 'current)
   (setq org-clock-clocked-in-display 'both)
@@ -2162,7 +2168,22 @@ TODO: fix this section
   ;; https://github.com/udyantw/most-used-words
   (use-package most-used-words :ensure nil)
 #+END_SRC
-** LaTeX
+** Popper.el
+#+BEGIN_SRC emacs-lisp
+  (use-package popper
+	:bind (("C-'" . popper-toggle-latest)
+		   ("M-'" . popper-cycle)
+		   ("C-M-'" . popper-toggle-type))
+	:init
+	(setq popper-reference-buffers
+		  '("\\*Messages\\*"
+			"Output\\*$"
+			"\\*Warnings\\*"
+			help-mode
+			compilation-mode))
+	(popper-mode +1))
+#+END_SRC
+* LaTeX
 #+BEGIN_SRC emacs-lisp
   (use-package latex ;; This is a weird one. Package is auctex but needs to be managed like this.
 	:ensure nil
@@ -2218,7 +2239,7 @@ TODO: fix this section
   ;;   (add-to-list 'company-backends 'company-auctex)
   ;;   (company-auctex-init))
 #+END_SRC
-** PDF
+* PDF
 [[https://github.com/politza/pdf-tools]]
 
 #+begin_src emacs-lisp  
@@ -2266,21 +2287,6 @@ TODO: fix this section
 						)
 	)
 #+end_src
-** Popper.el
-#+BEGIN_SRC emacs-lisp
-  (use-package popper
-	:bind (("C-'" . popper-toggle-latest)
-		   ("M-'" . popper-cycle)
-		   ("C-M-'" . popper-toggle-type))
-	:init
-	(setq popper-reference-buffers
-		  '("\\*Messages\\*"
-			"Output\\*$"
-			"\\*Warnings\\*"
-			help-mode
-			compilation-mode))
-	(popper-mode +1))
-#+END_SRC
 * Programming-related
 ** General
 #+BEGIN_SRC emacs-lisp
