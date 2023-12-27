@@ -198,7 +198,7 @@ You can now restart Emacs. It will take some time to download all the packages a
 
 #+end_src
 
-** Scripts
+* Scripts
 #+begin_src emacs-lisp  
 
   (defun fet/duplicate-line ()
@@ -289,6 +289,11 @@ You can now restart Emacs. It will take some time to download all the packages a
 	  (let ((b (get-buffer buffer)))
 		(save-buffer b)
 		(kill-buffer b))))
+
+  (defmacro spacemacs|org-emphasize (fname char)
+  "Make function for setting the emphasis in org mode"
+  `(defun ,fname () (interactive)
+          (org-emphasize ,char)))
 #+end_src
 * General configuration
 ** Sane defaults
