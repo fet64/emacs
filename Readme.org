@@ -80,6 +80,9 @@ If you run into any errors, try starting from terminal:
 #+BEGIN_SRC sh :tangle no 
   emacs --debug-init
 #+END_SRC
+
+The rest of this org-file contains my configuration, with the exception of all of the supporting files...
+
 * Start
 ** Early-init.el
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
