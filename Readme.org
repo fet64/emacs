@@ -873,6 +873,235 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     ;; Exit
     ("q" nil))
 #+end_src
+*** Hydra scripts
+#+BEGIN_SRC emacs-lisp
+	(require 'cl-lib)
+
+	(defgroup fet-hydra nil
+	  "Customization for 'fet-hydra'"
+	  :tag "fet-hydra")
+
+	(defcustom fet-hydra-key "<f6>"
+	  "Key to bind 'fet/body' to."
+	  :type 'string
+	  :group 'fet-hydra)
+
+	(global-set-key (kbd fet-hydra-key) 'fet/body)
+
+	(lexical-let ((fet-hydra-stack '()))
+	  (defun fet-hydra-push (expr)
+		"Push an EXPR onto the stack."
+		(push expr fet-hydra-stack))
+
+	  (defun fet-hydra-pop ()
+		"Pop an expression of the stack and call it."
+		(interactive)
+		(let ((x (pop fet-hydra-stack)))
+		  (when x
+			(call-interactively x))))
+
+	  (defun fet-hydra ()
+		"Show the current stack."
+		(interactive)
+		(with-help-window (help-buffer)
+		  (princ "Fet-hydra-stack\n")
+		  (pp fet-hydra-stack)))
+
+	  (defun fet-hydra-reset ()
+		"Reset the stack to empty."
+		(interactive)
+		(setq fet-hydra-stack '())))
+
+  (defmacro fet-open-hydra (hydra)
+	"Push current HYDRA to a stack.
+  This is a macro so I don't have to quote the hydra name."
+	`(progn
+	   (fet-hydra-push hydra-curr-body-fn)
+	   (call-interactively ',hydra)))
+
+	(defun fet-hydra-help ()
+	  "Show help buffer for current hydra."
+	  (interactive)
+	  (with-help-window (help-buffer)
+		(with-current-buffer (help-buffer)
+		  (unless (featurep 'emacs-keybinding-command-tooltip-mode)
+		(require 'emacs-keybinding-command-tooltip-mode))
+		  (emacs-keybinding-command-tooltip-mode +1))
+		(let ((s (format "Help for %s\n" hydra-curr-body-fn)))
+		  (princ s)
+		  (princ (make-string (length s) ?-))
+		  (princ "\n"))
+
+		(princ (mapconcat
+			(lambda (head)
+			  (format "%s%s"
+				  ;;  key
+				  (s-pad-right 10 " " (car head))
+				  ;; command
+				  (let* ((hint (if (stringp (nth 2 head))
+						   (concat " " (nth 2 head))
+						 ""))
+					 (cmd (cond
+					   ;; quit
+					   ((null (nth 1 head))
+						"")
+					   ;; a symbol
+					   ((symbolp (nth 1 head))
+						(format "`%s'" (nth 1 head)))
+					   ((and (listp (nth 1 head))
+						 (eq 'fet-open-hydra (car (nth 1 head))))
+						(format "`%s'" (nth 1 (nth 1 head))))
+					   ((listp (nth 1 head))
+						(with-temp-buffer
+						  (pp (nth 1 head) (current-buffer))
+						  (let ((fill-prefix (make-string 10 ? )))
+						(indent-code-rigidly
+						 (save-excursion
+						   (goto-char (point-min))
+						   (forward-line)
+						   (point))
+						 (point-max) 10))
+						  (buffer-string)))
+					   (t
+						(format "%s" (nth 1 head)))))
+					 (l1 (format "%s%s" (s-pad-right 50 " " (car (split-string cmd "\n"))) hint))
+					 (s (s-join "\n" (append (list l1) (cdr (split-string cmd "\n"))))))
+				(s-pad-right 50 " " s))))
+			(symbol-value
+			 (intern
+			  (replace-regexp-in-string
+			   "/body$" "/heads"
+			   (symbol-name hydra-curr-body-fn))))
+			"\n"))))
+
+#+END_SRC
+
+#+RESULTS:
+: fet-hydra-help
+
+*** Hydra base
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-base (:color blue)
+	"base"
+	("x" counsel-M-x "M-x")
+	("C-s" save-buffer "Save")
+	("8" (switch-to-buffer "*scratch*") "*scratch*")
+	("?" fet-hydra-help "Help menu")
+	("q" nil "quit")
+	)
+#+END_SRC
+*** Hydra fet
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet (:color blue :inherit (fet-base/heads)
+							  :columns 4 :body-pre (fet-hydra-reset)
+							  :idle 0.5)
+	"fet"
+	("a" (fet-open-hydra fet-applications/body) "Applications")
+	("b" (fet-open-hydra fet-buffers/body) "Buffers")
+	("f" (fet-open-hydra fet-files/body) "Files")
+	("h" (fet-open-hydra fet-help/body) "Help")
+  
+	)
+#+END_SRC
+*** Hydra help-menu
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-help (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
+	"
+  help
+  Code              ^Point               ^Thing           ^Documentation
+  --------------------------------------------------------------------------------
+  _a_: Apropos        _o_: Org explorer     _h_: Theme        _e_: Emacs manual
+  _c_: Desc cmd       _t_: Text properties  _k_: Desc key     _T_: Emacs tutorial
+  _f_: Desc func      _s_: Syntax           _K_: Desc keymap  _i_: Info
+  _v_: Desc variable  ^^                    _m_: Desc mode    _w_: Woman
+  _M_: View echo area messages
+   --------------------------------------------------------------------------------
+  "
+	("a" apropos)
+	("c" describe-command) 
+	("f" describe-function)
+	("v" describe-variable)
+	("M" view-echo-area-messages)
+
+	("o" ore)
+	("t" describe-text-properties)
+	("s" describe-syntax)
+
+	("h" describe-theme)
+	("k" describe-key)
+	("K" describe-keymap)
+	("m" describe-mode)
+	("p" describe-package)
+
+	("e" info-emacs-manual)
+	("T" help-with-tutorial)
+	("i" info)
+	("w" woman))
+#+END_SRC
+*** Hydra fet-files
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-files (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
+	"
+  files
+  ----------------------------------------------
+  _f_: find file     _R_: rename  _r_: recentf
+  _4_: other window  _k_: close   _l_: locate
+  _5_: other frame   _d_: dired
+  _p_: ffap
+  ----------------------------------------------"
+	("4" find-file-other-window)
+	("5" find-file-other-frame)
+	("b" describe-file)
+	("d" (dired default-directory))
+	("f" find-file)
+	("k" kill-this-buffer)
+	("l" counsel-locate)
+	("p" ffap)
+	("r" counsel-recentf)
+	("R" write-file))
+#+END_SRC
+*** Hydra fet-buffers
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-buffers (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
+	"
+  buffer
+  Switch                  ^Kill                Split        Misc
+  ------------------------------------------------------------------
+   _a_: ace-window        _k_: kill           _2_: below   _l_: list (%(length (buffer-list)))
+   _b_: switch buffer     _K_: kill others    _3_: right   _r_: rename
+   _o_: other-window      _A_: kill all
+   _O_: switch other win  _m_: kill matching
+   _n_: next buffer       _0_: delete win
+   _p_: prev buffer       _1_: delete other
+   _s_: scratch           _4_: kill buf/win
+   _f_: other frame       _6_: kill some
+   _F_: buf in frame      _y_: bury
+  ------------------------------------------------------------------
+  "
+	("0" delete-window)
+	("1" delete-other-windows)
+	("2" split-window-below)
+	("3" split-window-right)
+	("5" make-frame-command)
+	("4" kill-buffer-and-window)
+	("6" kill-some-buffers)
+	("a" ace-window :color red)
+	("b" switch-to-buffer)
+	("A" kill-all-buffers)
+	("f" other-frame :color red)
+	("F" switch-to-buffer-other-frame)
+	("k" kill-this-buffer :color red)
+	("K" kill-other-buffers)
+	("l" ibuffer)
+	("m" kill-matching-buffers :color red)
+	("n" next-buffer :color red)
+	("o" other-window :color red)
+	("O" switch-to-buffer-other-window :color red)
+	("p" previous-buffer :color red)
+	("s" (switch-to-buffer "*scratch*"))
+	("r" rename-buffer)
+	("y" bury-buffer))
+#+END_SRC
 * Interaction and editing files
 ** Company
 [[https://github.com/company-mode/company-mode]]
