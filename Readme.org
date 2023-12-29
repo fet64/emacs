@@ -12,24 +12,17 @@
 
 This is a work in progress...
 
-* Do this first - How to use
-To tangle this file into =early-init.el= and =init.el= in the emacs-user-directory. You can do that by running (C-c C-c) in this code block:
-#+ATTR-LATEX: :options minted
-#+begin_src emacs-lisp :tangle no 
+* Do this first - Four (4) easy steps
+** 1 - First, enable shell tools in org-babel
+To be able to copy files below you need to activate shell tools for org-babel. You can do that by running (C-c C-c) in this code block:
+#+begin_src emacs-lisp  
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((shell .t)))
-
-  (org-babel-tangle)
-#+end_src
-
-#+CAPTION: Results from evaluating the elisp code to generate =early-init.el= and =init.el=.
-#+RESULTS:
-| ~/.config/emacs/init.el | ~/.config/emacs/early-init.el |
-
-After you have tangled =early-init.el= and =init.el= you need to copy all supporting code from this git
+   '((shell . t)))
+#+END_SRC
+** 2 - Second, copy supporting files
+You need to copy all supporting code from this git
 to where you have your emacs config, usually =~/.config/emacs/=.
-
 
 You can do that by running (C-c C-c) in this code block:
 #+begin_src sh :tangle no
@@ -42,31 +35,19 @@ You can do that by running (C-c C-c) in this code block:
   cp -rvp setupfiles_latex ~/.config/emacs/
   cp -v leuven_theme.css ~/.config/emacs/
 #+end_src
+** 3 - Third, tangle this org-file into config files
+To create ~early-init.el~ and ~init.el~ you need to tangle it. You can do that by running (C-c C-c) in this code block:
+#+BEGIN_SRC emacs-lisp :tangle no
+  (org-babel-tangle)
+#+end_src
 
-#+RESULTS:
-| snippets                              | -> | /Users/au/.config/emacs/snippets                              |
-| snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
-| snippets/org-mode/org_src_block       | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block       |
-| snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
-| scripts                               | -> | /Users/au/.config/emacs/scripts                               |
-| scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
-| emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
-| images                                | -> | /Users/au/.config/emacs/images                                |
-| images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
-| setupfiles_html                       | -> | /Users/au/.config/emacs/setupfiles_html                       |
-| setupfiles_html/readtheorg.setup      | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup      |
-| setupfiles_html/org.min_css.setup     | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup     |
-| setupfiles_html/bigblow.setup         | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup         |
-| setupfiles_html/latex_css.setup       | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup       |
-| setupfiles_latex                      | -> | /Users/au/.config/emacs/setupfiles_latex                      |
-| setupfiles_latex/fet-beamer.setup     | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup     |
-| leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
-
-
-
+** 4 - Four, Restart Emacs to load the new configuration
 You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config.
 
-
+If you run into any errors, try starting from terminal:
+#+BEGIN_SRC sh :tangle no 
+  emacs --debug-init
+#+END_SRC
 * Start
 ** Early-init.el
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
