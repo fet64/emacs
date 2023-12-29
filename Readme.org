@@ -117,8 +117,6 @@ The rest of this org-file contains my configuration, with the exception of all o
   ;; Remove fram title from Aqua titlebar
   (setq frame-title-format nil)
 
-  ;;; early-init.el ends here
-
 #+end_src
 
 ** Header in init.el
@@ -2404,7 +2402,10 @@ TODO: fix this section
    )
   )
 #+END_SRC
-* Footer in init.el
+* Footers in ~init.el~ and ~early-init.el~
 #+BEGIN_SRC emacs-lisp
 ;;; init.el ends here
+#+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
+;;; early-init.el ends here
 #+END_SRC
