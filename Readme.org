@@ -61,7 +61,7 @@ You can do that by running (C-c C-c) in this code block:
 | leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
 
 ** 3 - Third, tangle this org-file into config files
-To create ~early-init.el~ and ~init.el~ you need to tangle it. You can do that by running (C-c C-c) in this code block:
+To create ~early-init.el~ and ~init.el~ you need to tangle this org-file. You can do that by running (C-c C-c) in this code block:
 #+BEGIN_SRC emacs-lisp :tangle no
   (org-babel-tangle)
 #+end_src
