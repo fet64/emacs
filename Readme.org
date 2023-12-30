@@ -1138,32 +1138,32 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 [[https://github.com/sebastiencs/company-box]]
 
 #+begin_src emacs-lisp 
-  (use-package company
-	:diminish company-mode
-	:general
-	(general-define-key :keymaps 'company-active-map
-						"C-j" 'company-select-next
-						"C-k" 'company-select-previous)
-	:init
-	(add-hook 'after-init-hook 'global-company-mode)
-	(setq company-minimum-prefix-length 2
-		  company-tooltip-limit 14
-		  company-tooltip-align-annotations t
-		  company-require-match 'never
-		  company-global-modes '(not erc-mode message-mode help-mode gud-mode)
-		  company-frontends '(company-pseudo-tooltip-frontend
-							  company-echo-metadata-frontend)
-		  company-backends '(company-capf company-files company-keywords)
-		  company-insertion-on-trigger nil
-		  company-dabbrev-other-buffers nil
-		  company-dabbrev-ignore-case nil
-		  company-dabbrev-downcase nil)
-	:config
-	(setq company-idle-delay 0.3)
-	:custom-face
-	(company-tooltip ((t (:family "Roboto Mono")))))
+  ;; (use-package company
+  ;;   :diminish company-mode
+  ;;   :general
+  ;;   (general-define-key :keymaps 'company-active-map
+  ;; 					  "C-j" 'company-select-next
+  ;; 					  "C-k" 'company-select-previous)
+  ;;   :init
+  ;;   (add-hook 'after-init-hook 'global-company-mode)
+  ;;   (setq company-minimum-prefix-length 2
+  ;; 		company-tooltip-limit 14
+  ;; 		company-tooltip-align-annotations t
+  ;; 		company-require-match 'never
+  ;; 		company-global-modes '(not erc-mode message-mode help-mode gud-mode)
+  ;; 		company-frontends '(company-pseudo-tooltip-frontend
+  ;; 							company-echo-metadata-frontend)
+  ;; 		company-backends '(company-capf company-files company-keywords)
+  ;; 		company-insertion-on-trigger nil
+  ;; 		company-dabbrev-other-buffers nil
+  ;; 		company-dabbrev-ignore-case nil
+  ;; 		company-dabbrev-downcase nil)
+  ;;   :config
+  ;;   (setq company-idle-delay 0.3)
+  ;;   :custom-face
+  ;;   (company-tooltip ((t (:family "Roboto Mono")))))
 #+end_src
-*** Corfu
+** Corfu
 #+BEGIN_SRC emacs-lisp
   (use-package corfu
 	:init
