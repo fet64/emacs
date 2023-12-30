@@ -555,6 +555,13 @@ TODO This config is for mac os only, fix for linux
 	(define-key evil-motion-state-map (kbd "RET") nil)
 	(define-key evil-motion-state-map (kbd "TAB") nil))
 
+  (use-package evil-org
+	:ensure t
+	:after org
+	:hook (org-mode . (lambda () evil-org-mode))
+	:config
+	(require 'evil-org-agenda)
+	(evil-org-agenda-set-keys))
 #+end_src
 
 ** General
