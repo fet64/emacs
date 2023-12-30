@@ -126,6 +126,12 @@ The rest of this org-file contains my configuration, with the exception of all o
   ;;; Code:
 #+END_SRC
 ** Package Management
+[[https://melpa.org/#/]]
+[[https://github.com/jwiegley/use-package]]
+[[https://github.com/quelpa/quelpa]]
+[[https://github.com/quelpa/quelpa-use-package]]
+[[https://github.com/emacscollective/auto-compile]]
+[[https://github.com/jwiegley/emacs-async]]
 #+BEGIN_SRC emacs-lisp
   (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
@@ -411,6 +417,7 @@ By default, Emacs saves backup files in the current directory. These are files e
   (setq delete-by-moving-to-trash t)
 #+END_SRC
 *** Recent files
+[[https://www.emacswiki.org/emacs/RecentFiles]]
 #+BEGIN_SRC emacs-lisp
   ;; recent files
   (recentf-mode 1)
@@ -521,7 +528,8 @@ TODO This config is for mac os only, fix for linux
 ** Evil mode
 [[https://github.com/emacs-evil/evil]]
 [[https://github.com/emacs-evil/evil-collection]]
-
+[[https://github.com/Somelauw/evil-org-mode]]
+[[https://github.com/emacs-evil/evil-surround]]
 #+begin_src emacs-lisp 
   (use-package evil
 	 :init
@@ -1164,6 +1172,9 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   ;;   (company-tooltip ((t (:family "Roboto Mono")))))
 #+end_src
 ** Corfu
+[[https://github.com/minad/corfu]]
+[[https://github.com/minad/cape]]
+[[https://github.com/jdtsmith/kind-icon]]
 #+BEGIN_SRC emacs-lisp
   (use-package corfu
 	:init
@@ -1237,6 +1248,9 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
 #+end_src
 ** Ivy
+[[https://github.com/abo-abo/swiper]]
+[[https://github.com/seagle0128/all-the-icons-ivy-rich]]
+[[https://github.com/Yevgnen/ivy-rich]]
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
 	:diminish ivy-mode
@@ -1295,6 +1309,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	(marginalia-mode))
  #+end_src
 ** Prescient
+[[https://github.com/radian-software/prescient.el]]
 #+BEGIN_SRC emacs-lisp
   (use-package prescient
 	:config
@@ -1310,6 +1325,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	(ivy-prescient-mode +1))
 #+END_SRC
 ** Smartparens
+[[https://github.com/Fuco1/smartparens]]
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
 	:diminish smartparens-mode
@@ -1356,6 +1372,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
 #+end_src
 ** Search and replace
+[[https://github.com/emacsorphanage/evil-anzu]]
 #+BEGIN_SRC emacs-lisp
   (use-package evil-anzu :defer t)
 #+END_SRC
@@ -1384,6 +1401,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
 #+end_src
 ** Undo and redo
+[[https://github.com/emacsmirror/undo-fu]]
 #+BEGIN_SRC emacs-lisp
   (use-package undo-fu)
 #+END_SRC
@@ -1433,6 +1451,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
     (super-save-mode +1))
 #+END_SRC
 ** Saveplace
+[[https://www.emacswiki.org/emacs/SavePlace]]
 #+BEGIN_SRC emacs-lisp
   (use-package saveplace
 	:init (setq save-place-limit 100)
@@ -1494,6 +1513,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
 #+END_SRC
 *** Mixed pitch
+[[https://gitlab.com/jabranham/mixed-pitch]]
 #+BEGIN_SRC emacs-lisp
   (use-package mixed-pitch
 	:defer t
@@ -1788,6 +1808,9 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
               (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
 #+END_SRC
 * Misc packages
+[[https://github.com/iqbalansari/restart-emacs]]
+[[https://github.com/emacsmirror/diminish]]
+[[8https://github.com/kaz-yos/reveal-in-osx-finder]]
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs :defer t)
   (use-package diminish)
