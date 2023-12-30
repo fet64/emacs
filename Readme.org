@@ -15,7 +15,6 @@ This is a work in progress... it will never be done!
 :PROPERTIES:
 :TOC:      :include all :depth 4
 :END:
-This text appears before the TOC.
 :CONTENTS:
 - [[#toc][TOC]]
 - [[#do-this-first---four-4-easy-steps][Do this first - Four (4) easy steps]]
