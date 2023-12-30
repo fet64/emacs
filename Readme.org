@@ -875,6 +875,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+end_src
 *** Hydra scripts
 #+BEGIN_SRC emacs-lisp
+  (require 'cl)
 	(require 'cl-lib)
 
 	(defgroup fet-hydra nil
@@ -1000,7 +1001,8 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	("b" (fet-open-hydra fet-buffers/body) "Buffers")
 	("f" (fet-open-hydra fet-files/body) "Files")
 	("h" (fet-open-hydra fet-help/body) "Help")
-  
+	("l" (fet-open-hydra fet-lisp/body) "Lisp")
+
 	)
 #+END_SRC
 *** Hydra help-menu
@@ -1101,6 +1103,27 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	("s" (switch-to-buffer "*scratch*"))
 	("r" rename-buffer)
 	("y" bury-buffer))
+#+END_SRC
+*** Hydra fet-lisp
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-lisp (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
+	"lisp"
+	("a" eval-buffer "eval buffer")
+	("c" byte-recompile-file "byte-compile file")
+	("d" (eval-defun t) "debug defun")
+	("z" (eval-defun nil) "stop edebug")
+	("e" eval-defun "eval defun")
+	("v" eval-last-sexp "eval last sexp")
+	("g" (eval-region (point-min)(point)) "eval region")
+	("h" (describe-function 'lispy--mode) "lispy help")
+	("i" ielm "ielm")
+	("l" load-file "load file")
+	("L" counsel-load-library "load library")
+	("f" counsel-find-library "find library")
+	("r" eval-region "region")
+	("t" toggle-debug-on-error "toggle debug")
+	("y" edebug-on-entry "debug on entry")
+	)
 #+END_SRC
 * Interaction and editing files
 ** Company
@@ -1258,11 +1281,11 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
   ;; )
 
-  ;; (use-package marginalia
-  ;;   :bind
-  ;;   (:map minibuffer-local-map ("M-A" . marginalia-cycle))
-  ;;   :init
-  ;;   (marginalia-mode))
+  (use-package marginalia
+	:bind
+	(:map minibuffer-local-map ("M-A" . marginalia-cycle))
+	:init
+	(marginalia-mode))
  #+end_src
 ** Prescient
 #+BEGIN_SRC emacs-lisp
@@ -2338,6 +2361,7 @@ TODO: fix this section
 #+BEGIN_SRC emacs-lisp
   (use-package magit :defer t)
   (use-package unfill :defer t)
+  (use-package f) ;; provides functions for working with files
   (use-package burly :defer t)
   (use-package ace-window :defer t)
   (defvar aw-dispatch-alist
