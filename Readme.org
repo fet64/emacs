@@ -455,7 +455,31 @@ The rest of this org-file contains my configuration, with the exception of all o
   (defmacro spacemacs|org-emphasize (fname char)
   "Make function for setting the emphasis in org mode"
   `(defun ,fname () (interactive)
-          (org-emphasize ,char)))
+		  (org-emphasize ,char)))
+
+  ;; bash
+  (defun bash (&optional path)
+	"Open a bash window.
+  PATH is optional, and defaults to the current directory."
+	(interactive (list (if (buffer-file-name)
+			   (file-name-directory (buffer-file-name))
+				 (expand-file-name default-directory))))
+	(cond
+	 ((string= system-type "gnu/linux")
+	  (shell-command "gnome-terminal"))
+	 ((string= system-type "darwin")
+	  (shell-command
+	   (format "open -b com.apple.terminal%s"
+		   (if path (format " \"%s\"" (expand-file-name path)) ""))))
+	 ((string= system-type "windows-nt")
+	  (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
+
+  ;; google
+  (defun google ()
+	"Open default browser to google.com."
+	(interactive)
+	(browse-url "http://google.com"))
+
 #+end_src
 * General configuration
 ** Sane defaults
@@ -1271,6 +1295,37 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	("r" eval-region "region")
 	("t" toggle-debug-on-error "toggle debug")
 	("y" edebug-on-entry "debug on entry")
+	)
+#+END_SRC
+*** Hydra fet-applications
+#+BEGIN_SRC emacs-lisp
+  (defun fet-app-hints ()
+	"Calculate some variables for the applications hydra."
+	(setq elfeed-count
+		  (s-pad-right 12 " "
+					   (if (get-buffer "*elfeed-search*")
+						   (format "RSS(%s)"
+								   (car (s-split "/" (with-current-buffer "*elfeed-search*"
+													   (elfeed-search--count-unread)))))))))
+
+  (defhydra fet-applications (:hint nil
+									:pre (fet-app-hints)
+									:color blue
+									:inherit (fet-base/heads))
+	"Applications"
+	("a" (org-db-agenda "+2d") "agenda" :column "Emacs")
+	("d" dired "dired" :column "Emacs")
+	("j" fet-journal/body "journal" :column "Emacs")
+	("r" elfeed "elfeed" :column "Emacs")
+
+	("g" google "Google" :column "Web")
+
+	("b" bash "bash" :column "OS")
+	("f" finder "finder" :column "OS")
+	("e" eshell "eshell" :column "OS")
+
+	("k" package-list-packages "List packages" :columns "Commands")
+	("m" compose-mail "Compose mail" :column "Commands")
 	)
 #+END_SRC
 * Interaction and editing files
