@@ -1174,6 +1174,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	("f" (fet-open-hydra fet-files/body) "Files")
 	("h" (fet-open-hydra fet-help/body) "Help")
 	("l" (fet-open-hydra fet-lisp/body) "Lisp")
+	("w" (fet-open-hydra fet-windows/body) "Windows")
 
 	)
 #+END_SRC
@@ -1326,6 +1327,37 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 
 	("k" package-list-packages "List packages" :columns "Commands")
 	("m" compose-mail "Compose mail" :column "Commands")
+	)
+#+END_SRC
+*** Hydra fet-windows
+#+BEGIN_SRC emacs-lisp
+  (defhydra fet-windows (:color blue :inherit (fet-base/heads) :columns 4 :hint nil)
+	"
+  Windows
+  Switch                Delete                Split                 Size
+  ------------------------------------------------------------------------------------------
+  _a_: ace-window      _dw_: delete window   _sb_: split below     _(_: enlarge horizontally
+  _ow_: other window   _do_: delete others   _sr_: split right     _)_: shrink horizontally
+  _of_: other frame    _y_: bury buffer      ^ ^                   _+_: enlarge
+  _b_: buffers         _df_: delete frame    ^ ^                   _-_: shrink
+  _s_: *scratch*
+  ------------------------------------------------------------------------------------------
+  "
+	("a" ace-window)
+	("dw" delete-window)
+	("b" (fet-open-hydra fet-buffers/body))
+	("do" delete-other-windows)
+	("sb" split-window-below)
+	("sr" split-window-right)
+	("ow" other-window)
+	("of" other-frame)
+	("df" delete-frame)
+	("y" bury-buffer)
+	("(" (shrink-window-horizontally 1) :color red)
+	(")" (enlarge-window-horizontally 1) :color red)
+	("+" (enlarge-window 1) :color red)
+	("-" (enlarge-window -1) :color red)
+	("s" (switch-to-buffer "*scratch*"))
 	)
 #+END_SRC
 * Interaction and editing files
