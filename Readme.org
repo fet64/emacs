@@ -2741,6 +2741,8 @@ TODO: fix this section
 			 :repo "FrostyX/current-window-only")
 	:config
 	(current-window-only-mode))
+
+  (setq magit-commit-diff-inhibit-same-window t)
 #+END_SRC
 * LaTeX
 #+BEGIN_SRC emacs-lisp
