@@ -2136,6 +2136,8 @@ TODO: fix this section
 [[https://github.com/awth13/org-appear]]
 *bold text* not /italic/ text but _underline_ and +strikthroug+ text
 #+BEGIN_SRC emacs-lisp
+  (setq org-pretty-entities t)
+
   (use-package org-appear
 	:commands (org-appear-mode)
 	:hook (org-mode . org-appear-mode)
@@ -2143,8 +2145,9 @@ TODO: fix this section
 	(setq org-hide-emphasis-markers t	
 		  org-appear-autoemphasis t		
 		  org-appear-trigger 'always      
+		  org-appear-autoentities t
 		  org-appear-autolinks t		
-		  org-appear-autosubmarkers t))	
+		  org-appear-autosubmarkers t))
 #+END_SRC
 *** Org-reveal
 #+BEGIN_SRC emacs-lisp
@@ -2344,7 +2347,6 @@ TODO: fix this section
   (setq org-startup-folded 'showeverything)
   (setq org-image-actual-width 300)
   (setq org-fontify-whole-heading-line t)
-  (setq org-pretty-entities t)
 #+END_SRC
 *** Interaction
 #+BEGIN_SRC emacs-lisp
