@@ -505,8 +505,8 @@ The rest of this org-file contains my configuration, with the exception of all o
   (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
   (setq confirm-kill-emacs 'yes-or-no-p)  ;; confirm to quit
   (setq initial-major-mode 'org-mode
-    initial-scratch-message ""
-    initial-buffer-choice t)
+	initial-scratch-message ""
+	initial-buffer-choice t)
 
   ;; Window
   (setq frame-resize-pixelwise t)
@@ -527,9 +527,9 @@ The rest of this org-file contains my configuration, with the exception of all o
   ;; SCROLLING
   (setq scroll-conservatively 101)
   (setq mouse-wheel-follow-mouse 't
-        mouse-wheel-progressive-speed nil)
+		mouse-wheel-progressive-speed nil)
   (setq mac-redisplay-dont-reset-vscroll t
-        mac-mouse-wheel-smooth-scroll nil)
+		mac-mouse-wheel-smooth-scroll nil)
 
   (setq what-cursor-show-names t) ;; improves C-x =
 
@@ -538,9 +538,18 @@ The rest of this org-file contains my configuration, with the exception of all o
 
   ;; MacOS stuff
   (when (string= system-type "darwin")
-    (setq dired-use-ls-dired t
-          insert-directory-program "/opt/homebrew/bin/gls"
-          dired-listing-switches "-aBhl --group-directories-first"))
+	(setq dired-use-ls-dired t
+		  insert-directory-program "/opt/homebrew/bin/gls"
+		  dired-listing-switches "-aBhl --group-directories-first"))
+
+  ;; Switching buffers
+  (setq switch-to-buffer-obey-display-actions t)
+
+  (defun display-buffer-same-window (buffer alist)
+	(unless (or (cdr (assq 'inhibit-same-window alist))
+				(window-minibuffer-p)
+				(window-dedicated-p))
+	  (window--display-buffer buffer (selected-window) 'reuse alist)))
 #+end_src
 
 ** Backups, recent files, history and trash
@@ -2735,14 +2744,14 @@ TODO: fix this section
 #+END_SRC
 ** Current-window-only
 #+BEGIN_SRC emacs-lisp
-  (use-package current-window-only
-	:quelpa (current-window-only
-			 :fetcher github
-			 :repo "FrostyX/current-window-only")
-	:config
-	(current-window-only-mode))
+  ;; (use-package current-window-only
+  ;;   :quelpa (current-window-only
+  ;; 		   :fetcher github
+  ;; 		   :repo "FrostyX/current-window-only")
+  ;;   :config
+  ;;   (current-window-only-mode))
 
-  (setq magit-commit-diff-inhibit-same-window t)
+  ;; (setq magit-commit-diff-inhibit-same-window t)
 #+END_SRC
 * LaTeX
 #+BEGIN_SRC emacs-lisp
