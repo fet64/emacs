@@ -2733,6 +2733,15 @@ TODO: fix this section
 			compilation-mode))
 	(popper-mode +1))
 #+END_SRC
+** Current-window-only
+#+BEGIN_SRC emacs-lisp
+  (use-package current-window-only
+	:quelpa (current-window-only
+			 :fetcher github
+			 :repo "FrostyX/current-window-only")
+	:config
+	(current-window-only-mode))
+#+END_SRC
 * LaTeX
 #+BEGIN_SRC emacs-lisp
   (use-package latex ;; This is a weird one. Package is auctex but needs to be managed like this.
