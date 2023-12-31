@@ -982,12 +982,12 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   (use-package hydra)
 
   (defhydra hydra-zoom (global-map "<f2>")
-            "zoom"
-            ("g" text-scale-increase "in")
-            ("l" text-scale-decrease "out"))
+			"zoom"
+			("g" text-scale-increase "in")
+			("l" text-scale-decrease "out"))
 
   (defhydra hydra-buffer-menu (:color pink :hint nil)
-    "
+	"
   ^Mark^            ^Unmark^           ^Actions^          ^Search
   ^^^^^^^-----------------------------------------------------------------
   _m_: mark         _u_: unmark        _x_: executre       _R_: re-isearch
@@ -996,63 +996,49 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   _D_: delete up    ^ ^                _T_: files only: % -28`Buffer-menu-files-only
   _~_: modified
   "
-    ("m" Buffer-menu-mark)
-    ("u" Buffer-menu-unmark)
-    ("U" Buffer-menu-backup-unmark)
-    ("d" Buffer-menu-delete)
-    ("D" Buffer-menu-delete-backward)
-    ("s" Buffer-menu-save)
-    ("~" Buffer-menu-not-modified)
-    ("x" Buffer-menu-execute)
-    ("b" Buffer-menu-bury)
-    ("g" revert-buffer)
-    ("T" Buffer-menu-toggle-files-only)
-    ("O" Buffer-menu-multi-occur :color blue)
-    ("I" Buffer-menu-isearch-buffers :color blue)
-    ("R" Buffer-menu-isearch-buffers-regexp :color blue)
-    ("c" nil "cancel")
-    ("v" Buffer-menu-select "select" :color blue)
-    ("o" Buffer-menu-other-window "other-window" :color blue)
-    ("q" quit-window "quit" :color blue))
+	("m" Buffer-menu-mark)
+	("u" Buffer-menu-unmark)
+	("U" Buffer-menu-backup-unmark)
+	("d" Buffer-menu-delete)
+	("D" Buffer-menu-delete-backward)
+	("s" Buffer-menu-save)
+	("~" Buffer-menu-not-modified)
+	("x" Buffer-menu-execute)
+	("b" Buffer-menu-bury)
+	("g" revert-buffer)
+	("T" Buffer-menu-toggle-files-only)
+	("O" Buffer-menu-multi-occur :color blue)
+	("I" Buffer-menu-isearch-buffers :color blue)
+	("R" Buffer-menu-isearch-buffers-regexp :color blue)
+	("c" nil "cancel")
+	("v" Buffer-menu-select "select" :color blue)
+	("o" Buffer-menu-other-window "other-window" :color blue)
+	("q" quit-window "quit" :color blue))
 
   (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
 
-  (defhydra fet-hydra-theme-switcher (:hint nil)
-    "
-       Dark             ^Light^
-  -------------------------------------------
-  _1_ one               _z_ one-light
-  _2_ vivendi           _x_ operandi
-  _3_ molokai           _c_ solarized-light
-  _4_ snazzy            _v_ flatwhite
-  _5_ old-hope          _b_ tomorrow-day
-  _6_ henna                 ^
-  _7_ peacock               ^
-  _8_ monokai-machine       ^
-  _9_ xcode                 ^
-  _q_ quit                  ^
-  ^                         ^
-  "
-    ;; Dark
-    ("1" (fet/load-theme 'doom-one) "one")
-    ("2" (fet/load-theme 'modus-vivendi) "modus-vivendi")
-    ("3" (fet/load-theme 'doom-molokai) "molokai")
-    ("4" (fet/load-theme 'doom-snazzy) "snazzy")
-    ("5" (fet/load-theme 'doom-old-hope) "old-hope")
-    ("6" (fet/load-theme 'doom-henna) "henna")
-    ("7" (fet/load-theme 'doom-peacock) "peacock")
-    ("8" (fet/load-theme 'doom-monokai-machine) "monokai-machine")
-    ("9" (fet/load-theme 'doom-xcode) "xcode")
+  (defhydra fet-hydra-theme-switcher (:color red :inherit (fet-base/heads) :columns 4 :hint nil)
+	"Themes"
+	;; Dark
+	("on" (fet/load-theme 'doom-one) "one")
+	("vi" (fet/load-theme 'modus-vivendi) "modus-vivendi")
+	("mo" (fet/load-theme 'doom-molokai) "molokai")
+	("sn" (fet/load-theme 'doom-snazzy) "snazzy")
+	("oh" (fet/load-theme 'doom-old-hope) "old-hope")
+	("he" (fet/load-theme 'doom-henna) "henna")
+	("pe" (fet/load-theme 'doom-peacock) "peacock")
+	("mm" (fet/load-theme 'doom-monokai-machine) "monokai-machine")
+	("cc" (fet/load-theme 'doom-xcode) "xcode")
 
-    ;; Light
-    ("z" (fet/load-theme 'doom-one-light) "one-light")
-    ("x" (fet/load-theme 'modus-operandi) "modus-operandi")
-    ("c" (fet/load-theme 'doom-solarized-light) "solarized-light")
-    ("v" (fet/load-theme 'doom-flatwhite) "flatwhite")
-    ("b" (fet/load-theme 'doom-opera-light) "tomorrow-day")
+	;; Light
+	("lo" (fet/load-theme 'doom-one-light) "one-light")
+	("op" (fet/load-theme 'modus-operandi) "modus-operandi")
+	("sl" (fet/load-theme 'doom-solarized-light) "solarized-light")
+	("fl" (fet/load-theme 'doom-flatwhite) "flatwhite")
+	("td" (fet/load-theme 'doom-opera-light) "tomorrow-day")
 
-    ;; Exit
-    ("q" nil))
+	;; Exit
+	("q" nil))
 #+end_src
 *** Hydra scripts
 #+BEGIN_SRC emacs-lisp
@@ -1167,7 +1153,10 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	"base"
 	("x" counsel-M-x "M-x")
 	("C-s" save-buffer "Save")
-	("8" (switch-to-buffer "*scratch*") "*scratch*")
+	("." find-file "Find file")
+	("i" ibuffer "Ibuffer")
+	("d" dired "Dired")
+	("ss" (switch-to-buffer "*scratch*") "*scratch*")
 	("?" fet-hydra-help "Help menu")
 	("q" nil "quit")
 	)
@@ -1177,13 +1166,14 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   (defhydra fet (:color blue :inherit (fet-base/heads)
 							  :columns 4 :body-pre (fet-hydra-reset)
 							  :idle 0.5)
-	"fet"
+	"Choose:"
 	("a" (fet-open-hydra fet-applications/body) "Applications")
 	("b" (fet-open-hydra fet-buffers/body) "Buffers")
 	("f" (fet-open-hydra fet-files/body) "Files")
 	("h" (fet-open-hydra fet-help/body) "Help")
 	("l" (fet-open-hydra fet-lisp/body) "Lisp")
 	("w" (fet-open-hydra fet-windows/body) "Windows")
+	("t" (fet-open-hydra fet-hydra-theme-switcher/body) "Themes")
 
 	)
 #+END_SRC
@@ -1349,7 +1339,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
   _ow_: other window   _do_: delete others   _sr_: split right     _)_: shrink horizontally
   _of_: other frame    _y_: bury buffer      ^ ^                   _+_: enlarge
   _b_: buffers         _df_: delete frame    ^ ^                   _-_: shrink
-  _s_: *scratch*
+  _ss_: *scratch*
   ------------------------------------------------------------------------------------------
   "
 	("a" ace-window)
@@ -1366,7 +1356,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	(")" (enlarge-window-horizontally 1) :color red)
 	("+" (enlarge-window 1) :color red)
 	("-" (enlarge-window -1) :color red)
-	("s" (switch-to-buffer "*scratch*"))
+	("ss" (switch-to-buffer "*scratch*"))
 	)
 #+END_SRC
 * Interaction and editing files
