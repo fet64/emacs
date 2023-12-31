@@ -2133,15 +2133,18 @@ TODO: fix this section
 		  org-gcal-remove-api-cancelled-events t))
 #+END_SRC
 *** Org-appear
+[[https://github.com/awth13/org-appear]]
+*bold text* not /italic/ text but _underline_ and +strikthroug+ text
 #+BEGIN_SRC emacs-lisp
   (use-package org-appear
 	:commands (org-appear-mode)
 	:hook (org-mode . org-appear-mode)
 	:init
-	(setq org-hide-emphasis-markers t
-		  org-appear-autoemphasis t
-		  org-appear-autolinks nil
-		  org-appear-autosubmarkers t))
+	(setq org-hide-emphasis-markers t	
+		  org-appear-autoemphasis t		
+		  org-appear-trigger 'always      
+		  org-appear-autolinks t		
+		  org-appear-autosubmarkers t))	
 #+END_SRC
 *** Org-reveal
 #+BEGIN_SRC emacs-lisp
