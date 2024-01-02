@@ -231,7 +231,7 @@ Each register has a name that consists of a single character, which we will deno
 
 A register can store a position, a piece of text, a rectangle, a number, a window or frame configuration, a buffer name, or a file name, but only one thing at any given time. Whatever you store in a register remains there until you store something else in that register. To see what register r contains, use M-x view-register:
 
-~M-x view-register RET r~
+~M-x view-register RET C~
 
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html]]
 
@@ -243,6 +243,7 @@ A register can store a position, a piece of text, a rectangle, a number, a windo
 #+end_src
 
 * Scripts
+TODO fix this
 #+begin_src emacs-lisp  
 
   (defun fet/duplicate-line ()
@@ -366,6 +367,7 @@ A register can store a position, a piece of text, a rectangle, a number, a windo
 * General configuration
 ** Sane defaults
 *** Disable toolbar and scrollbar, keep menubar
+- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][Early Init file]]
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
