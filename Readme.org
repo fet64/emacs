@@ -11,9 +11,17 @@
 :END:
 This is a work in progress... it will never be done!
 
-* Do this first - Four (4) easy steps
+* Do this first - Five (5) easy steps
+** 0 - Zero, set your variables
+Enter your settings in this code block. These are used on various places in this configuration. I use a MacBook with the hostname =au= or a Linux machine with hostname =box=. After editing these settings you can run this code block ~(C-c C-c)~ to set your settings.
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Fet64"
+		user-mail-address "fet64@outlook.com")
+  (defvar macbook-p (equal (system-name) "au"))
+  (defvar linux-p (equal (system-name) "box"))
+#+END_SRC
 ** 1 - First, enable shell tools in org-babel
-To be able to copy files below you need to activate shell tools for org-babel. You can do that by running (C-c C-c) in this code block:
+To be able to copy files below you need to activate shell tools for org-babel. You can do that by running ~(C-c C-c)~ in this code block:
 #+begin_src emacs-lisp  
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -28,7 +36,7 @@ To be able to copy files below you need to activate shell tools for org-babel. Y
 You need to copy all supporting code from this git
 to where you have your emacs config, usually =~/.config/emacs/=.
 
-You can do that by running (C-c C-c) in this code block:
+You can do that by running ~(C-c C-c)~ in this code block:
 #+begin_src sh :tangle no
 
   cp -rvp snippets ~/.config/emacs/
@@ -41,26 +49,28 @@ You can do that by running (C-c C-c) in this code block:
 #+end_src
 
 #+RESULTS:
-| snippets                              | -> | /Users/au/.config/emacs/snippets                              |
-| snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
-| snippets/org-mode/org_src_block       | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block       |
+| snippets                           | -> | /Users/au/.config/emacs/snippets                           |
+| snippets/org-mode                  | -> | /Users/au/.config/emacs/snippets/org-mode                  |
+| snippets/org-mode/org_src_block      | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block      |
 | snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
-| scripts                               | -> | /Users/au/.config/emacs/scripts                               |
-| scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
-| emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
-| images                                | -> | /Users/au/.config/emacs/images                                |
-| images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
-| setupfiles_html                       | -> | /Users/au/.config/emacs/setupfiles_html                       |
-| setupfiles_html/readtheorg.setup      | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup      |
-| setupfiles_html/org.min_css.setup     | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup     |
-| setupfiles_html/bigblow.setup         | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup         |
-| setupfiles_html/latex_css.setup       | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup       |
-| setupfiles_latex                      | -> | /Users/au/.config/emacs/setupfiles_latex                      |
-| setupfiles_latex/fet-beamer.setup     | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup     |
-| leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
+| scripts                            | -> | /Users/au/.config/emacs/scripts                            |
+| scripts/buffer-move.el             | -> | /Users/au/.config/emacs/scripts/buffer-move.el             |
+| emacs-custom.el                    | -> | /Users/au/.config/emacs/emacs-custom.el                    |
+| images                             | -> | /Users/au/.config/emacs/images                             |
+| images/melpa.png                   | -> | /Users/au/.config/emacs/images/melpa.png                   |
+| images/emacs.png                   | -> | /Users/au/.config/emacs/images/emacs.png                   |
+| images/which-key.png               | -> | /Users/au/.config/emacs/images/which-key.png               |
+| setupfiles_html                     | -> | /Users/au/.config/emacs/setupfiles_html                     |
+| setupfiles_html/readtheorg.setup    | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup    |
+| setupfiles_html/org.min_css.setup    | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup    |
+| setupfiles_html/bigblow.setup       | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup       |
+| setupfiles_html/latex_css.setup      | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup      |
+| setupfiles_latex                    | -> | /Users/au/.config/emacs/setupfiles_latex                    |
+| setupfiles_latex/fet-beamer.setup   | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup   |
+| leuven_theme.css                    | -> | /Users/au/.config/emacs/leuven_theme.css                    |
 
 ** 3 - Third, tangle this org-file into config files
-To create ~early-init.el~ and ~init.el~ you need to tangle this org-file. You can do that by running (C-c C-c) in this code block:
+To create ~early-init.el~ and ~init.el~ you need to tangle this org-file. You can do that by running ~(C-c C-c)~ in this code block:
 #+BEGIN_SRC emacs-lisp :tangle no
   (org-babel-tangle)
 #+end_src
@@ -69,7 +79,7 @@ To create ~early-init.el~ and ~init.el~ you need to tangle this org-file. You ca
 | ~/.config/emacs/early-init.el | ~/.config/emacs/init.el |
 
 ** 4 - Four, Restart Emacs to load the new configuration
-You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config. You can do that by running (C-c C-c) in this code block:
+You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config. You can do that by running ~(C-c C-c)~ in this code block:
 
 #+BEGIN_SRC emacs-lisp :tangle no 
   (restart-emacs)
@@ -198,7 +208,7 @@ Add search path to ~early-init.el~.
 * Files, registers and variables
 ** Variables and directory paths used in this config
 Setting variables to be used in this configuration setup.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :var emacs-home=(ot variables $emacs-home-dir)
   ;;; fet-variables
   ;; File and directory locations
   (defvar fet/home (concat (getenv "HOME") "/") "My home directory.")
