@@ -15,10 +15,23 @@ This is a work in progress... it will never be done!
 ** 0 - Zero, set your variables
 Enter your settings in this code block. These are used on various places in this configuration. I use a MacBook with the hostname =au= or a Linux machine with hostname =box=. After editing these settings you can run this code block ~(C-c C-c)~ to set your settings.
 #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Fet64"
-		user-mail-address "fet64@outlook.com")
-  (defvar macbook-p (equal (system-name) "au"))
-  (defvar linux-p (equal (system-name) "box"))
+  (setq user-full-name "Fet64"                                     ;; My full name
+		user-mail-address "fet64@outlook.com")                     ;; My email-address
+  (defvar macbook-p (equal (system-name) "au")                     "If true, I'm using my Macbook")
+  (defvar linux-p (equal (system-name) "box")                      "If true, I'm using my Linux box")
+  (defvar fet/home (concat (getenv "HOME") "/")                    "User home directory.")
+  (defvar fet/emacs (concat fet/home ".config/emacs/")             "Directory for emacs configuration files")
+  (defvar fet/org (concat fet/home "Org")                          "Directory for org files")
+  (defvar fet/emacs-personal (concat fet/home "emacs-personal")    "Directory for personal emacs/lisp files")
+  (defvar fet/scripts (concat fet/emacs "scripts")                 "Directory for supporting scripts")
+  (defvar fet/snippets (concat fet/emacs "snippets")               "Directory for snippets")
+  (defvar fet/images (concat fet/emacs "images")                   "Directory for images")
+  (defvar fet/backups (concat fet/emacs "backups")                 "Directory for backups")
+  (defvar fet/auto-save-list (concat fet/emacs "auto-save-list")   "Directory for auto-save-list")
+  (defvar fet/text-height nil                                      "My preferred default text height")
+  (defvar fet/doom-modeline-text-height nil                        "My preferred modeline text height")
+  (defvar fet/default-line-spacing 0                               "Baseline line spacing")
+  (setq-default fet/default-line-spacing 0)                        ;; don't know why I do this but it seems to work...
 #+END_SRC
 ** 1 - First, enable shell tools in org-babel
 To be able to copy files below you need to activate shell tools for org-babel. You can do that by running ~(C-c C-c)~ in this code block:
