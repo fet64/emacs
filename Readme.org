@@ -603,7 +603,7 @@ Ref: [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customiz
 #+end_src
 
 * MacOS Configuration and stuff
-TODO This config is for mac os only, fix for linux
+This config is for mac os only, fix for linux
 
 #+CAPTION: Mac keyboard bindings:
 |---------------+--------------------------------------------|
@@ -761,9 +761,11 @@ TODO This config is for mac os only, fix for linux
 	   "d" '(dired :wk "Dired")
 	   "T" '(org-babel-tangle :wk "org-babel-tangle")
 	   "E" '(org-export-dispatch :wk "Export dispatch")
-	   "m" '(magit-status :wk "Magit status")
+	   "M" '(magit-status :wk "Magit status")
 	   "S" '(yas-insert-snippet :wk "Insert yasnippet")
 	   "," '(fet-config-command :wk "Options")
+	   "q" '(keyboard-quit :wk "Exit menu")
+	   "c" '(org-capture :wk "Org capture")
 
 	   )
 
@@ -1151,7 +1153,7 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 #+BEGIN_SRC emacs-lisp
   (defhydra fet-base (:color blue)
 	"base"
-	("x" counsel-M-x "M-x")
+	("SPC" counsel-M-x "M-x")
 	("C-s" save-buffer "Save")
 	("." find-file "Find file")
 	("i" ibuffer "Ibuffer")
@@ -2057,7 +2059,7 @@ Packages from ELPA will be stored in a temporary directory by default.
 #+END_SRC
 * Org Mode
 TODO: fix this section
-** Org Mode Packages
+# ** Org Mode Packages
 [[https://orgmode.org]]
 [[https://github.com/oantolin/orderless]]
 [[https://github.com/alphapapa/org-make-toc]]
@@ -2416,32 +2418,38 @@ TODO: fix this section
   (advice-add 'org-agenda-goto :after #'jib/post-org-goto)
   (advice-add 'org-agenda-switch-to :after #'jib/post-org-goto)
 #+END_SRC
-*** Tags, Todos and priorities
+*** TODO Tags, Todos and priorities
 #+BEGIN_SRC emacs-lisp
-	(setq org-tags-column -1)
-	(setq org-todo-keywords '((type
-							 "TODO(t)" "WAITING(h)" "INPROG-TODO(i)" "WORK(w)"
-							 "STUDY(s)" "SOMEDAY" "READ(r)" "PROJ(p)" "CONTACT(c)"
-							 "|" "DONE(d)" "CANCELLED(C@)")))
+	  (setq org-tags-column -1)
+	  (setq org-todo-keywords '((type
+							   "TODO(t)" "WAITING(h)" "INPROG-TODO(i)" "WORK(w)"
+							   "STUDY(s)" "SOMEDAY" "READ(r)" "PROJ(p)" "CONTACT(c)"
+							   "|" "DONE(d)" "CANCELLED(C@)")))
 
-  (setq org-todo-keyword-faces
-		'(("TODO"  :inherit (region org-todo) :foreground "DarkOrange1"   :weight bold)
-		  ("WORK"  :inherit (org-todo region) :foreground "DarkOrange1"   :weight bold)
-		  ("READ"  :inherit (org-todo region) :foreground "MediumPurple2" :weight bold)
-		  ("PROJ"  :inherit (org-todo region) :foreground "orange3"     :weight bold)
-		  ("STUDY" :inherit (region org-todo) :foreground "plum3"       :weight bold)
-		  ("DONE" . "SeaGreen4")))
+	(setq org-todo-keyword-faces
+		  '(("TODO"  :inherit (region org-todo) :foreground "DarkOrange1"   :weight bold)
+			("WORK"  :inherit (org-todo region) :foreground "DarkOrange1"   :weight bold)
+			("READ"  :inherit (org-todo region) :foreground "MediumPurple2" :weight bold)
+			("PROJ"  :inherit (org-todo region) :foreground "orange3"     :weight bold)
+			("STUDY" :inherit (region org-todo) :foreground "plum3"       :weight bold)
+			("DONE" . "SeaGreen4")))
 
   (setq org-lowest-priority ?F)  ;; Gives us priorities A through F
-(setq org-default-priority ?E) ;; If an item has no priority, it is considered [#E].
+  (setq org-default-priority ?E) ;; If an item has no priority, it is considered [#E].
 
-(setq org-priority-faces
-      '((65 . "red2")
-        (66 . "Gold1")
-        (67 . "Goldenrod2")
-        (68 . "PaleTurquoise3")
-        (69 . "DarkSlateGray4")
-        (70 . "PaleTurquoise4")))
+  (setq org-priority-faces
+		'((65 . "red2")
+		  (66 . "Gold1")
+		  (67 . "Goldenrod2")
+		  (68 . "PaleTurquoise3")
+		  (69 . "DarkSlateGray4")
+		  (70 . "PaleTurquoise4")))
+
+  (setq org-capture-templates
+		'(("t" "Todo" entry (file+headline "~/Org/todo.org" "Tasks")
+		   "* TODO %?\n  %i\n  %a")
+		  ("j" "Journal" entry (file+datetree "~/Org/journal.org")
+		   "* %?\nEntered on %U\n  %i\n  %a")))
 #+END_SRC
 *** Org-babel
 #+BEGIN_SRC emacs-lisp
@@ -2498,6 +2506,8 @@ TODO: fix this section
 *** Org-capture
 #+BEGIN_SRC emacs-lisp
   (setq org-bookmark-names-plist nil)
+  (define-key global-map (kbd "C-c x")
+			  (lambda () (interactive) (org-capture nil "x")))
   (setq org-capture-templates
 		'(
 		  ("n" "CPB Note" entry (file+headline "~/Org/cpb.org" "Refile")
@@ -2602,12 +2612,13 @@ TODO: fix this section
 #+END_SRC
 *** Path
 #+BEGIN_SRC emacs-lisp
-  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org"))
+  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
   (setq org-directory "~/Org"
 		org-agenda-files (mapcar
 						  (lambda (f) (concat (file-name-as-directory org-directory) f))
 						  my-agenda-files)
 		org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
+  (setq org-log-done 'time)
 
 #+END_SRC
 * Misc packages
