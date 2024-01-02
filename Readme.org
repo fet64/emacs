@@ -376,19 +376,19 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
 #+END_SRC
 *** Misc settings
 #+BEGIN_SRC emacs-lisp
-  (delete-selection-mode 1)     ;; You can select text and delete it by typing
-  (electric-indent-mode 1)      ;; Turn off the weird indenting that Emacs does by default
-  (electric-pair-mode -1)       ;; turns on the automatic parens pairing, I don't like it
-
-  (global-auto-revert-mode t)   ;; Automatically show changes if the file has changed
-  (global-display-line-numbers-mode 1)
+  ;; MISC
+  (delete-selection-mode 1)                    ;; You can select text and delete it by typing
+  (electric-indent-mode 1)                     ;; Turn off the weird indenting that Emacs does by default
+  (electric-pair-mode -1)                      ;; turns on the automatic parens pairing, I don't like it
+  (global-auto-revert-mode t)                  ;; Automatically show changes if the file has changed
+  (global-display-line-numbers-mode 1)          
   (setq-default display-line-numbers-width 5)
   (global-visual-line-mode t)   ;; Enable truncated lines
-  (setq org-edit-src-content-indentation 2) ;; Set src block automatic indent to 2 (which is the default)
+  (setq org-edit-src-content-indentation 2)    ;; Set src block automatic indent to 2 (which is the default)
 
   ;; INTERACTION
   (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
-  (setq confirm-kill-emacs 'yes-or-no-p)  ;; confirm to quit
+  (setq confirm-kill-emacs 'yes-or-no-p)       ;; confirm to quit
   (setq initial-major-mode 'org-mode
 	initial-scratch-message ""
 	initial-buffer-choice t)
@@ -416,7 +416,7 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
   (setq mac-redisplay-dont-reset-vscroll t
 		mac-mouse-wheel-smooth-scroll nil)
 
-  (setq what-cursor-show-names t) ;; improves C-x =
+  (setq what-cursor-show-names t)              ;; improves C-x =
 
   ;; DIRED
   (setq dired-kill-when-opening-new-dired-buffer t)
@@ -440,6 +440,7 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
 ** Backups, recent files, history and trash
 By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
 *** Backups
+TODO should use path set in variable 
 #+begin_src emacs-lisp 
   ;; Backup
   (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
@@ -449,6 +450,7 @@ By default, Emacs saves backup files in the current directory. These are files e
   (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)))
 #+END_SRC
 *** History
+TODO should use path set in variable
 #+BEGIN_SRC emacs-lisp
   ;; History
   (setq savehist-file "~/.config/emacs/savehist")
@@ -462,6 +464,7 @@ By default, Emacs saves backup files in the current directory. These are files e
 		  regexp-search-ring))
 #+END_SRC
 *** Trash
+TODO check if darwin, otherwise use different path
 #+BEGIN_SRC emacs-lisp
   ;; Trash
   (setq trash-directory "~/.Trash")
