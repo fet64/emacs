@@ -194,7 +194,8 @@ Add search path to ~early-init.el~.
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
 #+END_SRC
 * Files, registers and variables
-** My variables
+** Variables and directory paths used in this config
+Setting variables to be used in this configuration setup.
 #+BEGIN_SRC emacs-lisp
   ;;; fet-variables
   ;; File and directory locations
