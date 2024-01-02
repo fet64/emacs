@@ -84,6 +84,7 @@ The rest of this org-file contains my configuration, with the exception of all o
 
 * Start
 ** Early-init.el
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][Early Init file]]
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   ;;; early-init.el --- Fet64's early-init.el file
   ;;; Commentary: auto generated (tangled) from Readme.org
@@ -367,7 +368,7 @@ TODO fix this
 * General configuration
 ** Sane defaults
 *** Disable toolbar and scrollbar, keep menubar
-- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][Early Init file]]
+Generaly you should not put things in ~early-init.el~ that belong in ~init.el~. But I *like* this.
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
