@@ -368,7 +368,7 @@ TODO fix this
 * General configuration
 ** Sane defaults
 *** Disable toolbar and scrollbar, keep menubar
-Generaly you should not put things in ~early-init.el~ that belong in ~init.el~. But I *like* this.
+Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.el~. But I *like* this.
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
