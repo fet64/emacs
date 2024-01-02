@@ -563,7 +563,9 @@ This config is for mac os only, fix for linux
 #+end_src
 * Keyboard
 ** Which-key
-[[https://github.com/justbur/emacs-which-key]]
+=which-key= is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+[[./images/which-key.png]]
+- [[https://github.com/justbur/emacs-which-key]]
 
 #+begin_src emacs-lisp 
   (use-package which-key
