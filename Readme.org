@@ -582,10 +582,11 @@ This config is for mac os only, fix for linux
 #+end_src
 
 ** Evil mode
-[[https://github.com/emacs-evil/evil]]
-[[https://github.com/emacs-evil/evil-collection]]
-[[https://github.com/Somelauw/evil-org-mode]]
-[[https://github.com/emacs-evil/evil-surround]]
+- [[https://github.com/emacs-evil/evil]]
+- [[https://github.com/emacs-evil/evil-collection]]
+- [[https://github.com/Somelauw/evil-org-mode]]
+- [[https://github.com/emacs-evil/evil-surround]]
+
 #+begin_src emacs-lisp 
   (use-package evil
 	 :init
