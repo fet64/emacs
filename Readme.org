@@ -162,7 +162,7 @@ The rest of this org-file contains my configuration, with the exception of all o
 #+END_SRC
 ** Garbage Collections and Collector
 GCMH - the Garbage Collector Magic Hack
-[[https://github.com/emacsmirror/gcmh]]
+- [[https://github.com/emacsmirror/gcmh]]
 Enforce a sneaky Garbage Collection strategy to minimize GC interference with user activity. During normal use a high GC threshold is set. When idling GC is triggered and a low threshold is set. For more detailed explanation, read [[http://akrl.sdf.org/]].
 #+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
   (use-package gcmh
