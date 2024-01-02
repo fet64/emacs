@@ -133,8 +133,8 @@ The rest of this org-file contains my configuration, with the exception of all o
 - [[https://github.com/quelpa/quelpa]]
 - [[https://github.com/quelpa/quelpa-use-package]]
 - [[https://github.com/emacscollective/auto-compile]]
+- [[https://github.com/jwiegley/emacs-async]]
 *** Code
-[[https://github.com/jwiegley/emacs-async]]
 #+BEGIN_SRC emacs-lisp
   (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
