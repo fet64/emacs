@@ -3,148 +3,14 @@
 #+AUTHOR: Fet64
 #+email: fet64@outlook.com
 #+language: en
-#+options: ':t toc:t author:t email:t num:nil 
+#+options: ':t toc:nil author:t email:t num:nil 
 #+STARTUP: overview
 #+PROPERTY: header-args+ :tangle "~/.config/emacs/init.el"
 #+PROPERTY: header-args+ :mkdirp yes
 #+SETUPFILE: "~/.config/emacs/setupfiles_html/readtheorg.setup"
 :END:
-
 This is a work in progress... it will never be done!
-* TOC
-:PROPERTIES:
-:TOC:      :include all :depth 4
-:END:
-:CONTENTS:
-- [[#toc][TOC]]
-- [[#do-this-first---four-4-easy-steps][Do this first - Four (4) easy steps]]
-  - [[#1---first-enable-shell-tools-in-org-babel][1 - First, enable shell tools in org-babel]]
-  - [[#2---second-copy-supporting-files][2 - Second, copy supporting files]]
-  - [[#3---third-tangle-this-org-file-into-config-files][3 - Third, tangle this org-file into config files]]
-  - [[#4---four-restart-emacs-to-load-the-new-configuration][4 - Four, Restart Emacs to load the new configuration]]
-- [[#start][Start]]
-  - [[#early-initel][Early-init.el]]
-  - [[#header-in-initel][Header in init.el]]
-  - [[#package-management][Package Management]]
-  - [[#garbage-collections-and-collector][Garbage Collections and Collector]]
-  - [[#load-system-path-variables][Load system path variables]]
-- [[#files-registers-and-variables][Files, registers and variables]]
-  - [[#my-variables][My variables]]
-  - [[#load-local-scripts][Load local scripts]]
-  - [[#registers][Registers]]
-- [[#scripts][Scripts]]
-- [[#general-configuration][General configuration]]
-  - [[#sane-defaults][Sane defaults]]
-    - [[#disable-toolbar-and-scrollbar-keep-menubar][Disable toolbar and scrollbar, keep menubar]]
-    - [[#misc-settings][Misc settings]]
-  - [[#backups-recent-files-history-and-trash][Backups, recent files, history and trash]]
-    - [[#backups][Backups]]
-    - [[#history][History]]
-    - [[#trash][Trash]]
-    - [[#recent-files][Recent files]]
-  - [[#saving-customizations][Saving customizations]]
-- [[#macos-configuration-and-stuff][MacOS Configuration and stuff]]
-- [[#keyboard][Keyboard]]
-  - [[#which-key][Which-key]]
-  - [[#evil-mode][Evil mode]]
-  - [[#general][General]]
-  - [[#hydras][Hydras]]
-    - [[#hydra-scripts][Hydra scripts]]
-    - [[#hydra-base][Hydra base]]
-    - [[#hydra-fet][Hydra fet]]
-    - [[#hydra-help-menu][Hydra help-menu]]
-    - [[#hydra-fet-files][Hydra fet-files]]
-    - [[#hydra-fet-buffers][Hydra fet-buffers]]
-    - [[#hydra-fet-lisp][Hydra fet-lisp]]
-- [[#interaction-and-editing-files][Interaction and editing files]]
-  - [[#company][Company]]
-  - [[#corfu][Corfu]]
-  - [[#counsel][Counsel]]
-  - [[#ivy][Ivy]]
-  - [[#vertico][Vertico]]
-  - [[#prescient][Prescient]]
-  - [[#smartparens][Smartparens]]
-  - [[#rainbow-mode][Rainbow mode]]
-  - [[#search-and-replace][Search and replace]]
-  - [[#clipboard][Clipboard]]
-  - [[#avy][Avy]]
-  - [[#undo-and-redo][Undo and redo]]
-  - [[#neotree][Neotree]]
-  - [[#sudo-edit][Sudo Edit]]
-  - [[#super-save][Super Save]]
-  - [[#saveplace][Saveplace]]
-  - [[#projectile][Projectile]]
-  - [[#yasnippet][Yasnippet]]
-- [[#visuals][Visuals]]
-  - [[#all-the-icons][All the icons]]
-  - [[#fonts][Fonts]]
-    - [[#font-configuration][Font configuration]]
-    - [[#mixed-pitch][Mixed pitch]]
-  - [[#dashboard][Dashboard]]
-  - [[#themes][Themes]]
-  - [[#modeline][Modeline]]
-  - [[#frame][Frame]]
-  - [[#line-numbers-fringe-and-hl-line][Line numbers, fringe and hl-line]]
-  - [[#highlight-todo][Highlight todo]]
-  - [[#nerd-icons][Nerd icons]]
-  - [[#orderless][Orderless]]
-  - [[#typography][Typography]]
-  - [[#transient-stuff][Transient stuff]]
-- [[#work-in-progress][Work in progress]]
-  - [[#embark][Embark]]
-- [[#applications][Applications]]
-  - [[#elfeed][ELFEED]]
-  - [[#eshell][Eshell]]
-  - [[#gptel][GPTel]]
-  - [[#magit][Magit]]
-  - [[#thesaurus][Thesaurus]]
-- [[#misc-packages][Misc packages]]
-  - [[#tldr][TLDR]]
-  - [[#try][Try]]
-- [[#org-mode][Org Mode]]
-  - [[#org-mode-packages][Org Mode Packages]]
-    - [[#org-super-agenda][Org-super-agenda]]
-    - [[#old-org-stuff---maybee-remove][old org stuff - maybee remove]]
-    - [[#org-superstar][Org-superstar]]
-    - [[#org-modern][Org-modern]]
-    - [[#evil-org][Evil Org]]
-    - [[#org-gcal][Org-gcal]]
-    - [[#org-appear][Org-appear]]
-    - [[#org-reveal][Org-reveal]]
-    - [[#org-modules][Org-modules]]
-    - [[#org-ql][Org-ql]]
-    - [[#org-preview-html][Org-preview-html]]
-    - [[#org-fragtog][Org-fragtog]]
-    - [[#org-tree-slide][Org-tree-slide]]
-    - [[#org-download][Org-download]]
-    - [[#valign][Valign]]
-  - [[#orgmode-keybindings][Orgmode keybindings]]
-  - [[#orgmode-startup-setup-function][Orgmode startup setup function]]
-  - [[#org-mode-config][Org Mode Config]]
-    - [[#preamble][Preamble]]
-    - [[#visuals][Visuals]]
-    - [[#interaction][Interaction]]
-    - [[#tags-todos-and-priorities][Tags, Todos and priorities]]
-    - [[#org-babel][Org-babel]]
-    - [[#org-habits][Org-habits]]
-    - [[#org-agenda][Org-agenda]]
-    - [[#org-capture][Org-capture]]
-    - [[#org-exporting][Org-exporting]]
-      - [[#latex][LaTeX]]
-    - [[#misc-org-mode][Misc Org Mode]]
-    - [[#path][Path]]
-- [[#misc-packages][Misc packages]]
-  - [[#misc][Misc]]
-  - [[#popperel][Popper.el]]
-- [[#latex][LaTeX]]
-- [[#pdf][PDF]]
-- [[#programming-related][Programming-related]]
-  - [[#general][General]]
-  - [[#python][Python]]
-  - [[#htmlcssjs][HTML/CSS/JS]]
-  - [[#emacs-lisp-mode][Emacs-lisp-mode]]
-- [[#footers-in-initel-and-early-initel][Footers in init.el and early-init.el]]
-:END:
+
 * Do this first - Four (4) easy steps
 ** 1 - First, enable shell tools in org-babel
 To be able to copy files below you need to activate shell tools for org-babel. You can do that by running (C-c C-c) in this code block:
@@ -259,11 +125,15 @@ The rest of this org-file contains my configuration, with the exception of all o
   ;;; Code:
 #+END_SRC
 ** Package Management
+*** MELPA
+[[./images/melpa.png]]
 [[https://melpa.org/#/]]
+*** Help Libraries
 [[https://github.com/jwiegley/use-package]]
 [[https://github.com/quelpa/quelpa]]
 [[https://github.com/quelpa/quelpa-use-package]]
 [[https://github.com/emacscollective/auto-compile]]
+*** Code
 [[https://github.com/jwiegley/emacs-async]]
 #+BEGIN_SRC emacs-lisp
   (setq warning-suppress-log-types '((package reinitialization)))
@@ -2031,7 +1901,7 @@ A very good writeup to get you started using Magit: [[https://www.masteringemacs
 * Misc packages
 [[https://github.com/iqbalansari/restart-emacs]]
 [[https://github.com/emacsmirror/diminish]]
-[[8https://github.com/kaz-yos/reveal-in-osx-finder]]
+[[https://github.com/kaz-yos/reveal-in-osx-finder]]
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs :defer t)
   (use-package diminish)
@@ -2089,6 +1959,7 @@ TODO: fix this section
 
   (use-package org-bullets)
   (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
+  ;;(add-hook 'before-save-hook #'org-make-toc-mode)
 
   ;(require 'org-make-toc)
   (use-package org-make-toc)
@@ -2103,7 +1974,7 @@ TODO: fix this section
 	  'org-export-filter-timestamp-remove-brackets)
 	)
   (setq org-return-follows-link t)
-  
+
   ;; (use-package org-super-agenda
   ;;   :after org
   ;;   :config
