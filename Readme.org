@@ -654,7 +654,8 @@ I don't want saved customizations in my init.el file.
 :CUSTOM_ID: KeyboardHelpersGeneralkeybindings-t0ubeqe0d2k0
 :END:
 - [[https://github.com/noctuid/general.el]]
-
+[[./images/general.png
+]]
 #+begin_src emacs-lisp
 	   (use-package general
 		 :config
