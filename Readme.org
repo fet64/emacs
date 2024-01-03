@@ -246,37 +246,37 @@ Enforce a sneaky Garbage Collection strategy to minimize GC interference with us
 :CUSTOM_ID: KeyboardSettings-2opaeqe0d2k0
 :END:
 #+BEGIN_SRC emacs-lisp
-(setq mac-option-modifier 'meta
-		mac-command-modifier 'super
-		mac-right-option-modifier 'none
-		)
+  (setq mac-option-modifier 'meta
+		  mac-command-modifier 'super
+		  mac-right-option-modifier 'none
+		  )
 
-(global-set-key (kbd "s-c") 'kill-ring-save)
-(global-set-key (kbd "s-v") 'yank)
-(global-set-key (kbd "s-x") 'kill-region)
-(global-set-key (kbd "s-a") 'mark-whole-buffer)
-(global-set-key (kbd "s-z") 'undo)
-(global-set-key (kbd "s-f") 'isearch-forward)
-(global-set-key (kbd "s-g") 'isearch-repeat-forward)
-(global-set-key (kbd "s-o") 'mac-open-file)
-(global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "s-S") 'mac-save-file-as)
-;;(global-set-key (kbd "s-p") 'mac-preview)
-(global-set-key (kbd "s-w") 'kill-buffer)
-(global-set-key (kbd "s-m") 'iconify-frame)
-(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-(global-set-key (kbd "s-.") 'keyboard-quit)
-(global-set-key (kbd "s-l") 'goto-line)
-(global-set-key (kbd "s-k") 'kill-buffer)
-(global-set-key (kbd "s-<up>") 'beginning-of-buffer)
-(global-set-key (kbd "s-<down>") 'end-of-buffer)
-(global-set-key (kbd "s-<left>") 'beginning-of-line)
-(global-set-key (kbd "s-<right>") 'end-of-line)
-(global-set-key [(meta down)] 'forward-paragraph)
-(global-set-key [(meta up)] 'backward-paragraph)
+  (global-set-key (kbd "s-c") 'kill-ring-save)
+  (global-set-key (kbd "s-v") 'yank)
+  (global-set-key (kbd "s-x") 'kill-region)
+  (global-set-key (kbd "s-a") 'mark-whole-buffer)
+  (global-set-key (kbd "s-z") 'undo)
+  (global-set-key (kbd "s-f") 'isearch-forward)
+  (global-set-key (kbd "s-g") 'isearch-repeat-forward)
+  (global-set-key (kbd "s-o") 'mac-open-file)
+  (global-set-key (kbd "s-s") 'save-buffer)
+  (global-set-key (kbd "s-S") 'mac-save-file-as)
+  ;;(global-set-key (kbd "s-p") 'mac-preview)
+  (global-set-key (kbd "s-w") 'kill-buffer)
+  (global-set-key (kbd "s-m") 'iconify-frame)
+  (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
+  (global-set-key (kbd "s-.") 'keyboard-quit)
+  (global-set-key (kbd "s-l") 'goto-line)
+  (global-set-key (kbd "s-k") 'kill-buffer)
+  (global-set-key (kbd "s-<up>") 'beginning-of-buffer)
+  (global-set-key (kbd "s-<down>") 'end-of-buffer)
+  (global-set-key (kbd "s-<left>") 'beginning-of-line)
+  (global-set-key (kbd "s-<right>") 'end-of-line)
+  (global-set-key [(meta down)] 'forward-paragraph)
+  (global-set-key [(meta up)] 'backward-paragraph)
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
+  ;; (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  (global-set-key [escape] 'keyboard-escape-quit)
 #+END_SRC
 
 #+RESULTS:
@@ -578,17 +578,21 @@ I don't want saved customizations in my init.el file.
 [[./images/which-key.png]]
 - [[https://github.com/justbur/emacs-which-key]]
 #+begin_src emacs-lisp
-   (use-package which-key
-	:diminish which-key-mode
-	:init
-	(which-key-mode)
-	(which-key-setup-minibuffer)
-	:config
-	(setq which-key-idle-delay 0.3
-		  which-key-prefix-prefix " → "
-		  which-key-sort-order 'which-key-key-order-alpha
-		  which-key-min-display-lines 10
-		  which-key-max-display-columns nil))
+  (use-package which-key
+   :diminish which-key-mode
+   :init
+   (which-key-mode)
+   (which-key-setup-minibuffer)
+   :config
+   (setq which-key-idle-delay 0.3
+		 which-key-sort-order 'which-key-prefix-then-key-order
+		 which-key-min-display-lines 10
+		 which-key-max-display-columns nil
+		 which-key-allow-imprecise-window-fit nil
+		 which-key-sort-uppercase-first nil
+		 which-key-side-window-slot -10
+		 which-key-side-window-max-height 0.25
+		 ))
 
 #+end_src
 
@@ -1348,20 +1352,20 @@ I don't want saved customizations in my init.el file.
 :CUSTOM_ID: VisualsFonts-8wldeqe0d2k0
 :END:
 #+begin_src emacs-lisp
-	  (setq text-scale-mode-step 1)
-	(setq fet-default-line-spacing 1)
-	(setq-default line-spacing fet-default-line-spacing)
-	(setq fet-text-height 140)
-	(set-frame-font "RobotoMono Nerd Font:size=14" nil t)
+  (setq text-scale-mode-step 1)
+  (setq fet-default-line-spacing 1)
+  (setq-default line-spacing fet-default-line-spacing)
+  (setq fet-text-height 140)
+  (set-frame-font "RobotoMono Nerd Font:size=14" nil t)
 
-	 (use-package mixed-pitch
-	  :defer t
-	  :config
-	  (setq mixed-pitch-set-height nil)
-	  (dolist (face '(org-date org-priority org-tag org-special-keyword))
-		(add-to-list 'mixed-pitch-fixed-pitch-faces face)))
+  (use-package mixed-pitch
+	:defer t
+	:config
+	(setq mixed-pitch-set-height nil)
+	(dolist (face '(org-date org-priority org-tag org-special-keyword))
+	  (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
 
-	(set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
+  (set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
   (setq-default fill-column 90)
   (use-package fontawesome)
 
@@ -1374,6 +1378,8 @@ I don't want saved customizations in my init.el file.
 	(face-spec-reset-face face)
 	(set-face-foreground face (face-attribute 'default :background)))
   (set-face-background 'fringe (face-attribute 'default :background))
+
+  (setq-default line-spacing 0.12)
 #+end_src
 
 #+RESULTS:
