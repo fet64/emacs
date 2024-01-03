@@ -9,14 +9,210 @@
 #+PROPERTY: header-args+ :mkdirp yes
 #+SETUPFILE: "~/.config/emacs/setupfiles_html/readtheorg.setup"
 :END:
+
 This is a work in progress... it will never be done!
 
-* Do this first - Five (5) easy steps
-** 0 - Zero, set your variables
-Enter your settings in this code block. These are used on various places in this configuration. I use a MacBook with the hostname =au= or a Linux machine with hostname =box=. After editing these settings you can run this code block ~(C-c C-c)~ to set your settings.
+* To use this config
+:PROPERTIES:
+:CUSTOM_ID: Tousethisconfig-4o1aeqe0d2k0
+:END:
+** Edit variables
+:PROPERTIES:
+:CUSTOM_ID: TousethisconfigEditvariables-p85aeqe0d2k0
+:END:
+In many places in this config I reference =~/.config/emacs/...=. This is the path where I save my Emacs config. If you want to save it at another place you have to edit this. Check the =Custom Variables= section below for more variables.
+** Enable shell tools in org-babael
+:PROPERTIES:
+:CUSTOM_ID: TousethisconfigEnableshelltoolsinorgbabael-n27aeqe0d2k0
+:END:
+To be able to copy files below you need to activate shell tools for org-babel. you can do that by running =(C-c C-c)= in this code block:
+#+begin_src emacs-lisp :tangle no
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+(message "Very good, you have enabled sehll use in org-babel")
+#+end_src
+
+#+RESULTS:
+: Very good, you have enabled sehll use in org-babel
+
+** Copy supporing ifles
+:PROPERTIES:
+:CUSTOM_ID: TousethisconfigCopysupporingifles-x0aaeqe0d2k0
+:END:
+You need to copy all supporting code from this git to where you have your emacs config, usually =~/.config/emacs/=.
+
+You can do that by running =(C-c C-c)= in this code block:
+#+begin_src sh :tangle no
+  
+cp -rvp snippets ~/.config/emacs/
+cp -rvp scripts ~/.config/emacs/
+cp -rvp emacs-custom.el ~/.config/emacs/
+cp -rvp images ~/.config/emacs/
+cp -rvp setupfiles_html ~/.config/emacs/
+cp -rvp setupfiles_latex ~/.config/emacs/
+cp -v leuven_theme.css ~/.config/emacs/
+
+#+end_src
+
+#+RESULTS:
+| snippets                              | -> | /Users/au/.config/emacs/snippets                              |
+| snippets/org-mode                     | -> | /Users/au/.config/emacs/snippets/org-mode                     |
+| snippets/org-mode/org_src_block       | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block       |
+| snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
+| scripts                               | -> | /Users/au/.config/emacs/scripts                               |
+| scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
+| emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
+| images                                | -> | /Users/au/.config/emacs/images                                |
+| images/melpa.png                      | -> | /Users/au/.config/emacs/images/melpa.png                      |
+| images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
+| images/which-key.png                  | -> | /Users/au/.config/emacs/images/which-key.png                  |
+| setupfiles_html                       | -> | /Users/au/.config/emacs/setupfiles_html                       |
+| setupfiles_html/readtheorg.setup      | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup      |
+| setupfiles_html/org.min_css.setup     | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup     |
+| setupfiles_html/bigblow.setup         | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup         |
+| setupfiles_html/latex_css.setup       | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup       |
+| setupfiles_latex                      | -> | /Users/au/.config/emacs/setupfiles_latex                      |
+| setupfiles_latex/fet-beamer.setup     | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup     |
+| leuven_theme.css                      | -> | /Users/au/.config/emacs/leuven_theme.css                      |
+
+** Tange this org-file into early-init.el and init.el
+:PROPERTIES:
+:CUSTOM_ID: TousethisconfigTangethisorgfileintoearlyinitelandinitel-yscaeqe0d2k0
+:END:
+To create =early-init.el= and =init.el= you need to tangle this org-file. You can do that by running =(C-c C-c)= in this code block:
+#+begin_src emacs-lisp :tangle no
+  (org-babel-tangle)
+
+#+end_src
+
+#+RESULTS:
+| ~/.config/emacs/early-init.el | ~/.config/emacs/init.el |
+
+** Restart Emacs to load the new configuration
+:PROPERTIES:
+:CUSTOM_ID: TousethisconfigRestartEmacstoloadthenewconfiguration-vzeaeqe0d2k0
+:END:
+You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config. You can do that by running =(C-c C-c)= in this code block:
+#+begin_src emacs-lisp :tangle no
+  (restart-emacs)
+
+#+end_src
+If you run into any errors, try starting from terminal:
+
+#+begin_src sh :tangle no
+emacs --debug-init
+#+end_src
+* Header
+:PROPERTIES:
+:CUSTOM_ID: Header-98haeqe0d2k0
+:END:
+#+BEGIN_SRC emacs-lisp
+  ;; -*- lexical-binding: t; -*-
+  ;;;
+  ;;; init.el --- part of Fet64's Emacs Configuration
+  ;;; Commentary: auto generated (tangled) from Readme.org available at https://github.com/fet64/emacs
+  ;;; 
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
+  ;; -*- lexical-binding: t; -*-
+  ;;;
+  ;;; early-init.el --- part of Fet64's Emacs Configuration
+  ;;; Commentary: auto generated (tangled) from Readme.org available at https://github.com/fet64/emacs
+  ;;; 
+#+END_SRC
+
+* Package Manager
+:PROPERTIES:
+:CUSTOM_ID: PackageManager-djjaeqe0d2k0
+:END:
+[[./images/melpa.png]]
+#+BEGIN_SRC emacs-lisp
+  (setq warning-suppress-log-types '((package reinitialization)))
+  (package-initialize)
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+
+  (unless (assoc-default "nongnu" package-archives)
+    (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (setq use-package-verbose t)
+  (setq use-package-always-ensure t)
+  (require 'use-package)
+  (use-package quelpa)
+  (use-package quelpa-use-package)
+  (quelpa-use-package-activate-advice)
+  (use-package auto-compile
+    :config (auto-compile-on-load-mode))
+  (setq load-prefer-newer t)
+
+  (use-package async
+    :config
+    (setq async-bytecomp-package-mode 1))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+* Early-init.el
+:PROPERTIES:
+:CUSTOM_ID: Earlyinitel-b7maeqe0d2k0
+:END:
+GCMH - the Garbage Collector Magic Hack
+
+- [[https://github.com/emacsmirror/gcmh]]
+
+Enforce a sneaky Garbage Collection strategy to minimize GC interference with user activity. During normal use a high GC threshold is set. When idling GC is triggered and a low threshold is set. For more detailed explanation, read [[http://akrl.sdf.org/]].
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
+  (setq package-enable-at-startup nil)
+
+  ;; Garbage collections
+  (setq gc-cons-percentage 0.6)
+
+  ;; Compile warnings
+  (setq warning-minimum-level :emergency)
+  (setq native-comp-async-report-warnings-errors 'silent)
+  (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
+
+  ;; Misc optimizations
+  (setq idle-update-delay 1.0)
+  (setq-default bidi-display-reordering 'left-to-right
+				  bidi-paragraph-direction 'left-to-right)
+
+  (setq-default cursor-in-non-selected-windows nil)
+  (setq highlight-nonselected-windows nil)
+  (setq fast-but-imprecise-scrolling t)
+  (setq inhibit-compacting-font-caches t)
+
+  ;; This makes the Aqua titlebar color the same as Emacs
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  ;; Remove icon in Aqua titlebar
+  (setq ns-use-proxy-icon nil)
+  ;; Remove fram title from Aqua titlebar
+  (setq frame-title-format nil)
+
+  (exec-path)
+  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
+
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode 1)             ;; I like having access to the menu-bar
+
+#+end_src
+
+#+RESULTS:
+: t
+
+* Custom Variables
+:PROPERTIES:
+:CUSTOM_ID: CustomVariables-5xig0se0d2k0
+:END:
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Fet64"                                     ;; My full name
-		user-mail-address "fet64@outlook.com")                     ;; My email-address
+		  user-mail-address "fet64@outlook.com")                     ;; My email-address
   (defvar macbook-p (equal (system-name) "au")                     "If true, I'm using my Macbook")
   (defvar linux-p (equal (system-name) "box")                      "If true, I'm using my Linux box")
   (defvar fet/home (concat (getenv "HOME") "/")                    "User home directory.")
@@ -32,246 +228,89 @@ Enter your settings in this code block. These are used on various places in this
   (defvar fet/doom-modeline-text-height nil                        "My preferred modeline text height")
   (defvar fet/default-line-spacing 0                               "Baseline line spacing")
   (setq-default fet/default-line-spacing 0)                        ;; don't know why I do this but it seems to work...
-#+END_SRC
-** 1 - First, enable shell tools in org-babel
-To be able to copy files below you need to activate shell tools for org-babel. You can do that by running ~(C-c C-c)~ in this code block:
-#+begin_src emacs-lisp  
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)))
-  (message "Very good, you have enabled sehll use in org-babel")
+  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
+  (setq org-directory "~/Org"
+		  org-agenda-files (mapcar
+							(lambda (f) (concat (file-name-as-directory org-directory) f))
+							my-agenda-files)
+		  org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
+  (setq org-log-done 'time)
+
 #+END_SRC
 
 #+RESULTS:
-: Very good, you have enabled sehll use in org-babel
+: time
 
-** 2 - Second, copy supporting files
-You need to copy all supporting code from this git
-to where you have your emacs config, usually =~/.config/emacs/=.
-
-You can do that by running ~(C-c C-c)~ in this code block:
-#+begin_src sh :tangle no
-
-  cp -rvp snippets ~/.config/emacs/
-  cp -rvp scripts ~/.config/emacs/
-  cp -rvp emacs-custom.el ~/.config/emacs/
-  cp -rvp images ~/.config/emacs/
-  cp -rvp setupfiles_html ~/.config/emacs/
-  cp -rvp setupfiles_latex ~/.config/emacs/
-  cp -v leuven_theme.css ~/.config/emacs/
-#+end_src
-
-#+RESULTS:
-| snippets                           | -> | /Users/au/.config/emacs/snippets                           |
-| snippets/org-mode                  | -> | /Users/au/.config/emacs/snippets/org-mode                  |
-| snippets/org-mode/org_src_block      | -> | /Users/au/.config/emacs/snippets/org-mode/org_src_block      |
-| snippets/org-mode/org_elisp_src_block | -> | /Users/au/.config/emacs/snippets/org-mode/org_elisp_src_block |
-| scripts                            | -> | /Users/au/.config/emacs/scripts                            |
-| scripts/buffer-move.el             | -> | /Users/au/.config/emacs/scripts/buffer-move.el             |
-| emacs-custom.el                    | -> | /Users/au/.config/emacs/emacs-custom.el                    |
-| images                             | -> | /Users/au/.config/emacs/images                             |
-| images/melpa.png                   | -> | /Users/au/.config/emacs/images/melpa.png                   |
-| images/emacs.png                   | -> | /Users/au/.config/emacs/images/emacs.png                   |
-| images/which-key.png               | -> | /Users/au/.config/emacs/images/which-key.png               |
-| setupfiles_html                     | -> | /Users/au/.config/emacs/setupfiles_html                     |
-| setupfiles_html/readtheorg.setup    | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup    |
-| setupfiles_html/org.min_css.setup    | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup    |
-| setupfiles_html/bigblow.setup       | -> | /Users/au/.config/emacs/setupfiles_html/bigblow.setup       |
-| setupfiles_html/latex_css.setup      | -> | /Users/au/.config/emacs/setupfiles_html/latex_css.setup      |
-| setupfiles_latex                    | -> | /Users/au/.config/emacs/setupfiles_latex                    |
-| setupfiles_latex/fet-beamer.setup   | -> | /Users/au/.config/emacs/setupfiles_latex/fet-beamer.setup   |
-| leuven_theme.css                    | -> | /Users/au/.config/emacs/leuven_theme.css                    |
-
-** 3 - Third, tangle this org-file into config files
-To create ~early-init.el~ and ~init.el~ you need to tangle this org-file. You can do that by running ~(C-c C-c)~ in this code block:
-#+BEGIN_SRC emacs-lisp :tangle no
-  (org-babel-tangle)
-#+end_src
-
-#+RESULTS:
-| ~/.config/emacs/early-init.el | ~/.config/emacs/init.el |
-
-** 4 - Four, Restart Emacs to load the new configuration
-You can now restart Emacs. It will take some time to download all the packages and compile them. You may also need to accept that the theme can run elisp code. When done, restart again and your up and running this config. You can do that by running ~(C-c C-c)~ in this code block:
-
-#+BEGIN_SRC emacs-lisp :tangle no 
-  (restart-emacs)
-#+END_SRC
-
-If you run into any errors, try starting from terminal:
-#+BEGIN_SRC sh :tangle no 
-  emacs --debug-init
-#+END_SRC
-
-The rest of this org-file contains my configuration, with the exception of all of the supporting files...
-
-* Start
-** Early-init.el
-- [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][Early Init file]]
-
-#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
-  ;;; early-init.el --- Fet64's early-init.el file
-  ;;; Commentary: auto generated (tangled) from Readme.org
-  ;;; Code:
-
-  (setq package-enable-at-startup nil)
-
-  ;; Garbage collections
-  (setq gc-cons-percentage 0.6)
-
-  ;; Compile warnings
-  (setq warning-minimum-level :emergency)
-  (setq native-comp-async-report-warnings-errors 'silent)
-  (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
-
-  ;; Misc optimizations
-  (setq idle-update-delay 1.0)
-  (setq-default bidi-display-reordering 'left-to-right
-				bidi-paragraph-direction 'left-to-right)
-
-  (setq-default cursor-in-non-selected-windows nil)
-  (setq highlight-nonselected-windows nil)
-  (setq fast-but-imprecise-scrolling t)
-  (setq inhibit-compacting-font-caches t)
-
-  ;; This makes the Aqua titlebar color the same as Emacs
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  ;; Remove icon in Aqua titlebar
-  (setq ns-use-proxy-icon nil)
-  ;; Remove fram title from Aqua titlebar
-  (setq frame-title-format nil)
-
-#+end_src
-
-** Header in init.el
+* Keyboard Settings
+:PROPERTIES:
+:CUSTOM_ID: KeyboardSettings-2opaeqe0d2k0
+:END:
 #+BEGIN_SRC emacs-lisp
-  ;;; init.el --- Fet64's init.el
-  ;;; Commentary: auto generated (tangled) from Readme.org
-  ;;; Code:
+(setq mac-option-modifier 'meta
+		mac-command-modifier 'super
+		mac-right-option-modifier 'none
+		)
+
+(global-set-key (kbd "s-c") 'kill-ring-save)
+(global-set-key (kbd "s-v") 'yank)
+(global-set-key (kbd "s-x") 'kill-region)
+(global-set-key (kbd "s-a") 'mark-whole-buffer)
+(global-set-key (kbd "s-z") 'undo)
+(global-set-key (kbd "s-f") 'isearch-forward)
+(global-set-key (kbd "s-g") 'isearch-repeat-forward)
+(global-set-key (kbd "s-o") 'mac-open-file)
+(global-set-key (kbd "s-s") 'save-buffer)
+(global-set-key (kbd "s-S") 'mac-save-file-as)
+;;(global-set-key (kbd "s-p") 'mac-preview)
+(global-set-key (kbd "s-w") 'kill-buffer)
+(global-set-key (kbd "s-m") 'iconify-frame)
+(global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
+(global-set-key (kbd "s-.") 'keyboard-quit)
+(global-set-key (kbd "s-l") 'goto-line)
+(global-set-key (kbd "s-k") 'kill-buffer)
+(global-set-key (kbd "s-<up>") 'beginning-of-buffer)
+(global-set-key (kbd "s-<down>") 'end-of-buffer)
+(global-set-key (kbd "s-<left>") 'beginning-of-line)
+(global-set-key (kbd "s-<right>") 'end-of-line)
+(global-set-key [(meta down)] 'forward-paragraph)
+(global-set-key [(meta up)] 'backward-paragraph)
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
 #+END_SRC
-** Package Management
-*** MELPA
-[[./images/melpa.png]]
-- [[https://melpa.org/#/]]
-*** Help Libraries
-- [[https://github.com/jwiegley/use-package]]
-- [[https://github.com/quelpa/quelpa]]
-- [[https://github.com/quelpa/quelpa-use-package]]
-- [[https://github.com/emacscollective/auto-compile]]
-- [[https://github.com/jwiegley/emacs-async]]
-*** Code
-#+BEGIN_SRC emacs-lisp
-  (setq warning-suppress-log-types '((package reinitialization)))
-  (package-initialize)
-  (unless (assoc-default "melpa" package-archives)
-	  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
-	(unless (assoc-default "nongnu" package-archives)
-	  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+#+RESULTS:
+: keyboard-escape-quit
 
-	(unless (package-installed-p 'use-package)
-	  (package-install 'use-package))
-	(setq use-package-verbose t)
-	(setq use-package-always-ensure t)
-	(require 'use-package)
-	(use-package quelpa)
-	(use-package quelpa-use-package)
-	(quelpa-use-package-activate-advice)
-	(use-package auto-compile
-	  :config (auto-compile-on-load-mode))
-	(setq load-prefer-newer t)
-
-  (use-package async
-	:config
-	(setq async-bytecomp-package-mode 1))
-#+END_SRC
-** Garbage Collections and Collector
-GCMH - the Garbage Collector Magic Hack
-- [[https://github.com/emacsmirror/gcmh]]
-Enforce a sneaky Garbage Collection strategy to minimize GC interference with user activity. During normal use a high GC threshold is set. When idling GC is triggered and a low threshold is set. For more detailed explanation, read [[http://akrl.sdf.org/]].
-#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
-  (use-package gcmh
-    :diminish gcmh-mode
-    :config
-    (setq gcmh-idle-delay 5
-          gcmh-high-cons-threshold (* 16 1024 1024)) ; 16mb
-    (gcmh-mode 1)
-    )
-
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (setq gc-cons-percentage 0.1)))
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "Emacs ready in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
-
-
-#+end_src
-
-** Load system path variables
-Add search path to ~early-init.el~.
-#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
-  (exec-path)
-  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin/"))
-#+END_SRC
-* Files, registers and variables
-** Variables and directory paths used in this config
-Setting variables to be used in this configuration setup.
-#+BEGIN_SRC emacs-lisp :var emacs-home=(ot variables $emacs-home-dir)
-  ;;; fet-variables
-  ;; File and directory locations
-  (defvar fet/home (concat (getenv "HOME") "/") "My home directory.")
-  (defvar fet/emacs (concat fet/home ".config/emacs/") "Emacs home directory.")
-  (setq org-directory (concat fet/home "Org"))
-  (defvar fet/emacs-stuff (concat fet/home "emacs-stuff") "Personal emacs files goes here.")
-  (defvar fet/scripts (concat user-emacs-directory "scripts"))
-  (defvar fet/snippets (concat user-emacs-directory "snippets"))
-  (defvar fet/images (concat user-emacs-directory "images"))
-  (defvar fet/backups (concat user-emacs-directory "backups"))
-  (defvar fet/auto-save-list (concat user-emacs-directory "auto-save-list"))
-
-  ;; Internal variables
-  (defvar fet/computer 'macbook "Which computer I am on -- 'macbook or 'linux.")
-  (defvar fet-text-height nil "My preferred default text height.")
-  (defvar fet-doom-modeline-text-height nil "My preferred modeline text height.")
-  (defvar fet-default-line-spacing 0 "Baseline line spacing")
-  (setq-default fet-default-line-spacing 0)
-
-  ;;; fet-variables ends here
-#+END_SRC
-** Load local scripts
-TODO add other scripts here and tangle to different places and files
-#+begin_src emacs-lisp 
-  (load (expand-file-name "buffer-move.el" fet/scripts))
-#+end_src
-
-** Registers
+* Registers
+:PROPERTIES:
+:CUSTOM_ID: Registers-hptaeqe0d2k0
+:END:
 Emacs registers are compartments where you can save text, rectangles, positions, and other things for later use. Once you save text or a rectangle in a register, you can copy it into the buffer once or many times; once you save a position in a register, you can jump back to that position once or many times.
 
 Each register has a name that consists of a single character, which we will denote by r; r can be a letter (such as ‘a’) or a number (such as ‘1’); case matters, so register ‘a’ is not the same as register ‘A’. You can also set a register in non-alphanumeric characters, for instance ‘*’ or ‘C-d’. Note, it’s not possible to set a register in ‘C-g’ or ‘ESC’, because these keys are reserved for quitting).
 
 A register can store a position, a piece of text, a rectangle, a number, a window or frame configuration, a buffer name, or a file name, but only one thing at any given time. Whatever you store in a register remains there until you store something else in that register. To see what register r contains, use M-x view-register:
-
 ~M-x view-register RET C~
-
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Registers.html]]
 
 #+begin_src emacs-lisp 
   (setq register-preview-delay 0)
   (set-register ?C (cons 'file "~/dev/emacs/Readme.org"))
   (set-register ?G (cons 'file "~/dev/emacs/.gitignore"))
-
+  
 #+end_src
 
-* Scripts
-TODO fix this
-#+begin_src emacs-lisp  
+#+RESULTS:
+: (file . ~/dev/emacs/.gitignore)
 
-  (defun fet/duplicate-line ()
+* Scrips
+:PROPERTIES:
+:CUSTOM_ID: Scrips-53yaeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+
+ (defun fet/duplicate-line ()
 	"Duplicate current line"
 	(interactive)
 	(move-beginning-of-line 1)
@@ -281,14 +320,14 @@ TODO fix this
 	(next-line 1)
 	(yank))
 
-  (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
+ (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
 
-  (defun fet/load-theme (theme)
+ (defun fet/load-theme (theme)
 	"Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
 	(mapc #'disable-theme custom-enabled-themes)
 	(load-theme theme t))
 
-  (defun mac-open-file ()
+ (defun mac-open-file ()
 	(interactive)
 	(let ((file (do-applescript "POSIX path of (choose file)")))
 	  (if (< (length file) 3)
@@ -297,7 +336,7 @@ TODO fix this
 	  (if (and (not (equal file "")) (file-readable-p file))
 	  (find-file file))))
 
-  (defun mac-save-file-as ()
+ (defun mac-save-file-as ()
 	(interactive)
 	(let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
 	  (if (> (length file) 3)
@@ -306,40 +345,40 @@ TODO fix this
 	  (if (not (equal file ""))
 	  (write-file file))))
 
-  (defun fet/system-clipboard-to-emacs-clipboard ()
+ (defun fet/system-clipboard-to-emacs-clipboard ()
 	"Set Emacs kill ring to contents of system clipboard."
 	(interactive)
 	(kill-new (simpleclip-get-contents)))
 
-  (defun fet/prettify-symbols-setup ()
-  ;; checkboxes
-  (push '("[ ]" .  "☐") prettify-symbols-alist)
-  (push '("[X]" . "☑" ) prettify-symbols-alist)
-  ;; (push '("[X]" . "☒" ) prettify-symbols-alist)
-  (push '("[-]" . "❍" ) prettify-symbols-alist)
+ (defun fet/prettify-symbols-setup ()
+ ;; checkboxes
+ (push '("[ ]" .  "☐") prettify-symbols-alist)
+ (push '("[X]" . "☑" ) prettify-symbols-alist)
+ ;; (push '("[X]" . "☒" ) prettify-symbols-alist)
+ (push '("[-]" . "❍" ) prettify-symbols-alist)
 
-  ;; org-babel
-  (push '("#+BEGIN_SRC" . ?≫) prettify-symbols-alist)
-  (push '("#+END_SRC" . ?≫) prettify-symbols-alist)
-  (push '("#+begin_src" . ?≫) prettify-symbols-alist)
-  (push '("#+end_src" . ?≫) prettify-symbols-alist)
+ ;; org-babel
+ (push '("#+BEGIN_SRC" . ?≫) prettify-symbols-alist)
+ (push '("#+END_SRC" . ?≫) prettify-symbols-alist)
+ (push '("#+begin_src" . ?≫) prettify-symbols-alist)
+ (push '("#+end_src" . ?≫) prettify-symbols-alist)
 
-  (push '("#+BEGIN_QUOTE" . ?❝) prettify-symbols-alist)
-  (push '("#+END_QUOTE" . ?❞) prettify-symbols-alist)
+ (push '("#+BEGIN_QUOTE" . ?❝) prettify-symbols-alist)
+ (push '("#+END_QUOTE" . ?❞) prettify-symbols-alist)
 
-  ;; (push '("#+BEGIN_SRC python" . ) prettify-symbols-alist) ;; This is the Python symbol. Comes up weird for some reason
-  (push '("#+RESULTS:" . ?≚ ) prettify-symbols-alist)
+ ;; (push '("#+BEGIN_SRC python" . ) prettify-symbols-alist) ;; This is the Python symbol. Comes up weird for some reason
+ (push '("#+RESULTS:" . ?≚ ) prettify-symbols-alist)
 
-  ;; drawers
-  (push '(":PROPERTIES:" . ?) prettify-symbols-alist)
+ ;; drawers
+ (push '(":PROPERTIES:" . ?) prettify-symbols-alist)
 
-  ;; tags
-  ;; (push '(":Misc:" . "" ) prettify-symbols-alist)
+ ;; tags
+ ;; (push '(":Misc:" . "" ) prettify-symbols-alist)
 
-  (prettify-symbols-mode))
-  (defun fet/org-done-keep-todo ()
+ (prettify-symbols-mode))
+ (defun fet/org-done-keep-todo ()
 	"Mark an org todo item as done while keeping its former keyword intact, and archive.
-  For example: * TODO This item   becomes   * DONE TODO This item."
+ For example: * TODO This item   becomes   * DONE TODO This item."
 	(interactive)
 	(let ((state (org-get-todo-state)) (tag (org-get-tags)) (todo (org-entry-get (point) "TODO"))
 	  post-command-hook)
@@ -353,22 +392,22 @@ TODO fix this
 	(user-error "Not a TODO."))
 	  (run-hooks 'post-command-hook)))
 
-  (defun fet/save-and-close-this-buffer (buffer)
-  "Saves and closes given buffer."
-  (if (get-buffer buffer)
+ (defun fet/save-and-close-this-buffer (buffer)
+ "Saves and closes given buffer."
+ (if (get-buffer buffer)
 	  (let ((b (get-buffer buffer)))
 		(save-buffer b)
 		(kill-buffer b))))
 
-  (defmacro spacemacs|org-emphasize (fname char)
-  "Make function for setting the emphasis in org mode"
-  `(defun ,fname () (interactive)
+ (defmacro spacemacs|org-emphasize (fname char)
+ "Make function for setting the emphasis in org mode"
+ `(defun ,fname () (interactive)
 		  (org-emphasize ,char)))
 
-  ;; bash
-  (defun bash (&optional path)
+ ;; bash
+ (defun bash (&optional path)
 	"Open a bash window.
-  PATH is optional, and defaults to the current directory."
+ PATH is optional, and defaults to the current directory."
 	(interactive (list (if (buffer-file-name)
 			   (file-name-directory (buffer-file-name))
 				 (expand-file-name default-directory))))
@@ -382,25 +421,27 @@ TODO fix this
 	 ((string= system-type "windows-nt")
 	  (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
 
-  ;; google
-  (defun google ()
+ ;; google
+ (defun google ()
 	"Open default browser to google.com."
 	(interactive)
 	(browse-url "http://google.com"))
 
 #+end_src
-* General configuration
-** Sane defaults
-*** Disable toolbar and scrollbar, keep menubar
-Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.el~. But I *like* this.
-#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (menu-bar-mode 1)             ;; I like having access to the menu-bar
-#+END_SRC
-*** Misc settings
-#+BEGIN_SRC emacs-lisp
-  ;; MISC
+
+#+RESULTS:
+: google
+
+* General configuration settings
+:PROPERTIES:
+:CUSTOM_ID: Generalconfigurationsettings-u43beqe0d2k0
+:END:
+** Settings
+:PROPERTIES:
+:CUSTOM_ID: GeneralconfigurationsettingsSettings-ol8beqe0d2k0
+:END:
+#+begin_src emacs-lisp
+	;; MISC
   (delete-selection-mode 1)                    ;; You can select text and delete it by typing
   (electric-indent-mode 1)                     ;; Turn off the weird indenting that Emacs does by default
   (electric-pair-mode -1)                      ;; turns on the automatic parens pairing, I don't like it
@@ -414,8 +455,8 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
   (setq use-short-answers t)    ;; y or n suffice when emacs asks for yes or no
   (setq confirm-kill-emacs 'yes-or-no-p)       ;; confirm to quit
   (setq initial-major-mode 'org-mode
-	initial-scratch-message ""
-	initial-buffer-choice t)
+	 initial-scratch-message ""
+	 initial-buffer-choice t)
 
   ;; Window
   (setq frame-resize-pixelwise t)
@@ -429,6 +470,13 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
   (setq-default fill-column 80)
   (setq line-move-visual t)
 
+  ;; Edit settings
+  (setq org-auto-align-tags nil
+		org-tags-column 0
+		org-catch-invisible-edits 'show-and-error
+		org-special-ctrl-a/e t
+		org-insert-heading-respect-content t)
+
   ;; BELL/WARNING
   (setq visible-bell nil)
   (setq ring-bell-function 'ignore)
@@ -436,9 +484,9 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
   ;; SCROLLING
   (setq scroll-conservatively 101)
   (setq mouse-wheel-follow-mouse 't
-		mouse-wheel-progressive-speed nil)
+		 mouse-wheel-progressive-speed nil)
   (setq mac-redisplay-dont-reset-vscroll t
-		mac-mouse-wheel-smooth-scroll nil)
+		 mac-mouse-wheel-smooth-scroll nil)
 
   (setq what-cursor-show-names t)              ;; improves C-x =
 
@@ -447,35 +495,34 @@ Generaly you should not put GUI things in ~early-init.el~ that belong in ~init.e
 
   ;; MacOS stuff
   (when (string= system-type "darwin")
-	(setq dired-use-ls-dired t
-		  insert-directory-program "/opt/homebrew/bin/gls"
-		  dired-listing-switches "-aBhl --group-directories-first"))
+	 (setq dired-use-ls-dired t
+		   insert-directory-program "/opt/homebrew/bin/gls"
+		   dired-listing-switches "-aBhl --group-directories-first"))
 
   ;; Switching buffers
   (setq switch-to-buffer-obey-display-actions t)
 
   (defun display-buffer-same-window (buffer alist)
-	(unless (or (cdr (assq 'inhibit-same-window alist))
-				(window-minibuffer-p)
-				(window-dedicated-p))
-	  (window--display-buffer buffer (selected-window) 'reuse alist)))
+	 (unless (or (cdr (assq 'inhibit-same-window alist))
+				 (window-minibuffer-p)
+				 (window-dedicated-p))
+	   (window--display-buffer buffer (selected-window) 'reuse alist)))
+
 #+end_src
 
-** Backups, recent files, history and trash
-By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in ~/.config/emacs/backups/, where I can find them with find-file if I really need to.
-*** Backups
-TODO should use path set in variable 
-#+begin_src emacs-lisp 
+** Backups, recent files and trash
+:PROPERTIES:
+:CUSTOM_ID: GeneralconfigurationsettingsBackupsrecentfilesandtrash-mfebeqe0d2k0
+:END:
+By default, Emacs saves backup files in the current directory. These are files ending in ~ that are cluttering up your directory lists. The following code stashes them all in =~/.config/emacs/backups/=, where I can find them with find-file if I really need to.
+#+begin_src emacs-lisp
   ;; Backup
   (setq backup-directory-alist '(("." . "~/.config/emacs/backups")))
   (setq delete-old-versions -1)
   (setq version-control t)
   (setq vc-make-backup-files t)
   (setq auto-save-file-name-transforms '((".*" "~/.config/emacs/auto-save-list/" t)))
-#+END_SRC
-*** History
-TODO should use path set in variable
-#+BEGIN_SRC emacs-lisp
+
   ;; History
   (setq savehist-file "~/.config/emacs/savehist")
   (savehist-mode 1)
@@ -483,116 +530,55 @@ TODO should use path set in variable
   (setq history-delete-duplicates t)
   (setq savehist-save-minibuffer-history 1)
   (setq savehist-additional-variables
-		'(kill-ring
-		  search-ring
-		  regexp-search-ring))
-#+END_SRC
-*** Trash
-TODO check if darwin, otherwise use different path
-#+BEGIN_SRC emacs-lisp
+		  '(kill-ring
+		    search-ring
+		    regexp-search-ring))
+
   ;; Trash
   (setq trash-directory "~/.Trash")
   (setq delete-by-moving-to-trash t)
-#+END_SRC
-*** Recent files
-- [[https://www.emacswiki.org/emacs/RecentFiles]]
-#+BEGIN_SRC emacs-lisp
+
   ;; recent files
   (recentf-mode 1)
   (setq recentf-max-menu-items 25)
   (setq recentf-max-saved-items 25)
   (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
 #+end_src
 
-** Saving customizations
+#+RESULTS:
+: recentf-open-files
+
+* Saving customizations
+:PROPERTIES:
+:CUSTOM_ID: Savingcustomizations-4pibeqe0d2k0
+:END:
 I don't want saved customizations in my init.el file.
 - [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html]]
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (setq custom-file "~/.config/emacs/emacs-custom.el")
   (load custom-file)
+  
 
 #+end_src
 
-* MacOS Configuration and stuff
-This config is for mac os only, fix for linux
+#+RESULTS:
+: t
 
-#+CAPTION: Mac keyboard bindings:
-|---------------+--------------------------------------------|
-| key-binding   | Does what                                  |
-|---------------+--------------------------------------------|
-| ⌘ + o         | Open an existing file into an Emacs buffer |
-| ⌘ + w         | Discard (kill) current buffer              |
-| ⌘ + s         | Save current buffer into its file          |
-| ⌘ + S         | Write curent buffer into another file      |
-| ⌘ + q         | Save buffer and kill Emacs                 |
-| ⌘ + c         | Kill ring save (copy selected)             |
-| ⌘ + v         | Yank (paste)                               |
-| ⌘ + x         | Kill region (cut)                          |
-| ⌘ + a         | Sellect all                                |
-| ⌘ + z         | Undo                                       |
-| ⌘ + f         | Search for a string (isearch)              |
-| ⌘ + g         | Search forward for a string                |
-| ⌘ + .         | Move to a different window (frame)         |
-| ⌘ + l         | Goto line                                  |
-| ⌘ + k         | Kill buffer                                |
-| ⌘ + m         | Minimize the window                        |
-| ⌘ + <up>      | Move point to the beginning of the buffer  |
-| ⌘ + <down>    | Move point to the end of the buffer        |
-| ⌘ + <left>    | Move point to beginning of current line    |
-| ⌘ + <right>   | Move point to end of current line          |
-| CTRL + click  | Show contextual menu                       |
-| SHIFT + Click | Select region                              |
-|---------------+--------------------------------------------|
-
-#+begin_src emacs-lisp
-
-  ;; (setq mac-command-modifier  'meta
-  ;;   mac-option-modifier         nil
-  ;;   mac-control-modifier       'control
-  ;;   mac-right-command-modifier 'super
-  ;;   mac-right-control-modifier 'hyper)
-
-  (setq mac-option-modifier 'meta
-		mac-command-modifier 'super
-		mac-right-option-modifier 'none
-		)
-
-  (global-set-key (kbd "s-c") 'kill-ring-save)
-  (global-set-key (kbd "s-v") 'yank)
-  (global-set-key (kbd "s-x") 'kill-region)
-  (global-set-key (kbd "s-a") 'mark-whole-buffer)
-  (global-set-key (kbd "s-z") 'undo)
-  (global-set-key (kbd "s-f") 'isearch-forward)
-  (global-set-key (kbd "s-g") 'isearch-repeat-forward)
-  (global-set-key (kbd "s-o") 'mac-open-file)
-  (global-set-key (kbd "s-s") 'save-buffer)
-  (global-set-key (kbd "s-S") 'mac-save-file-as)
-  ;;(global-set-key (kbd "s-p") 'mac-preview)
-  (global-set-key (kbd "s-w") 'kill-buffer)
-  (global-set-key (kbd "s-m") 'iconify-frame)
-  (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
-  (global-set-key (kbd "s-.") 'keyboard-quit)
-  (global-set-key (kbd "s-l") 'goto-line)
-  (global-set-key (kbd "s-k") 'kill-buffer)
-  (global-set-key (kbd "s-<up>") 'beginning-of-buffer)
-  (global-set-key (kbd "s-<down>") 'end-of-buffer)
-  (global-set-key (kbd "s-<left>") 'beginning-of-line)
-  (global-set-key (kbd "s-<right>") 'end-of-line)
-  (global-set-key [(meta down)] 'forward-paragraph)
-  (global-set-key [(meta up)] 'backward-paragraph)
-
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-#+end_src
-* Keyboard
+* Keyboard Helpers
+:PROPERTIES:
+:CUSTOM_ID: KeyboardHelpers-unlbeqe0d2k0
+:END:
 ** Which-key
-=which-key= is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
+:PROPERTIES:
+:CUSTOM_ID: KeyboardHelpersWhichkey-siobeqe0d2k0
+:END:
+=which-key= is a minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popus:
 [[./images/which-key.png]]
 - [[https://github.com/justbur/emacs-which-key]]
-
-#+begin_src emacs-lisp 
-  (use-package which-key
+#+begin_src emacs-lisp
+   (use-package which-key
 	:diminish which-key-mode
 	:init
 	(which-key-mode)
@@ -603,715 +589,309 @@ This config is for mac os only, fix for linux
 		  which-key-sort-order 'which-key-key-order-alpha
 		  which-key-min-display-lines 10
 		  which-key-max-display-columns nil))
+
 #+end_src
-
-** Evil mode
-- [[https://github.com/emacs-evil/evil]]
-- [[https://github.com/emacs-evil/evil-collection]]
-- [[https://github.com/Somelauw/evil-org-mode]]
-- [[https://github.com/emacs-evil/evil-surround]]
-
-#+begin_src emacs-lisp 
-  (use-package evil
-	 :init
-	 (setq evil-want-integration t
-		   evil-want-keybinding nil
-		   evil-want-fine-undo t
-		   evil-want-Y-yank-to-eol t)
-	 :config
-	 (evil-set-initial-state 'dashboard-mode 'motion)
-	 (evil-set-initial-state 'debugger-mode 'motion)
-	 (evil-set-initial-state 'pdf-view-mode 'motion)
-	 (evil-set-initial-state 'term-mode 'emacs)
-	 (evil-set-initial-state 'calc-mode 'emacs)
-	 ;; keybinding
-	 (define-key evil-window-map "\C-q" 'evil-delete-buffer)
-	 (define-key evil-window-map "\C-w" 'kill-this-buffer)
-	 (define-key evil-motion-state-map "\C-b" 'evil-scroll-up)
-	 (define-key evil-motion-state-map [?\s-\\] 'evil-execute-in-emacs-state) ;; super-\ TODO change binding for this
-	 (evil-mode 1))
-
-  (use-package evil-surround
-	:after evil
-	:defer 2
-	:config
-	(global-evil-surround-mode 1))
-
-  (with-eval-after-load 'evil-maps
-	(evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
-	(evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
-	(define-key evil-motion-state-map (kbd "SPC") nil)
-	(define-key evil-motion-state-map (kbd "RET") nil)
-	(define-key evil-motion-state-map (kbd "TAB") nil))
-
-  (use-package evil-org
-	:ensure t
-	:after org
-	:hook (org-mode . (lambda () evil-org-mode))
-	:config
-	(require 'evil-org-agenda)
-	(evil-org-agenda-set-keys))
-#+end_src
-
-** General
-- [[https://github.com/noctuid/general.el]]
-
-#+begin_src emacs-lisp 
-	(use-package general
-	  :config
-	  (general-evil-setup)
-
-	  (general-create-definer fet/leader-keys
-		:states '(normal insert visual emacs)
-		:keymaps 'override
-		:prefix "SPC"
-		:global-prefix "C-SPC") ;; access leader in insert mode
-
-	  (fet/leader-keys
-	   "SPC" '(counsel-M-x :wk "M-x")
-	   "." '(find-file :wk "Find file")
-	   "u" '(universal-argument :wk "Universal argument")
-	   "TAB TAB" '(comment-line :wk "Comment lines")
-	   "i" '(ibuffer :wk "Ibuffer")
-	   "d" '(dired :wk "Dired")
-	   "T" '(org-babel-tangle :wk "org-babel-tangle")
-	   "E" '(org-export-dispatch :wk "Export dispatch")
-	   "M" '(magit-status :wk "Magit status")
-	   "S" '(yas-insert-snippet :wk "Insert yasnippet")
-	   "," '(fet-config-command :wk "Options")
-	   "q" '(keyboard-quit :wk "Exit menu")
-	   "c" '(org-capture :wk "Org capture")
-
-	   )
-
-	  (fet/leader-keys
-		"b" '(nil :wk "Bookmarks/Buffers")
-		"b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
-		"b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
-		"b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
-		"b d" '(bookmark-delete :wk "Delete bookmark")
-		"b i" '(ibuffer :wk "Ibuffer")
-		"b k" '(kill-current-buffer :wk "Kill current buffer")
-		"b K" '(kill-some-buffers :wk "Kill multiple buffers")
-		"b l" '(list-bookmarks :wk "List bookmarks")
-		"b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
-		"b n" '(next-buffer :wk "Next buffer")
-		"b p" '(previous-buffer :wk "Prev buffer")
-		"b r" '(revert-buffer :wk "Reload buffer")
-		"b R" '(rename-buffer :wk "Rename buffer")
-		"b s" '(basic-save-buffer :wk "Save buffer")
-		"b S" '(save-some-buffers :wk "Save multiple buffers")
-		"b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
-		"b P" '(lpr-buffer :wk "Print buffer")
-		)
-
-	  (fet/leader-keys
-		"d" '(nil :wk "Dired")
-		"d d" '(dired :wk "Open dired")
-		"d j" '(dired-jump :wk "Dired jump to current")
-		"d n" '(neotree-dir :wk "Open directory in neotree")
-		)
-
-	  (fet/leader-keys
-		"e" '(nil :wk "Eshell/Evaluate")
-		"e b" '(eval-buffer :wk "Evaluate elisp in buffer")
-		"e d" '(eval-defun :wk "Evaluate defun containing or after point")
-		"e e" '(eval-expression :wk "Evaluate an elisp expression")
-		"e h" '(counsel-esh-history :wk "Eshell history")
-		"e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-		"e r" '(eval-region :wk "Evaluate elisp in region")
-		"e R" '(eww-reload :wk "Reload current page in EWW")
-		"e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
-		"e w" '(eww :wk "EWW emacs web broswer")
-		)
-
-	  (fet/leader-keys
-		"f" '(nil :wk "Files")
-		"f c" '((lambda () (interactive) (find-file "~/dev/emacs/Readme.org")) :wk "Open Readme.org")
-		"f d" '(find-grep-dired :wk "Search for string in files in DIR")
-		"f g" '(counsel-grep-or-swiper :wk "Search for string current file")
-		"f j" '(counsel-file-jump :wk "Jump to a file below current directory")
-		"f l" '(counsel-locate :wk "Locate a file")
-		"f s" '((lambda () (interactive) (find-file "~/dev/emacs/snippets/")) :wk "Dired snippets directory")
-		"f r" '(counsel-recentf :wk "Find recent files")
-		"f u" '(sudo-edit-find-file :wk "Sudo find file")
-		"f U" '(sudo-edit :wk "Sudo edit file")
-		)
-
-	  (fet/leader-keys
-		"g" '(nil :wk "Git")
-		"g d" '(magit-dispatch :wk "Magit dispatch")
-		"g ." '(magit-file-disatch :wk "Magit file dispatch")
-		"g b" '(magit-branch-checkout :wk "Switch branch")
-		"g c" '(nil :wk "Create")
-		"g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
-		"g c c" '(magit-commit-create : "Create commit")
-		"g c f" '(magit-commit-fixup :wk "Create fixup commit")
-		"g C" '(magit-clone :wk "Clone repo")
-		"g f" '(nil :wk "Find")
-		"g f c" '(magit-show-commit :wk "Show commit")
-		"g f f" '(magit-find-file :wk "Magit find file")
-		"g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
-		"g F" '(magit-fetch :wk "Git fetch")
-		"g g" '(magit-status :wk "Magit status")
-		"g i" '(magit-init :wk "Initialize git repo")
-		"g l" '(magit-log-buffer-file :wk "Magit buffer log")
-		"g r" '(vc-revert :wk "Git revert file")
-		"g s" '(magit-stage-file :wk "Git stage file")
-		"g t" '(git-timemachine :wk "Git time machine")
-		"g u" '(magit-unstage-file :wk "Git unstage file")
-		)
-
-	  (fet/leader-keys
-		"h" '(nil :wk "Help")
-		"h a" '(counsel-apropos :wk "Apropos")
-		"h b" '(counsel-bindings :wk "Desc. bindings")
-		"h c" '(describe-char :wk "Desc. char under cursor")
-		"h d" '(nil :wk "Emaccs documentation")
-		"h d a" '(about-emacs :wk "About Emacs")
-		"h d d" '(view-emacs-debugging :wk "View Emacs debugging")
-		"h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
-		"h d m" '(info-emacs-manual :wk "The Emacs manual")
-		"h d n" '(view-emacs-news :wk "View Emacs news")
-		"h d o" '(describe-distribution :wk "How to obtain Emacs")
-		"h d p" '(view-emacs-problems :wk "View Emacs problems")
-		"h d t" '(view-emacs-todo :wk "View Emacs todo")
-		"h d w" '(describe-no-warranty :wk "Describe no warranty")
-		"h e" '(view-echo-area-messages :wk "View echo area messages")
-		"h f" '(describe-function :wk "Desc. function")
-		"h F" '(describe-face :wk "Desc. face")
-		"h g" '(describe-gnu-project :wk "Desc. GNU Project")
-		"h i" '(info :wk "Info")
-		"h I" '(describe-input-method :wk "Desc. input method")
-		"h k" '(describe-key :wk "Desc. key")
-		"h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
-		"h L" '(describe-language-environment :wk "Desc. language environment")
-		"h m" '(describe-mode :wk "Desc. mode")
-		"h t" '(fet-hydra-theme-switcher/body :wk "Change theme")
-		"h v" '(describe-variable :wk "Desc. variable")
-		"h w" '(where-is :wk "Prints keybinding for command if set")
-		"h x" '(describe-command :wk "Display full documentation for command")
-		)
-
-	  (fet/leader-keys
-		"m" '(nil :wk "Org")
-		"m a" '(org-agenda :wk "Org agenda")
-		"m e" '(org-export-dispatch :wk "Org export dispatch")
-		"m i" '(org-toggle-item :wk "Org toggle item")
-		"m t" '(org-todo :wk "Org todo")
-		"m T" '(org-babel-tangle :wk "Org babel tangle")
-		"m l" '(org-todo-list :wk "Org todo list")
-		"m b" '(nil :wk "Tables")
-		"m b -" '(org-table-insert-hline :wk "Insert hline in table")
-		"m d" '(nil :wk "Date/deadline")
-		"m d t" '(org-time-stamp :wk "Org time stamp")
-		)
-
-	  (fet/leader-keys
-		"o" '(nil :wk "Open")
-		"o e" '(elfeed :wk "Elfeed RSS")
-		"o f" '(make-frame :wk "Open buffer in new frame")
-		"o F" '(select-frame-by-name :wk "Select frame by name")
-		)
-
-	  (fet/leader-keys
-		"p" '(projectile-command-map :wk "Projectile")
-		)
-
-	  (fet/leader-keys
-		"s" '(nil :wk "Search")
-		"s d" '(dictionary-search :wk "Search dictionary")
-		"s m" '(man :wk "Man pages")
-		"s o" '(pdf-occur :wk "Pdf search lines matching STRING")
-		"s t" '(tldr :wk "Lookup TLDR docs for a command")
-		)
-
-	  (fet/leader-keys
-		"t" '(nil :wk "Toggle")
-		"t e" '(eshell-toggle :wk "Toggle eshell")
-		"t l" '(display-line-numbers-mode :wk "Toggle line numbers")
-		"t n" '(neotree-toggle :wk "Toggle neotree file viewer")
-		"t o" '(org-mode :wk "Toggle org mode")
-		"t r" '(rainbow-mode :wk "Toggle rainbow mode")
-		"t t" '(visual-line-mode :wk "Toggle truncated lines")
-		)
-
-	  (fet/leader-keys
-		"w" '(nil :wk "Windows/Words")
-		"w c" '(evil-window-delete :wk "Close window")
-		"w n" '(evil-window-new :wk "New window")
-		"w s" '(evil-window-split :wk "Horizontal split window")
-		"w v" '(evil-window-vsplit :wk "Vertical split window")
-		"w h" '(evil-window-left :wk "Window left")
-		"w j" '(evil-window-down :wk "Window down")
-		"w k" '(evil-window-up :wk "Window up")
-		"w l" '(evil-window-right :wk "Window right")
-		"w w" '(evil-window-next :wk "Goto next window")
-		"w d" '(downcase-word :wk "Downcase word")
-		"w u" '(upcase-word :wk "Upcase word")
-		"w =" '(count-words :wk "Count words/lines for buffer")
-		"w t" '(nil :wk "Thesaurus")
-		"w t p" '(mw-thesaurus-lookup-at-point :wk "Lookup word at point")
-		"w t m" '(mw-thesaurus-mode :wk "Merriam-Webster minor mode")
-		"w t l" '(mw-thesaurus-lookup :wk "Lookup word")
-		)
-	  (general-def
-		:keymaps 'override
-		;; Emacs
-		"M-x" 'counsel-M-x
-		"s-x" 'execute-extended-command
-		"s-b" 'counsel-switch-buffer ; super-b
-		;; Editing
-		"M-v" 'simpleclip-paste
-		"M-V" 'evil-paste-after ; shift-paste uses the internal clipboard
-		"M-c" 'simpleclip-copy
-		;; Utility
-		"C-c c" 'org-capture
-		"C-c a" 'org-agenda
-		"C-s" 'swiper
-		"M-=" 'count-words
-		"M-j" 'avy-goto-char-2
-		)
-
-	  ) 
-
-  ;; end of general-define-key
-#+end_src
-** Hydras
-- [[https://github.com/abo-abo/hydra]]
-
-The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the following way:
-
-#+CAPTION: Color keys for hydra.
-|----------+----------------------------|
-| color    | toggle                     |
-|----------+----------------------------|
-| red      |                            |
-| blue     | :exit t                    |
-| amaranth | :foreign-keys warn         |
-| teal     | :foreign-keys-warn :exit t |
-| pink     | :foreign-keys run          |
-|----------+----------------------------|
-
-
-
-#+begin_src emacs-lisp 
-  (use-package hydra)
-
-  (defhydra hydra-zoom (global-map "<f2>")
-			"zoom"
-			("g" text-scale-increase "in")
-			("l" text-scale-decrease "out"))
-
-  (defhydra hydra-buffer-menu (:color pink :hint nil)
-	"
-  ^Mark^            ^Unmark^           ^Actions^          ^Search
-  ^^^^^^^-----------------------------------------------------------------
-  _m_: mark         _u_: unmark        _x_: executre       _R_: re-isearch
-  _s_: save         _U_: unmark up     _b_: bury           _I_: isearch
-  _d_: delete       ^ ^                _g_: refresh        _O_: multi-occur
-  _D_: delete up    ^ ^                _T_: files only: % -28`Buffer-menu-files-only
-  _~_: modified
-  "
-	("m" Buffer-menu-mark)
-	("u" Buffer-menu-unmark)
-	("U" Buffer-menu-backup-unmark)
-	("d" Buffer-menu-delete)
-	("D" Buffer-menu-delete-backward)
-	("s" Buffer-menu-save)
-	("~" Buffer-menu-not-modified)
-	("x" Buffer-menu-execute)
-	("b" Buffer-menu-bury)
-	("g" revert-buffer)
-	("T" Buffer-menu-toggle-files-only)
-	("O" Buffer-menu-multi-occur :color blue)
-	("I" Buffer-menu-isearch-buffers :color blue)
-	("R" Buffer-menu-isearch-buffers-regexp :color blue)
-	("c" nil "cancel")
-	("v" Buffer-menu-select "select" :color blue)
-	("o" Buffer-menu-other-window "other-window" :color blue)
-	("q" quit-window "quit" :color blue))
-
-  (define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
-
-  (defhydra fet-hydra-theme-switcher (:color red :inherit (fet-base/heads) :columns 4 :hint nil)
-	"Themes"
-	;; Dark
-	("on" (fet/load-theme 'doom-one) "one")
-	("vi" (fet/load-theme 'modus-vivendi) "modus-vivendi")
-	("mo" (fet/load-theme 'doom-molokai) "molokai")
-	("sn" (fet/load-theme 'doom-snazzy) "snazzy")
-	("oh" (fet/load-theme 'doom-old-hope) "old-hope")
-	("he" (fet/load-theme 'doom-henna) "henna")
-	("pe" (fet/load-theme 'doom-peacock) "peacock")
-	("mm" (fet/load-theme 'doom-monokai-machine) "monokai-machine")
-	("cc" (fet/load-theme 'doom-xcode) "xcode")
-
-	;; Light
-	("lo" (fet/load-theme 'doom-one-light) "one-light")
-	("op" (fet/load-theme 'modus-operandi) "modus-operandi")
-	("sl" (fet/load-theme 'doom-solarized-light) "solarized-light")
-	("fl" (fet/load-theme 'doom-flatwhite) "flatwhite")
-	("td" (fet/load-theme 'doom-opera-light) "tomorrow-day")
-
-	;; Exit
-	("q" nil))
-#+end_src
-*** Hydra scripts
-#+BEGIN_SRC emacs-lisp
-  (require 'cl)
-	(require 'cl-lib)
-
-	(defgroup fet-hydra nil
-	  "Customization for 'fet-hydra'"
-	  :tag "fet-hydra")
-
-	(defcustom fet-hydra-key "<f6>"
-	  "Key to bind 'fet/body' to."
-	  :type 'string
-	  :group 'fet-hydra)
-
-	(global-set-key (kbd fet-hydra-key) 'fet/body)
-
-	(lexical-let ((fet-hydra-stack '()))
-	  (defun fet-hydra-push (expr)
-		"Push an EXPR onto the stack."
-		(push expr fet-hydra-stack))
-
-	  (defun fet-hydra-pop ()
-		"Pop an expression of the stack and call it."
-		(interactive)
-		(let ((x (pop fet-hydra-stack)))
-		  (when x
-			(call-interactively x))))
-
-	  (defun fet-hydra ()
-		"Show the current stack."
-		(interactive)
-		(with-help-window (help-buffer)
-		  (princ "Fet-hydra-stack\n")
-		  (pp fet-hydra-stack)))
-
-	  (defun fet-hydra-reset ()
-		"Reset the stack to empty."
-		(interactive)
-		(setq fet-hydra-stack '())))
-
-  (defmacro fet-open-hydra (hydra)
-	"Push current HYDRA to a stack.
-  This is a macro so I don't have to quote the hydra name."
-	`(progn
-	   (fet-hydra-push hydra-curr-body-fn)
-	   (call-interactively ',hydra)))
-
-	(defun fet-hydra-help ()
-	  "Show help buffer for current hydra."
-	  (interactive)
-	  (with-help-window (help-buffer)
-		(with-current-buffer (help-buffer)
-		  (unless (featurep 'emacs-keybinding-command-tooltip-mode)
-		(require 'emacs-keybinding-command-tooltip-mode))
-		  (emacs-keybinding-command-tooltip-mode +1))
-		(let ((s (format "Help for %s\n" hydra-curr-body-fn)))
-		  (princ s)
-		  (princ (make-string (length s) ?-))
-		  (princ "\n"))
-
-		(princ (mapconcat
-			(lambda (head)
-			  (format "%s%s"
-				  ;;  key
-				  (s-pad-right 10 " " (car head))
-				  ;; command
-				  (let* ((hint (if (stringp (nth 2 head))
-						   (concat " " (nth 2 head))
-						 ""))
-					 (cmd (cond
-					   ;; quit
-					   ((null (nth 1 head))
-						"")
-					   ;; a symbol
-					   ((symbolp (nth 1 head))
-						(format "`%s'" (nth 1 head)))
-					   ((and (listp (nth 1 head))
-						 (eq 'fet-open-hydra (car (nth 1 head))))
-						(format "`%s'" (nth 1 (nth 1 head))))
-					   ((listp (nth 1 head))
-						(with-temp-buffer
-						  (pp (nth 1 head) (current-buffer))
-						  (let ((fill-prefix (make-string 10 ? )))
-						(indent-code-rigidly
-						 (save-excursion
-						   (goto-char (point-min))
-						   (forward-line)
-						   (point))
-						 (point-max) 10))
-						  (buffer-string)))
-					   (t
-						(format "%s" (nth 1 head)))))
-					 (l1 (format "%s%s" (s-pad-right 50 " " (car (split-string cmd "\n"))) hint))
-					 (s (s-join "\n" (append (list l1) (cdr (split-string cmd "\n"))))))
-				(s-pad-right 50 " " s))))
-			(symbol-value
-			 (intern
-			  (replace-regexp-in-string
-			   "/body$" "/heads"
-			   (symbol-name hydra-curr-body-fn))))
-			"\n"))))
-
-#+END_SRC
 
 #+RESULTS:
-: fet-hydra-help
+: t
 
-*** Hydra base
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-base (:color blue)
-	"base"
-	("SPC" counsel-M-x "M-x")
-	("C-s" save-buffer "Save")
-	("." find-file "Find file")
-	("i" ibuffer "Ibuffer")
-	("d" dired "Dired")
-	("ss" (switch-to-buffer "*scratch*") "*scratch*")
-	("?" fet-hydra-help "Help menu")
-	("q" nil "quit")
-	)
-#+END_SRC
-*** Hydra fet
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet (:color blue :inherit (fet-base/heads)
-							  :columns 4 :body-pre (fet-hydra-reset)
-							  :idle 0.5)
-	"Choose:"
-	("a" (fet-open-hydra fet-applications/body) "Applications")
-	("b" (fet-open-hydra fet-buffers/body) "Buffers")
-	("f" (fet-open-hydra fet-files/body) "Files")
-	("h" (fet-open-hydra fet-help/body) "Help")
-	("l" (fet-open-hydra fet-lisp/body) "Lisp")
-	("w" (fet-open-hydra fet-windows/body) "Windows")
-	("t" (fet-open-hydra fet-hydra-theme-switcher/body) "Themes")
+** Evil mode
+:PROPERTIES:
+:CUSTOM_ID: KeyboardHelpersEvilmode-berbeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package evil
+	   :init
+	   (setq evil-want-integration t
+		     evil-want-keybinding nil
+		     evil-want-fine-undo t
+		     evil-want-Y-yank-to-eol t)
+	   :config
+	   (evil-set-initial-state 'dashboard-mode 'motion)
+	   (evil-set-initial-state 'debugger-mode 'motion)
+	   (evil-set-initial-state 'pdf-view-mode 'motion)
+	   (evil-set-initial-state 'term-mode 'emacs)
+	   (evil-set-initial-state 'calc-mode 'emacs)
+	   ;; keybinding
+	   (define-key evil-window-map "\C-q" 'evil-delete-buffer)
+	   (define-key evil-window-map "\C-w" 'kill-this-buffer)
+	   (define-key evil-motion-state-map "\C-b" 'evil-scroll-up)
+	   (define-key evil-motion-state-map [?\s-\\] 'evil-execute-in-emacs-state) ;; super-\ TODO change binding for this
+	   (evil-mode 1))
 
-	)
-#+END_SRC
-*** Hydra help-menu
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-help (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
-	"
-  help
-  Code              ^Point               ^Thing           ^Documentation
-  --------------------------------------------------------------------------------
-  _a_: Apropos        _o_: Org explorer     _h_: Theme        _e_: Emacs manual
-  _c_: Desc cmd       _t_: Text properties  _k_: Desc key     _T_: Emacs tutorial
-  _f_: Desc func      _s_: Syntax           _K_: Desc keymap  _i_: Info
-  _v_: Desc variable  ^^                    _m_: Desc mode    _w_: Woman
-  _M_: View echo area messages
-   --------------------------------------------------------------------------------
-  "
-	("a" apropos)
-	("c" describe-command) 
-	("f" describe-function)
-	("v" describe-variable)
-	("M" view-echo-area-messages)
+   (use-package evil-surround
+	  :after evil
+	  :defer 2
+	  :config
+	  (global-evil-surround-mode 1))
 
-	("o" ore)
-	("t" describe-text-properties)
-	("s" describe-syntax)
+   (with-eval-after-load 'evil-maps
+	  (evil-define-key 'motion help-mode-map "q" 'kill-this-buffer)
+	  (evil-define-key 'motion calendar-mode-map "q" 'kill-this-buffer)
+	  (define-key evil-motion-state-map (kbd "SPC") nil)
+	  (define-key evil-motion-state-map (kbd "RET") nil)
+	  (define-key evil-motion-state-map (kbd "TAB") nil))
 
-	("h" describe-theme)
-	("k" describe-key)
-	("K" describe-keymap)
-	("m" describe-mode)
-	("p" describe-package)
+   (use-package evil-org
+	  :ensure t
+	  :after org
+	  :hook (org-mode . (lambda () evil-org-mode))
+	  :config
+	  (require 'evil-org-agenda)
+	  (evil-org-agenda-set-keys))
 
-	("e" info-emacs-manual)
-	("T" help-with-tutorial)
-	("i" info)
-	("w" woman))
-#+END_SRC
-*** Hydra fet-files
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-files (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
-	"
-  files
-  ----------------------------------------------
-  _f_: find file     _R_: rename  _r_: recentf
-  _4_: other window  _k_: close   _l_: locate
-  _5_: other frame   _d_: dired
-  _p_: ffap
-  ----------------------------------------------"
-	("4" find-file-other-window)
-	("5" find-file-other-frame)
-	("b" describe-file)
-	("d" (dired default-directory))
-	("f" find-file)
-	("k" kill-this-buffer)
-	("l" counsel-locate)
-	("p" ffap)
-	("r" counsel-recentf)
-	("R" write-file))
-#+END_SRC
-*** Hydra fet-buffers
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-buffers (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
-	"
-  buffer
-  Switch                  ^Kill                Split        Misc
-  ------------------------------------------------------------------
-   _a_: ace-window        _k_: kill           _2_: below   _l_: list (%(length (buffer-list)))
-   _b_: switch buffer     _K_: kill others    _3_: right   _r_: rename
-   _o_: other-window      _A_: kill all
-   _O_: switch other win  _m_: kill matching
-   _n_: next buffer       _0_: delete win
-   _p_: prev buffer       _1_: delete other
-   _s_: scratch           _4_: kill buf/win
-   _f_: other frame       _6_: kill some
-   _F_: buf in frame      _y_: bury
-  ------------------------------------------------------------------
-  "
-	("0" delete-window)
-	("1" delete-other-windows)
-	("2" split-window-below)
-	("3" split-window-right)
-	("5" make-frame-command)
-	("4" kill-buffer-and-window)
-	("6" kill-some-buffers)
-	("a" ace-window :color red)
-	("b" switch-to-buffer)
-	("A" kill-all-buffers)
-	("f" other-frame :color red)
-	("F" switch-to-buffer-other-frame)
-	("k" kill-this-buffer :color red)
-	("K" kill-other-buffers)
-	("l" ibuffer)
-	("m" kill-matching-buffers :color red)
-	("n" next-buffer :color red)
-	("o" other-window :color red)
-	("O" switch-to-buffer-other-window :color red)
-	("p" previous-buffer :color red)
-	("s" (switch-to-buffer "*scratch*"))
-	("r" rename-buffer)
-	("y" bury-buffer))
-#+END_SRC
-*** Hydra fet-lisp
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-lisp (:color blue :inherit (fet-base/heads) :columns 3 :hint nil)
-	"lisp"
-	("a" eval-buffer "eval buffer")
-	("c" byte-recompile-file "byte-compile file")
-	("d" (eval-defun t) "debug defun")
-	("z" (eval-defun nil) "stop edebug")
-	("e" eval-defun "eval defun")
-	("v" eval-last-sexp "eval last sexp")
-	("g" (eval-region (point-min)(point)) "eval region")
-	("h" (describe-function 'lispy--mode) "lispy help")
-	("i" ielm "ielm")
-	("l" load-file "load file")
-	("L" counsel-load-library "load library")
-	("f" counsel-find-library "find library")
-	("r" eval-region "region")
-	("t" toggle-debug-on-error "toggle debug")
-	("y" edebug-on-entry "debug on entry")
-	)
-#+END_SRC
-*** Hydra fet-applications
-#+BEGIN_SRC emacs-lisp
-  (defun fet-app-hints ()
-	"Calculate some variables for the applications hydra."
-	(setq elfeed-count
-		  (s-pad-right 12 " "
-					   (if (get-buffer "*elfeed-search*")
-						   (format "RSS(%s)"
-								   (car (s-split "/" (with-current-buffer "*elfeed-search*"
-													   (elfeed-search--count-unread)))))))))
-
-  (defhydra fet-applications (:hint nil
-									:pre (fet-app-hints)
-									:color blue
-									:inherit (fet-base/heads))
-	"Applications"
-	("a" (org-db-agenda "+2d") "agenda" :column "Emacs")
-	("d" dired "dired" :column "Emacs")
-	("j" fet-journal/body "journal" :column "Emacs")
-	("r" elfeed "elfeed" :column "Emacs")
-
-	("g" google "Google" :column "Web")
-
-	("b" bash "bash" :column "OS")
-	("f" finder "finder" :column "OS")
-	("e" eshell "eshell" :column "OS")
-
-	("k" package-list-packages "List packages" :columns "Commands")
-	("m" compose-mail "Compose mail" :column "Commands")
-	)
-#+END_SRC
-*** Hydra fet-windows
-#+BEGIN_SRC emacs-lisp
-  (defhydra fet-windows (:color blue :inherit (fet-base/heads) :columns 4 :hint nil)
-	"
-  Windows
-  Switch                Delete                Split                 Size
-  ------------------------------------------------------------------------------------------
-  _a_: ace-window      _dw_: delete window   _sb_: split below     _(_: enlarge horizontally
-  _ow_: other window   _do_: delete others   _sr_: split right     _)_: shrink horizontally
-  _of_: other frame    _y_: bury buffer      ^ ^                   _+_: enlarge
-  _b_: buffers         _df_: delete frame    ^ ^                   _-_: shrink
-  _ss_: *scratch*
-  ------------------------------------------------------------------------------------------
-  "
-	("a" ace-window)
-	("dw" delete-window)
-	("b" (fet-open-hydra fet-buffers/body))
-	("do" delete-other-windows)
-	("sb" split-window-below)
-	("sr" split-window-right)
-	("ow" other-window)
-	("of" other-frame)
-	("df" delete-frame)
-	("y" bury-buffer)
-	("(" (shrink-window-horizontally 1) :color red)
-	(")" (enlarge-window-horizontally 1) :color red)
-	("+" (enlarge-window 1) :color red)
-	("-" (enlarge-window -1) :color red)
-	("ss" (switch-to-buffer "*scratch*"))
-	)
-#+END_SRC
-* Interaction and editing files
-** Company
-- [[https://github.com/company-mode/company-mode]]
-- [[https://github.com/sebastiencs/company-box]]
-
-#+begin_src emacs-lisp 
-  ;; (use-package company
-  ;;   :diminish company-mode
-  ;;   :general
-  ;;   (general-define-key :keymaps 'company-active-map
-  ;; 					  "C-j" 'company-select-next
-  ;; 					  "C-k" 'company-select-previous)
-  ;;   :init
-  ;;   (add-hook 'after-init-hook 'global-company-mode)
-  ;;   (setq company-minimum-prefix-length 2
-  ;; 		company-tooltip-limit 14
-  ;; 		company-tooltip-align-annotations t
-  ;; 		company-require-match 'never
-  ;; 		company-global-modes '(not erc-mode message-mode help-mode gud-mode)
-  ;; 		company-frontends '(company-pseudo-tooltip-frontend
-  ;; 							company-echo-metadata-frontend)
-  ;; 		company-backends '(company-capf company-files company-keywords)
-  ;; 		company-insertion-on-trigger nil
-  ;; 		company-dabbrev-other-buffers nil
-  ;; 		company-dabbrev-ignore-case nil
-  ;; 		company-dabbrev-downcase nil)
-  ;;   :config
-  ;;   (setq company-idle-delay 0.3)
-  ;;   :custom-face
-  ;;   (company-tooltip ((t (:family "Roboto Mono")))))
 #+end_src
+
+#+RESULTS:
+| (lambda nil evil-org-mode) | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
+
+** General key bindings
+:PROPERTIES:
+:CUSTOM_ID: KeyboardHelpersGeneralkeybindings-t0ubeqe0d2k0
+:END:
+- [[https://github.com/noctuid/general.el]]
+
+#+begin_src emacs-lisp
+	   (use-package general
+		 :config
+		 (general-evil-setup)
+
+		 (general-create-definer fet/leader-keys
+		   :states '(normal insert visual emacs)
+		   :keymaps 'override
+		   :prefix "SPC"
+		   :global-prefix "C-SPC") ;; access leader in insert mode
+
+		 (fet/leader-keys
+		  "SPC" '(counsel-M-x :wk "M-x")
+		  "." '(find-file :wk "Find file")
+		  "u" '(universal-argument :wk "Universal argument")
+		  "TAB TAB" '(comment-line :wk "Comment lines")
+		  "i" '(ibuffer :wk "Ibuffer")
+		  "d" '(dired :wk "Dired")
+		  "T" '(org-babel-tangle :wk "org-babel-tangle")
+		  "E" '(org-export-dispatch :wk "Export dispatch")
+		  "M" '(magit-status :wk "Magit status")
+		  "S" '(yas-insert-snippet :wk "Insert yasnippet")
+		  "," '(fet-config-command :wk "Options")
+		  "q" '(keyboard-quit :wk "Exit menu")
+		  "c" '(org-capture :wk "Org capture")
+
+		  )
+
+		 (fet/leader-keys
+		   "b" '(nil :wk "Bookmarks/Buffers")
+		   "b b" '(switch-to-buffer :wk "Switch to buffer") ;; TODO fix error
+		   "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
+		   "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
+		   "b d" '(bookmark-delete :wk "Delete bookmark")
+		   "b i" '(ibuffer :wk "Ibuffer")
+		   "b k" '(kill-current-buffer :wk "Kill current buffer")
+		   "b K" '(kill-some-buffers :wk "Kill multiple buffers")
+		   "b l" '(list-bookmarks :wk "List bookmarks")
+		   "b m" '(bookmark-set :wk "Set bookmark") ;; TODO fix error
+		   "b n" '(next-buffer :wk "Next buffer")
+		   "b p" '(previous-buffer :wk "Prev buffer")
+		   "b r" '(revert-buffer :wk "Reload buffer")
+		   "b R" '(rename-buffer :wk "Rename buffer")
+		   "b s" '(basic-save-buffer :wk "Save buffer")
+		   "b S" '(save-some-buffers :wk "Save multiple buffers")
+		   "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
+		   "b P" '(lpr-buffer :wk "Print buffer")
+		   )
+
+		 (fet/leader-keys
+		   "d" '(nil :wk "Dired")
+		   "d d" '(dired :wk "Open dired")
+		   "d j" '(dired-jump :wk "Dired jump to current")
+		   "d n" '(neotree-dir :wk "Open directory in neotree")
+		   )
+
+		 (fet/leader-keys
+		   "e" '(nil :wk "Eshell/Evaluate")
+		   "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+		   "e d" '(eval-defun :wk "Evaluate defun containing or after point")
+		   "e e" '(eval-expression :wk "Evaluate an elisp expression")
+		   "e h" '(counsel-esh-history :wk "Eshell history")
+		   "e l" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+		   "e r" '(eval-region :wk "Evaluate elisp in region")
+		   "e R" '(eww-reload :wk "Reload current page in EWW")
+		   "e s" '(eshell :wk "Eshell") ;; TODO fix emacs mode in eshell not evil
+		   "e w" '(eww :wk "EWW emacs web broswer")
+		   )
+
+		 (fet/leader-keys
+		   "f" '(nil :wk "Files")
+		   "f c" '((lambda () (interactive) (find-file "~/dev/emacs/Readme.org")) :wk "Open Readme.org")
+		   "f d" '(find-grep-dired :wk "Search for string in files in DIR")
+		   "f g" '(counsel-grep-or-swiper :wk "Search for string current file")
+		   "f j" '(counsel-file-jump :wk "Jump to a file below current directory")
+		   "f l" '(counsel-locate :wk "Locate a file")
+		   "f s" '((lambda () (interactive) (find-file "~/dev/emacs/snippets/")) :wk "Dired snippets directory")
+		   "f r" '(counsel-recentf :wk "Find recent files")
+		   "f u" '(sudo-edit-find-file :wk "Sudo find file")
+		   "f U" '(sudo-edit :wk "Sudo edit file")
+		   )
+
+		 (fet/leader-keys
+		   "g" '(nil :wk "Git")
+		   "g d" '(magit-dispatch :wk "Magit dispatch")
+		   "g ." '(magit-file-disatch :wk "Magit file dispatch")
+		   "g b" '(magit-branch-checkout :wk "Switch branch")
+		   "g c" '(nil :wk "Create")
+		   "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
+		   "g c c" '(magit-commit-create : "Create commit")
+		   "g c f" '(magit-commit-fixup :wk "Create fixup commit")
+		   "g C" '(magit-clone :wk "Clone repo")
+		   "g f" '(nil :wk "Find")
+		   "g f c" '(magit-show-commit :wk "Show commit")
+		   "g f f" '(magit-find-file :wk "Magit find file")
+		   "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
+		   "g F" '(magit-fetch :wk "Git fetch")
+		   "g g" '(magit-status :wk "Magit status")
+		   "g i" '(magit-init :wk "Initialize git repo")
+		   "g l" '(magit-log-buffer-file :wk "Magit buffer log")
+		   "g r" '(vc-revert :wk "Git revert file")
+		   "g s" '(magit-stage-file :wk "Git stage file")
+		   "g t" '(git-timemachine :wk "Git time machine")
+		   "g u" '(magit-unstage-file :wk "Git unstage file")
+		   )
+
+		 (fet/leader-keys
+		   "h" '(nil :wk "Help")
+		   "h a" '(counsel-apropos :wk "Apropos")
+		   "h b" '(counsel-bindings :wk "Desc. bindings")
+		   "h c" '(describe-char :wk "Desc. char under cursor")
+		   "h d" '(nil :wk "Emaccs documentation")
+		   "h d a" '(about-emacs :wk "About Emacs")
+		   "h d d" '(view-emacs-debugging :wk "View Emacs debugging")
+		   "h d f" '(view-emacs-FAQ :wk "View Emacs FAQ")
+		   "h d m" '(info-emacs-manual :wk "The Emacs manual")
+		   "h d n" '(view-emacs-news :wk "View Emacs news")
+		   "h d o" '(describe-distribution :wk "How to obtain Emacs")
+		   "h d p" '(view-emacs-problems :wk "View Emacs problems")
+		   "h d t" '(view-emacs-todo :wk "View Emacs todo")
+		   "h d w" '(describe-no-warranty :wk "Describe no warranty")
+		   "h e" '(view-echo-area-messages :wk "View echo area messages")
+		   "h f" '(describe-function :wk "Desc. function")
+		   "h F" '(describe-face :wk "Desc. face")
+		   "h g" '(describe-gnu-project :wk "Desc. GNU Project")
+		   "h i" '(info :wk "Info")
+		   "h I" '(describe-input-method :wk "Desc. input method")
+		   "h k" '(describe-key :wk "Desc. key")
+		   "h l" '(view-lossage :wk "Display recent keystrokes and the commands run")
+		   "h L" '(describe-language-environment :wk "Desc. language environment")
+		   "h m" '(describe-mode :wk "Desc. mode")
+		   "h t" '(fet-hydra-theme-switcher/body :wk "Fixme Change theme")
+		   "h v" '(describe-variable :wk "Desc. variable")
+		   "h w" '(where-is :wk "Prints keybinding for command if set")
+		   "h x" '(describe-command :wk "Display full documentation for command")
+		   )
+
+		 (fet/leader-keys
+		   "m" '(nil :wk "Org")
+		   "m a" '(org-agenda :wk "Org agenda")
+		   "m e" '(org-export-dispatch :wk "Org export dispatch")
+		   "m i" '(org-toggle-item :wk "Org toggle item")
+		   "m t" '(org-todo :wk "Org todo")
+		   "m T" '(org-babel-tangle :wk "Org babel tangle")
+		   "m l" '(org-todo-list :wk "Org todo list")
+		   "m b" '(nil :wk "Tables")
+		   "m b -" '(org-table-insert-hline :wk "Insert hline in table")
+		   "m d" '(nil :wk "Date/deadline")
+		   "m d t" '(org-time-stamp :wk "Org time stamp")
+		   )
+
+		 (fet/leader-keys
+		   "o" '(nil :wk "Open")
+		   "o e" '(elfeed :wk "Elfeed RSS")
+		   "o f" '(make-frame :wk "Open buffer in new frame")
+		   "o F" '(select-frame-by-name :wk "Select frame by name")
+		   )
+
+		 (fet/leader-keys
+		   "p" '(projectile-command-map :wk "Projectile")
+		   )
+
+		 (fet/leader-keys
+		   "s" '(nil :wk "Search")
+		   "s d" '(dictionary-search :wk "Search dictionary")
+		   "s m" '(man :wk "Man pages")
+		   "s o" '(pdf-occur :wk "Pdf search lines matching STRING")
+		   "s t" '(tldr :wk "Lookup TLDR docs for a command")
+		   )
+
+		 (fet/leader-keys
+		   "t" '(nil :wk "Toggle")
+		   "t e" '(eshell-toggle :wk "Toggle eshell")
+		   "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+		   "t n" '(neotree-toggle :wk "Toggle neotree file viewer")
+		   "t o" '(org-mode :wk "Toggle org mode")
+		   "t r" '(rainbow-mode :wk "Toggle rainbow mode")
+		   "t t" '(visual-line-mode :wk "Toggle truncated lines")
+		   )
+
+		 (fet/leader-keys
+		   "w" '(nil :wk "Windows/Words")
+		   "w c" '(evil-window-delete :wk "Close window")
+		   "w n" '(evil-window-new :wk "New window")
+		   "w s" '(evil-window-split :wk "Horizontal split window")
+		   "w v" '(evil-window-vsplit :wk "Vertical split window")
+		   "w h" '(evil-window-left :wk "Window left")
+		   "w j" '(evil-window-down :wk "Window down")
+		   "w k" '(evil-window-up :wk "Window up")
+		   "w l" '(evil-window-right :wk "Window right")
+		   "w w" '(evil-window-next :wk "Goto next window")
+		   "w d" '(downcase-word :wk "Downcase word")
+		   "w u" '(upcase-word :wk "Upcase word")
+		   "w =" '(count-words :wk "Count words/lines for buffer")
+		   "w t" '(nil :wk "Thesaurus")
+		   "w t p" '(mw-thesaurus-lookup-at-point :wk "Lookup word at point")
+		   "w t m" '(mw-thesaurus-mode :wk "Merriam-Webster minor mode")
+		   "w t l" '(mw-thesaurus-lookup :wk "Lookup word")
+		   )
+		 (general-def
+		   :keymaps 'override
+		   ;; Emacs
+		   "M-x" 'counsel-M-x
+		   "s-x" 'execute-extended-command
+		   "s-b" 'counsel-switch-buffer ; super-b
+		   ;; Editing
+		   "M-v" 'simpleclip-paste
+		   "M-V" 'evil-paste-after ; shift-paste uses the internal clipboard
+		   "M-c" 'simpleclip-copy
+		   ;; Utility
+		   "C-c c" 'org-capture
+		   "C-c a" 'org-agenda
+		   "C-s" 'swiper
+		   "M-=" 'count-words
+		   "M-j" 'avy-goto-char-2
+		   )
+
+		 (setq general-describe-priority-keymaps nil
+		   general-describe-keymap-sort-function #'general-sort-by-car
+		   general-describe-state-sort-function #'general-sort-by-car)
+		 (setq general-describe-keybinding-sort-function #'general-sort-by-car)
+
+		 )
+
+
+	;; end of general-define-key
+
+#+end_src
+
+#+RESULTS:
+: t
+
+* Interaction and editing files
+:PROPERTIES:
+:CUSTOM_ID: Interactionandeditingfiles-jnwbeqe0d2k0
+:END:
 ** Corfu
-- [[https://github.com/minad/corfu]]
-- [[https://github.com/minad/cape]]
-- [[https://github.com/jdtsmith/kind-icon]]
-#+BEGIN_SRC emacs-lisp
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesCorfu-vwybeqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package corfu
 	:init
 	(global-corfu-mode)
@@ -1344,12 +924,30 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 			  "<escape>" 'corfu-quit
 			  ))
 
-  (use-package cape
+#+end_src
+
+#+RESULTS:
+
+** Cape
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesCape-c81ceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package cape
 	:init
 	(add-to-list 'completion-at-point-functions #'cape-file)
 	(add-to-list 'completion-at-point-functions #'cape-keyword)
 	)
 
+#+end_src
+
+#+RESULTS:
+
+** Kind-icon
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesKindicon-go3ceqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package kind-icon
 	:config
 	(setq kind-icon-default-face 'corfu-default
@@ -1359,36 +957,46 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	(add-hook 'counsel-load-theme #'(lambda () (interactive) (kind-icon-reset-cache)))
 	(add-hook 'load-theme #'(lambda () (interactive) (kind-icon-reset-cache)))
 	)
-#+END_SRC
-** Counsel
-- [[https://github.com/abo-abo/swiper]]
-
-#+begin_src emacs-lisp 
-
-  (use-package counsel
-	:config
-	(setq default-directory fet/home
-		  counsel-switch-buffer-preview-virtual-buffers nil)
-	(setq counsel-find-file-ignore-regexp
-		  (concat "\\(Icon\\\)"
-				  "\\|\\(?:\\`[#.]\\)"))
-	(add-to-list 'ivy-sort-functions-alist '(counsel-recentf . file-newer-than-file-p))
-	(add-to-list 'recentf-exclude (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
-	(setq find-program "fd")
-	(setq counsel-file-jump-args (split-string "-L --type f -H"))
-	:general
-	(general-define-key :keymaps 'counsel-find-file-map
-						"C-c f" 'counsel-file-jump-from-find)
-	)
-		
 
 #+end_src
+
+#+RESULTS:
+: t
+
+** Counsel
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesCounsel-b76ceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+
+  (use-package counsel
+	 :config
+	 (setq default-directory fet/home
+		   counsel-switch-buffer-preview-virtual-buffers nil)
+	 (setq counsel-find-file-ignore-regexp
+		   (concat "\\(Icon\\\)"
+				   "\\|\\(?:\\`[#.]\\)"))
+	 (add-to-list 'ivy-sort-functions-alist '(counsel-recentf . file-newer-than-file-p))
+	 (add-to-list 'recentf-exclude (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+	 (setq find-program "fd")
+	 (setq counsel-file-jump-args (split-string "-L --type f -H"))
+	 :general
+	 (general-define-key :keymaps 'counsel-find-file-map
+						 "C-c f" 'counsel-file-jump-from-find)
+	 )
+
+
+
+#+end_src
+
+#+RESULTS:
+
 ** Ivy
-- [[https://github.com/abo-abo/swiper]]
-- [[https://github.com/seagle0128/all-the-icons-ivy-rich]]
-- [[https://github.com/Yevgnen/ivy-rich]]
-#+BEGIN_SRC emacs-lisp
-  (use-package ivy
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesIvy-wi9ceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package ivy
 	:diminish ivy-mode
 	:config
 	(setq ivy-extra-directories nil       ;; hides . and ..
@@ -1407,49 +1015,69 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	 "C-j" 'ivy-next-line)
 	)
 
-  (use-package all-the-icons-ivy-rich
+ (use-package all-the-icons-ivy-rich
 	:init (all-the-icons-ivy-rich-mode 1)
 	:config
 	(setq all-the-icons-ivy-rich-icon-size 1.0))
 
-  (use-package ivy-rich
+ (use-package ivy-rich
 	:after ivy
 	:init
 	(setq ivy-rich-path-style 'abbrev)
 	(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
 	:config
 	(ivy-rich-mode 1))
-#+END_SRC
-** Vertico
-- [[https://github.com/minad/marginalia]]
 
-#+begin_src emacs-lisp  
-   (use-package marginalia
+#+end_src
+
+#+RESULTS:
+: t
+
+** Marginalia
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesMarginalia-uhcceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+    (use-package marginalia
 	:bind
 	(:map minibuffer-local-map ("M-A" . marginalia-cycle))
 	:init
-	(marginalia-mode))
- #+end_src
+	(marginalia-mode)) 
+
+#+end_src
+
+#+RESULTS:
+: marginalia-cycle
+
 ** Prescient
-- [[https://github.com/radian-software/prescient.el]]
-#+BEGIN_SRC emacs-lisp
-  (use-package prescient
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesPrescient-ugfceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package prescient
 	:config
 	(setq-default history-length 1000)
 	(setq-default prescient-history-length 1000)
 	(prescient-persist-mode +1))
 
-  (use-package ivy-prescient
+ (use-package ivy-prescient
 	:after ivy
 	:config
 	(dolist (command '(org-ql-view counsel-find-file fontaine-set-preset))
 	  (setq ivy-prescient-sort-commands (append ivy-prescient-sort-commands (list command))))
 	(ivy-prescient-mode +1))
-#+END_SRC
-** Smartparens
-- [[https://github.com/Fuco1/smartparens]]
-#+BEGIN_SRC emacs-lisp
-  (use-package smartparens
+
+#+end_src
+
+#+RESULTS:
+: t
+
+** Smart parens
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesSmartparens-kmiceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package smartparens
 	:diminish smartparens-mode
 	:defer 1
 	:config
@@ -1477,113 +1105,161 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 			   :unless '(sp-point-before-word-p sp-point-before-same-p)))
 	(smartparens-global-mode t))
 
-#+END_SRC
-** Rainbow mode
-- [[https://github.com/emacsmirror/rainbow-mode]]
-- [[https://github.com/Fanael/rainbow-delimiters]]
-
-#+begin_src emacs-lisp  
-
-  (use-package rainbow-mode
-    :diminish
-    :hook org-mode prog-mode)
-
-  (use-package rainbow-delimiters
-    :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
-           (clojure-mode . rainbow-delimiters-mode)))
 
 #+end_src
+
+#+RESULTS:
+: t
+
+** Rainbow mode
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesRainbowmode-5xlceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  
+(use-package rainbow-mode
+  :diminish
+  :hook org-mode prog-mode)
+
+(use-package rainbow-delimiters
+  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+         (clojure-mode . rainbow-delimiters-mode)))
+
+
+#+end_src
+
+#+RESULTS:
+| rainbow-delimiters-mode |
+
 ** Search and replace
-- [[https://github.com/emacsorphanage/evil-anzu]]
-#+BEGIN_SRC emacs-lisp
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesSearchandreplace-rcpceqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package evil-anzu :defer t)
-#+END_SRC
+
+#+end_src
+
+#+RESULTS:
+
 ** Clipboard
-- [[https://github.com/rolandwalker/simpleclip]]
-
-#+begin_src emacs-lisp 
-
-  (use-package simpleclip
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesClipboard-jrsceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  
+ (use-package simpleclip
 	:config (simpleclip-mode 1))
 
-  (defun fet/paste-in-minibuffer ()
+ (defun fet/paste-in-minibuffer ()
 	(local-set-key (kbd "M-v") 'simpleclip-paste))
-  (add-hook 'minibuffer-setup-hook 'fet/paste-in-minibuffer) ;; allows pasting in minibuffer with M-v (Jake B)
+ (add-hook 'minibuffer-setup-hook 'fet/paste-in-minibuffer) ;; allows pasting in minibuffer with M-v (Jake B)
+
 
 #+end_src
+
+#+RESULTS:
+| fet/paste-in-minibuffer | marginalia--minibuffer-setup | all-the-icons-ivy-rich-minibuffer-align-icons | savehist-minibuffer-hook | rfn-eshadow-setup-minibuffer | minibuffer-error-initialize | minibuffer-history-isearch-setup | minibuffer-history-initialize |
+
 ** Avy
-- [[https://github.com/abo-abo/avy]]
-
-#+begin_src emacs-lisp 
-
-  (use-package avy
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesAvy-y2wceqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  
+ (use-package avy
 	:defer t
 	:config
 	(setq avy-case-fold-search nil))
 
+
 #+end_src
+
+#+RESULTS:
+
 ** Undo and redo
-- [[https://github.com/emacsmirror/undo-fu]]
-#+BEGIN_SRC emacs-lisp
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesUndoandredo-k3zceqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package undo-fu)
-#+END_SRC
-** Neotree
-- [[https://github.com/jaypei/emacs-neotree]]
-
-#+begin_src emacs-lisp 
-  (use-package neotree
-	:config
-	(setq neo-smart-open t
-		  neo-show-hidden-files t
-		  neo-window-width 55
-		  neo-window-fixed-size nil
-		  inhibit-compacting-font-caches t
-		  projectile-switch-project-action 'neotree-projectile-action)
-	(add-hook 'neo-after-create-hook
-			  #'(lambda (_)
-				  (with-current-buffer (get-buffer neo-buffer-name)
-					(setq truncate-lines t)
-					(setq word-wrap nil)
-					(make-local-variable 'auto-hscroll-mode)
-					(setq auto-hscroll-mode nil)))))
 
 #+end_src
 
-** Sudo Edit
-- [[https://github.com/nflath/sudo-edit/blob/master/sudo-edit.el]]
+#+RESULTS:
 
-#+begin_src emacs-lisp  
-
+** Sudo edit
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesSudoedit-f22deqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package sudo-edit)
 
 #+end_src
-** Super Save
-- [[https://github.com/bbatsov/super-save]]
 
-#+BEGIN_SRC emacs-lisp
+#+RESULTS:
+
+** Super save
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesSupersave-cs4deqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package super-save
-    :diminish super-save-mode
-    :defer 2
-    :config
-    (setq super-save-auto-save-when-idle t
-          super-save-idle-duration 5
-          super-save-triggers
-          '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
-          super-save-max-buffer-size 10000000)
-    (super-save-mode +1))
-#+END_SRC
+  :diminish super-save-mode
+  :defer 2
+  :config
+  (setq super-save-auto-save-when-idle t
+        super-save-idle-duration 5
+        super-save-triggers
+        '(evil-window-next evil-window-prev balance-windows other-window next-buffer previous-buffer)
+        super-save-max-buffer-size 10000000)
+  (super-save-mode +1))
+
+#+end_src
+
+#+RESULTS:
+
 ** Saveplace
-- [[https://www.emacswiki.org/emacs/SavePlace]]
-#+BEGIN_SRC emacs-lisp
-  (use-package saveplace
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesSaveplace-7d7deqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package saveplace
 	:init (setq save-place-limit 100)
 	:config (save-place-mode))
-#+END_SRC
-** Projectile
-- [[https://docs.projectile.mx/projectile/index.html]]
 
-#+begin_src emacs-lisp 
-  (use-package projectile
+#+end_src
+
+#+RESULTS:
+: t
+
+** Yasnippet
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesYasnippet-ir9deqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package yasnippet
+  :diminish yas-minor-mode
+  :defer 5
+  :config
+  (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+  (yas-global-mode 1))
+
+(require 'warnings)
+(add-to-list 'warning-suppress-types '(yasnippet backquote-change))
+
+
+#+end_src
+
+#+RESULTS:
+| yasnippet | backquote-change |
+
+** Projectile
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesProjectile-l1cdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package projectile
 	:ensure t
 	:init
 	(projectile-mode +1)
@@ -1592,88 +1268,153 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 		  ("s-p" . projectile-command-map)
 		  ("C-c p" . projectile-command-map)))
 
+
 #+end_src
 
-** Yasnippet
-- [[https://github.com/joaotavora/yasnippet]]
+#+RESULTS:
+: projectile-command-map
 
+** Orderless
+:PROPERTIES:
+:CUSTOM_ID: InteractionandeditingfilesOrderless-x6edeqe0d2k0
+:END:
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :diminish yas-minor-mode
-    :defer 5
-    :config
-    (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
-    (yas-global-mode 1))
+   (use-package orderless
+	:ensure t
+	:custom
+	(completion-styles '(orderless basic))
+	(completion-category-overrides '((file (styles basic partial-completion)))))
 
-  (require 'warnings)
-  (add-to-list 'warning-suppress-types '(yasnippet backquote-change))
 
 #+end_src
+
+#+RESULTS:
+
+* Eshell
+:PROPERTIES:
+:CUSTOM_ID: Eshell-c7gdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  
+(use-package eshell-toggle
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil)
+  (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
+
+(use-package eshell-syntax-highlighting
+  :after esh-mode
+  :config
+  (eshell-syntax-highlighting-global-mode +1))
+
+(setq eshell-history-size 5000
+      eshell-buffer-maximum-lines 5000
+      eshell-hist-ignoredups t
+      eshell-scroll-to-bottom-on-input t
+      eshell-destroy-buffer-when-process-dies t
+      eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
+
+
+#+end_src
+
+#+RESULTS:
+| bash | fish | htop | ssh | top | zsh |
 
 * Visuals
+:PROPERTIES:
+:CUSTOM_ID: Visuals-zbideqe0d2k0
+:END:
 ** All the icons
-- [[https://github.com/domtronn/all-the-icons.el]]
-- [[https://github.com/jtbm37/all-the-icons-dired]]
-
-#+begin_src emacs-lisp 
+:PROPERTIES:
+:CUSTOM_ID: VisualsAlltheicons-w1kdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package all-the-icons
-    :ensure t
-    :if (display-graphic-p))
+  :ensure t
+  :if (display-graphic-p))
 
-  (use-package all-the-icons-dired
-    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+(use-package all-the-icons-dired
+  :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+
 
 #+end_src
+
+#+RESULTS:
+| lambda | nil | (all-the-icons-dired-mode t) |
+
 ** Fonts
-*** Font configuration
-#+BEGIN_SRC emacs-lisp
-  (setq text-scale-mode-step 1.2)
-  (setq fet-default-line-spacing 1)
-  (setq-default line-spacing fet-default-line-spacing)
-  (setq fet-text-height 150)
-  (set-frame-font "RobotoMono Nerd Font:size=14" nil t)
+:PROPERTIES:
+:CUSTOM_ID: VisualsFonts-8wldeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+	  (setq text-scale-mode-step 1)
+	(setq fet-default-line-spacing 1)
+	(setq-default line-spacing fet-default-line-spacing)
+	(setq fet-text-height 140)
+	(set-frame-font "RobotoMono Nerd Font:size=14" nil t)
 
-#+END_SRC
-*** Mixed pitch
-- [[https://gitlab.com/jabranham/mixed-pitch]]
-#+BEGIN_SRC emacs-lisp
-  (use-package mixed-pitch
-	:defer t
-	:config
-	(setq mixed-pitch-set-height nil)
-	(dolist (face '(org-date org-priority org-tag org-special-keyword))
-	  (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
-#+END_SRC
+	 (use-package mixed-pitch
+	  :defer t
+	  :config
+	  (setq mixed-pitch-set-height nil)
+	  (dolist (face '(org-date org-priority org-tag org-special-keyword))
+		(add-to-list 'mixed-pitch-fixed-pitch-faces face)))
+
+	(set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
+  (setq-default fill-column 90)
+  (use-package fontawesome)
+
+  (modify-all-frames-parameters
+   '((right-divider-width . 20)
+	 (internal-border-width . 20)))
+  (dolist (face '(window-divider
+				  window-divider-first-pixel
+				  window-divider-last-pixel))
+	(face-spec-reset-face face)
+	(set-face-foreground face (face-attribute 'default :background)))
+  (set-face-background 'fringe (face-attribute 'default :background))
+#+end_src
+
+#+RESULTS:
+
 ** Dashboard
-- [[https://github.com/emacs-dashboard/emacs-dashboard]]
-
-#+BEGIN_SRC emacs-lisp
+:PROPERTIES:
+:CUSTOM_ID: VisualsDashboard-1xndeqe0d2k0
+:END:
+#+begin_src emacs-lisp
   (use-package dashboard
-    :init
-    (setq initial-buffer-choice 'dashboard-open)
-    (setq dashboard-set-heading-icons t
-          dashboard-set-file-icons t
-          dashboard-display-icons-p t
-          dashboard-icon-type 'all-the-icons
-          dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
-          dashboard-startup-banner "~/.config/emacs/images/emacs.png"
-          dashboard-center-content nil ;; set to 't' to center dashboard
-          dashboard-items '((recents . 15)
-                            (agenda . 10)
-                            (bookmarks . 10)
-                            (projects . 10)
-                            (registers . 10)))
-    :custom
-    (dashboard-modify-heading-icons '((recents . "file-text")
-                                      (bookmarks . "book")))
-    :config
-    (dashboard-setup-startup-hook))
-#+END_SRC
-** Themes 
-- [[https://github.com/doomemacs/themes]]
+  :init
+  (setq initial-buffer-choice 'dashboard-open)
+  (setq dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-display-icons-p t
+        dashboard-icon-type 'all-the-icons
+        dashboard-banner-logo-title "Emacs Is More Than A Text Editor!"
+        dashboard-startup-banner "~/.config/emacs/images/emacs.png"
+        dashboard-center-content nil ;; set to 't' to center dashboard
+        dashboard-items '((recents . 15)
+                          (agenda . 10)
+                          (bookmarks . 10)
+                          (projects . 10)
+                          (registers . 10)))
+  :custom
+  (dashboard-modify-heading-icons '((recents . "file-text")
+                                    (bookmarks . "book")))
+  :config
+  (dashboard-setup-startup-hook))
 
-#+begin_src emacs-lisp 
-  (use-package doom-themes
+#+end_src
+
+#+RESULTS:
+: t
+
+** Themes
+:PROPERTIES:
+:CUSTOM_ID: VisualsThemes-k2qdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package doom-themes
 	:config
 	(setq doom-themes-enable-bold t
 	  doom-themes-enable-italic t)
@@ -1682,27 +1423,31 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 	;;(doom-themes-neotree-config)
 	(doom-themes-org-config))
 
-  (line-number-mode)
-  (column-number-mode)
-  (setq display-time-24-hr-format 't)
-  (setq display-time-format "%Y-%m-%d week: %U %H:%M CET")
-  (display-time-mode 't)
-  (size-indication-mode 0)
+ (line-number-mode)
+ (column-number-mode)
+ (setq display-time-24-hr-format 't)
+ (setq display-time-format "%Y-%m-%d week: %U %H:%M CET")
+ (display-time-mode 't)
+ (size-indication-mode 0)
 
-#+END_SRC
+
+#+end_src
+
+#+RESULTS:
+
 ** Modeline
-- [[https://github.com/hlissner/emacs-hide-mode-line]]
-- [[https://github.com/seagle0128/doom-modeline]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package hide-mode-line
+:PROPERTIES:
+:CUSTOM_ID: VisualsModeline-scsdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+   (use-package hide-mode-line
 	:commands (hide-mode-line-mode))
 
-  (line-number-mode)
-  (column-number-mode)
-  (size-indication-mode t)
+ (line-number-mode)
+ (column-number-mode)
+ (size-indication-mode t)
 
-  (use-package doom-modeline
+ (use-package doom-modeline
 	:ensure t
 	:init
 	(doom-modeline-mode)
@@ -1717,939 +1462,402 @@ The :color key is a shortcut. It aggregates :exit and :foreign-keys key in the f
 		  doom-modeline-buffer-state-icon t
 		  doom-modeline-bar-width 3))
 
-  (setq fet-doom-modeline-text-height 140)
-  (setq doom-modeline-height 28)
-#+end_src
-** Frame
-#+BEGIN_SRC emacs-lisp
-  (setq default-frame-alist '((left . 170)
-							  (width . 170)
-							  (top . 64)
-							  (height . 100)
-							  (fullscreen . fullheight)
-							  (internal-border-width . 8)))
+ (setq fet-doom-modeline-text-height 140)
+ (setq doom-modeline-height 28)
 
-   (setq frame-inhibit-implied-resize t) ;; is startup faster with this?
-
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-#+END_SRC
-** Line numbers, fringe and hl-line
-#+BEGIN_SRC emacs-lisp
-  (setq-default fringes-outside-margins nil)
-  (setq-default indicate-buffer-boundaries nil)
-  (setq-default indicate-empty-lines nil)
-
-  (set-face-attribute 'fringe nil :background nil)
-  (set-face-attribute 'header-line nil :background nil :inherit 'default)
-
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-#+END_SRC
-
-** Highlight todo
-- [[https://github.com/tarsius/hl-todo]]
-
-#+begin_src emacs-lisp  
-
-  (use-package hl-todo
-    :hook ((org-mode . hl-todo-mode)
-           (prog-mode . hl-todo-mode))
-    :config
-    (setq hl-todo-highlight-punctuation ":"
-          hl-todo-keyword-faces
-          '(("TODO" warning bold)
-            ("FIXME" error bold)
-            ("HACK" font-lock-constant-face bold)
-            ("REVIEW" font-lock-constant-face bold)
-            ("NOTE" success bold)
-            ("DEPRECATED" font-lock-doc-face bold))))
-
-#+end_src
-** Nerd icons
-- [[https://github.com/rainstormstudio/nerd-icons.el]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package nerd-icons)
-#+END_SRC
-** Orderless
-- [[https://github.com/oantolin/orderless]]
-
-#+begin_src emacs-lisp 
-  (use-package orderless
-	:ensure t
-	:custom
-	(completion-styles '(orderless basic))
-	(completion-category-overrides '((file (styles basic partial-completion)))))
-
-#+end_src
-
-** Typography
-#+BEGIN_SRC emacs-lisp
-  (set-face-attribute 'default nil :family "Hack Nerd Font Mono" :height 140)
-  (setq-default fill-column 90)
-  (use-package fontawesome)
-#+END_SRC
-** Transient stuff
-#+BEGIN_SRC emacs-lisp
-  ;;(require 'transient)
-
-  (transient-define-prefix fet-config-command ()
-    "Config options"
-    [["Configuration files"
-      ("r" "Edit emacs config file" (lambda () (interactive) (
-                                                  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
-                                                  )))
-      ("c" "Copy snippets" (lambda () (interactive) (
-                                                     message "hello"
-                                                     )))
-      ("g" "Git status" (lambda () (interactive) (magit-status)))
-      ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
-      ]
-
-     ["Theme options"
-      ("1" "doom-solarized-light" (lambda () (interactive) (
-                                                            load-theme 'doom-solarized-light
-                                                            )))
-      ("2" "doom-solarized-dark" (lambda () (interactive) (
-                                                           load-theme 'doom-solarized-dark
-                                                           )))
-      ]
-     ])
-
-  ;;(fet-config-command)
-#+END_SRC
-* Applications
-** ELFEED
-- [[https://github.com/skeeto/elfeed]]
-
-#+begin_src emacs-lisp  
-
-  (use-package elfeed
-    :config
-    (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
-        elfeed-feeds (quote
-                       (("https://www.reddit.com/r/linux.rss" reddit linux)
-                        ("https://www.reddit.com/r/commandline.rss" reddit commandline)
-                        ("https://www.reddit.com/r/distrotube.rss" reddit distrotube)
-                        ("https://www.reddit.com/r/emacs.rss" reddit emacs)
-                        ("https://www.gamingonlinux.com/article_rss.php" gaming linux)
-                        ("https://hackaday.com/blog/feed/" hackaday linux)
-                        ("https://opensource.com/feed" opensource linux)
-                        ("https://linux.softpedia.com/backend.xml" softpedia linux)
-                        ("https://itsfoss.com/feed/" itsfoss linux)
-                        ("https://www.zdnet.com/topic/linux/rss.xml" zdnet linux)
-                        ("https://www.phoronix.com/rss.php" phoronix linux)
-                        ("http://feeds.feedburner.com/d0od" omgubuntu linux)
-                        ("https://www.computerworld.com/index.rss" computerworld linux)
-                        ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
-                        ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
-                        ("https://betanews.com/feed" betanews linux)
-                        ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
-                        ("https://distrowatch.com/news/dwd.xml" distrowatch linux)))))
- 
-
-(use-package elfeed-goodies
-  :init
-  (elfeed-goodies/setup)
-  :config
-  (setq elfeed-goodies/entry-pane-size 0.5))
-
-#+end_src
-** Eshell
-- [[https://github.com/4DA/eshell-toggle]]
-- [[https://github.com/akreisher/eshell-syntax-highlighting]]
-
-#+begin_src emacs-lisp  
-
-  (use-package eshell-toggle
-    :custom
-    (eshell-toggle-size-fraction 3)
-    (eshell-toggle-use-projectile-root t)
-    (eshell-toggle-run-command nil)
-    (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
-
-  (use-package eshell-syntax-highlighting
-    :after esh-mode
-    :config
-    (eshell-syntax-highlighting-global-mode +1))
-
-  (setq eshell-history-size 5000
-        eshell-buffer-maximum-lines 5000
-        eshell-hist-ignoredups t
-        eshell-scroll-to-bottom-on-input t
-        eshell-destroy-buffer-when-process-dies t
-        eshell-visual-commands '("bash" "fish" "htop" "ssh" "top" "zsh"))
-
-#+end_src
-** GPTel
-#+BEGIN_SRC emacs-lisp
- ;; (use-package gptel) ;; TODO create an api-key to get going
-#+END_SRC
-** Magit
-Magit is a complete text-based user interface to Git.
-- [[https://magit.vc]]
-
-A very good writeup to get you started using Magit: [[https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git]]
-
-#+begin_src emacs-lisp 
-  (use-package transient)
-  ;;(use-package magit)
-
-  (use-package git-gutter
-    :ensure t
-    :init (global-git-gutter-mode +1))
-
-  (use-package git-timemachine
-    :after git-timemachine
-    :hook (evil-normalize-keymaps . git-timemachine-hook)
-    :config
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
-    )
-
-
-#+end_src
-
-** Thesaurus
-- [[https://github.com/agzam/mw-thesaurus.el]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package mw-thesaurus
-    :defer t
-    :config
-    (add-hook 'mw-thesaurus-mode-hook
-              (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
-#+END_SRC
-* Misc packages
-- [[https://github.com/iqbalansari/restart-emacs]]
-- [[https://github.com/emacsmirror/diminish]]
-- [[https://github.com/kaz-yos/reveal-in-osx-finder]]
-#+BEGIN_SRC emacs-lisp
-  (use-package restart-emacs :defer t)
-  (use-package diminish)
-  (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
-
-  #+end_src
-
-** TLDR
-[[https://github.com/kuanyui/tldr.el]]
-
-#+begin_src emacs-lisp  
-
-  (use-package tldr)
-
-#+end_src
-** Try
-Try is a package that allows you to try out Emacs packages without installing them. If you pass a URL to a plaint text .el -file it evaluates the content, without storing the file.
-
-Packages from ELPA will be stored in a temporary directory by default.
-
-[[https://github.com/larstvei/Try]]
-
-#+BEGIN_SRC emacs-lisp
-  (use-package try)
-#+END_SRC
-* Org Mode
-TODO: fix this section
-# ** Org Mode Packages
-- [[https://orgmode.org]]
-- [[https://github.com/oantolin/orderless]]
-- [[https://github.com/alphapapa/org-make-toc]]
-- [[https://github.com/minad/org-modern]]
-- [[https://github.com/hexmode/ox-reveal]]
-*** Org-super-agenda
-#+BEGIN_SRC emacs-lisp
-  (use-package org-super-agenda
-	:after org
-	:config
-	(setq org-super-agenda-header-map nil)
-	(add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display nil)))
-	(org-super-agenda-mode))
-#+END_SRC
-*** old org stuff - maybee remove
-#+begin_src emacs-lisp
-
-
-
-  (use-package org-cliplink
-	:defer t
-	:after org)
-
-
-
-  (require 'org-tempo)
-
-  (use-package org-bullets)
-  (add-hook 'org-mode-hook (lambda ()(org-bullets-mode 1)))
-  ;;(add-hook 'before-save-hook #'org-make-toc-mode)
-
-  ;(require 'org-make-toc)
-  (use-package org-make-toc)
-
-  ;; HTML-specific
-  (setq org-html-validation-link nil) ;; No validation button on HTML exports
-
-  ;; LaTeX Specific
-  (eval-after-load 'ox
-	'(add-to-list
-	  'org-export-filter-timestamp-functions
-	  'org-export-filter-timestamp-remove-brackets)
-	)
-  (setq org-return-follows-link t)
-
-  ;; (use-package org-super-agenda
-  ;;   :after org
-  ;;   :config
-  ;;   (setq org-super-agenda-header-map nil)
-  ;;   (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local nobreak-char-display-nil)))
-  ;;   (org-super-agenda-mode))
-
-#+end_src
-*** Org-superstar
-#+BEGIN_SRC emacs-lisp
-  (use-package org-superstar
-	:config
-	(setq org-superstar-leading-bullet " ")
-	(setq org-superstar-special-todo-items t)
-	(setq org-superstar-todo-bullet-alist
-		  '(("TODO" . 9744)
-			("INPROG-TODO" . 9744)
-			("WORK" . 9744)
-			("STUDY" . 9744)
-			("SOMEDAY" . 9744)
-			("READ" . 9744)
-			("PROJ" . 9744)
-			("CONTACT" . 9744)
-			("DONE" . 9745)))
-	(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil))))
-#+END_SRC
-*** Org-modern
-#+BEGIN_SRC emacs-lisp
-  (use-package org-modern
-	:hook (org-mode . org-modern-mode)
-	:config
-	(setq org-modern-star '( "⌾" "✸" "◈" "◇")
-		  org-modern-list '((42 . "◦") (43 . "•") (45 . "–"))
-		  org-modern-tag nil
-		  org-modern-priority nil
-		  org-modern-todo nil
-		  org-modern-table nil))
-#+END_SRC
-*** Evil Org
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-org
-	:diminish evil-org-mode
-	:after org
-	:config
-	(add-hook 'org-mode-hook 'evil-org-mode)
-	(add-hook 'evil-org-mode-hook
-			  (lambda () (evil-org-set-key-theme))))
-
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys)
-#+END_SRC
-*** Org-gcal
-#+BEGIN_SRC emacs-lisp
-  (use-package org-gcal
-	:defer t
-	:config
-	(setq org-gcal-down-days '20
-		  org-gcal-up-days '10
-		  org-gcal-recurring-events-mode 'top-level
-		  org-gcal-remove-api-cancelled-events t))
-#+END_SRC
-*** Org-appear
-- [[https://github.com/awth13/org-appear]]
-*bold text* not /italic/ text but _underline_ and +strikthroug+ text
-#+BEGIN_SRC emacs-lisp
-  (setq org-pretty-entities t)
-
-  (use-package org-appear
-	:commands (org-appear-mode)
-	:hook (org-mode . org-appear-mode)
-	:init
-	(setq org-hide-emphasis-markers t	
-		  org-appear-autoemphasis t		
-		  org-appear-trigger 'always      
-		  org-appear-autoentities t
-		  org-appear-autolinks t		
-		  org-appear-autosubmarkers t))
-#+END_SRC
-*** Org-reveal
-#+BEGIN_SRC emacs-lisp
-  (use-package ox-reveal :defer 5)
-#+END_SRC
-*** Org-modules
-#+BEGIN_SRC emacs-lisp
-  (setq org-modules '(org-habit))
-  (eval-after-load 'org
-	'(org-load-modules-maybe t))
-#+END_SRC
-*** Org-ql
-#+BEGIN_SRC emacs-lisp
-  (use-package org-ql
-	:defer t
-	:general
-	(general-define-key :keymaps 'org-ql-view-map
-						"q" 'kill-buffer-and-window))
-#+END_SRC
-*** Org-preview-html
-#+BEGIN_SRC emacs-lisp
-  (use-package org-preview-html
-	:defer t
-	:config
-	(setq org-preview-html-viewer 'xwidget))
-#+END_SRC
-*** Org-fragtog
-#+BEGIN_SRC emacs-lisp
-  (use-package org-fragtog
-	:hook (org-mode . org-fragtog-mode)
-	:config
-	(setq org-latex-create-formula-image-program 'dvisvgm)
-	(plist-put org-format-latex-options :scale 1.5)
-	(setq org-latex-preview-ltxpng-directory (concat (temporary-file-directory) "ltxpng/")))
-#+END_SRC
-*** Org-tree-slide
-#+BEGIN_SRC emacs-lisp
-  (use-package org-tree-slide
-	:defer t
-	:config
-	(setq org-tree-slide-slide-in-effect nil
-		  org-tree-slide-skip-outline-level 3))
-#+END_SRC
-*** Org-download
-#+BEGIN_SRC emacs-lisp
-  (use-package org-download
-	:defer 2
-	:config
-	(setq org-download-method 'attach)
-	(advice-add 'org-download-yank :before 'fet/system-clipboard-to-emacs-clipboard))
-#+END_SRC
-*** Valign
-#+BEGIN_SRC emacs-lisp
-  (use-package valign :defer t)
-#+END_SRC
-** Orgmode keybindings
-#+BEGIN_SRC emacs-lisp
-  (setq org-special-ctrl-a/e t)
-
-  (general-def
-	:states 'normal
-	:keymaps 'org-mode-map
-	"t" 'org-todo
-	"<return>" 'org-open-at-point-global
-	"K" 'org-shiftup
-	"J" 'org-shiftdown
-	"<f5>" 'org-ctrl-c-ctrl-c)
-
-  (general-def
-	:states 'insert
-	:keymaps 'org-mode-map
-	"C-o" 'evil-org-open-above
-	"S-<left>" 'org-shiftleft
-	"S-<right>" 'org-shiftright)
-
-  (general-def
-	:keymaps 'org-mode-map
-	"M-[" 'org-metaleft
-	"M-]" 'org-metaright
-	"C-M-=" ''ap/org-count-words
-	"s-r" 'org-refile
-	"M-k" 'org-insert-link
-	"C-c t" 'fet/org-done-keep-todo)
-
-  (general-def
-	:prefix ","
-	:states 'normal
-	:keymaps 'org-src-mode-map
-	"b" '(nil :wk "org src")
-	"b c" 'org-edit-src-abort
-	"b b" 'org-edit-src-exit)
-
-  ;; Org mode leader key: , (comma).
-  (general-define-key
-   :prefix ","
-   :states 'motion
-   :keymaps '(org-mode-map)
-   "" nil
-   "A" '(org-archive-subtree-default :wk "org-archive")
-   "a" '(org-agenda :wk "org agenda")
-   "6" '(org-sort :wk "sort")
-   "c" '(org-capture .wk "org capture")
-   "s" '(org-schedule :wk "schedule")
-   "d" '(org-deadline :wk "deadline")
-   "g" '(counsel-org-goto :wk "goto heading")
-   "t" '(counsel-org-tag :wk "set tags")
-   "p" '(org-set-property :wk "set property")
-   "e" '(org-export-dispatch :wk "export org")
-   "." '(org-toggle-narrow-to-subtree :wk "toggle narrow to subtree")
-   "H" '(org-html-convert-region-to-html :wk "convert region to html")
-   "=" '(ap/org-count-words :wk "ap/org-count-words")
-
-   "1" '(org-toggle-link-display :wk "toggle link display")
-   "2" '(org-toggle-inline-images :wk "toggle images")
-
-   "b" '(nil :wk "babel")
-   "b t" '(org-babel-tangle :wk "org-babel-tangle")
-   "b b" '(org-edit-special :wk "org-edit-special")
-   "b c" '(org-edit-src-abort :wk "org-edit-src-abort")
-   "b k" '(org-babel-remove-result-one-or-many :wk "org-babel-remove-result-one-or-many")
-
-   "x" '(nil :wk "text")
-   "x b" (spacemacs|org-emphasize spacemacs|org-bold ?*)
-   "x c" (spacemacs|org-emphasize spacemacs|org-code ?~)
-   "x i" (spacemacs|org-emphasize spacemacs|org-italic ?/)
-   "x s" (spacemacs|org-emphasize spacemacs|org-strikt-through ?+)
-   "x u" (spacemacs|org-emphasize spacemacs|org-underline ?_)
-   "x v" (spacemacs|org-emphasize spacemacs|org-verbose ?~)
-   ;; insert
-   "i" '(nil :wk "insert")
-   "i l" '(org-insert-link :wk "org-insert-link")
-   "l" '(org-insert-link :wk "org-insert-link")
-   "i L" '(counsel-org-link :wk "counsel-org-link")
-   "i s" '(nil :wk "insert stamp")
-   "i s s" '((lambda () (interactive) (call-interactively (org-time-stamp-inactive))) :wk "org-time-stamp-inactive")
-   "l s S" '((lambda () (interactive) (call-interactively (org-time-stamp nil))) :wk "org-time-stamp")
-
-   ;; clocking
-   "c" '(nil :wk "clocking")
-   "c i" '(org-clock-in :wk "clock in")
-   "c o" '(org-clock-out :wk "clock out")
-   "c j" '(org-clock-goto :wk "jump to clock")
-   )
-
-  ;; org-agenda
-  (general-define-key
-   :prefix ","
-   :states 'motion
-   :keymaps '(org-agenda-mode-map)
-   "" nil
-   "a" '(org-agenda :wk "org agenda")
-   "c" '(org-capture :wk "org capture")
-   "s" '(org-agenda-schedule :wk "schedule")
-   "," '(org-agenda-schedule :wk "schedule")
-   "d" '(org-agenda-deadline :wk "deadline")
-   "t" '(org-agenda-set-tags :wk "set tags")
-   ;; clocking
-   "c" '(nil :wk "clocking")
-   "c i" '(org-agenda-clock-in :wk "clock in")
-   "c o" '(org-agenda-clock-out :wk "clock out")
-   "c j" '(org-clock-goto :wk "jump to clock")
-   )
-
-  (evil-define-key 'motion org-agenda-mode-map
-	(kbd "f") 'org-agenda-later
-	(kbd "b") 'org-agenda-earlier)
-#+END_SRC
-** Orgmode startup setup function
-#+BEGIN_SRC emacs-lisp
-  (defun fet/org-setup ()
-	(org-indent-mode)
-	(visual-line-mode 1)
-	(centered-cursor-mode)
-	(smartparens-mode 0)
-	(hl-prog-extra-mode)
-	(setq-local line-spacing (+ fet-default-line-spacing 2))
-	(valign-mode))
-#+END_SRC
-** Org Mode Config
-*** Preamble
-#+BEGIN_SRC emacs-lisp
-  (use-package org
-	:hook (org-mode . fet/org-setup)
-	:hook (org-mode . fet/prettify-symbols-setup)
-	:hook (org-capture-mode . evil-insert-state)
-	:diminish org-indent-mode
-	:diminish visual-line-mode
-	:config
-  
-#+END_SRC
-*** Visuals
-#+BEGIN_SRC emacs-lisp
-  (setq org-ellipsis "…")
-  ;; ⤵ ▼ ⬎  
-  (setq org-src-fontify-natively t) ;; Syntax highlighting in org src blocks
-  (setq org-highlight-latex-and-related '(native)) ;; Highlight inline LaTeX
-  (setq org-startup-folded 'showeverything)
-  (setq org-image-actual-width 300)
-  (setq org-fontify-whole-heading-line t)
-#+END_SRC
-*** Interaction
-#+BEGIN_SRC emacs-lisp
-  (setq org-cycle-separator-lines 1)
-  (setq org-catch-invisible-edits 'show-and-error) ;; 'smart
-  (setq org-src-tab-acts-natively t)
-
-  ;; M-Ret can split lines on items and tables but not headlines and not on anything else (unconfigured)
-  (setq org-M-RET-may-split-line '((headline) (item . t) (table . t) (default)))
-  (setq org-loop-over-headlines-in-active-region nil)
-
-  ;; Opens links to other org file in same frame (rather than splitting)
-  (setq org-link-frame-setup '((file . find-file)))
-
-  (setq org-log-done t
-		org-log-into-drawer t)
-
-  ;; Automatically change bullet type when indenting
-  ;; Ex: indenting a + makes the bullet a *.
-  (setq org-list-demote-modify-bullet
-		'(("+" . "*") ("*" . "-") ("-" . "+")))
-
-  ;; Automatically save and close the org files I most frequently archive to.
-  ;; I see no need to keep them open and crowding my buffer list.
-  ;; Uses my own function jib/save-and-close-this-buffer.
-  (dolist (file '("homework-archive.org_archive" "todo-archive.org_archive"))
-	(advice-add 'org-archive-subtree-default :after 
-				(lambda () (fet/save-and-close-this-buffer file))))
-
-  (defun jib/post-org-goto ()
-	(let ((current-prefix-arg '(4))) ;; emulate C-u
-	  (call-interactively 'org-reveal))
-	(org-cycle))
-
-  (advice-add 'counsel-org-goto :after #'jib/post-org-goto)
-  (advice-add 'org-agenda-goto :after #'jib/post-org-goto)
-  (advice-add 'org-agenda-switch-to :after #'jib/post-org-goto)
-#+END_SRC
-*** TODO Tags, Todos and priorities
-#+BEGIN_SRC emacs-lisp
-	  (setq org-tags-column -1)
-	  (setq org-todo-keywords '((type
-							   "TODO(t)" "WAITING(h)" "INPROG-TODO(i)" "WORK(w)"
-							   "STUDY(s)" "SOMEDAY" "READ(r)" "PROJ(p)" "CONTACT(c)"
-							   "|" "DONE(d)" "CANCELLED(C@)")))
-
-	(setq org-todo-keyword-faces
-		  '(("TODO"  :inherit (region org-todo) :foreground "DarkOrange1"   :weight bold)
-			("WORK"  :inherit (org-todo region) :foreground "DarkOrange1"   :weight bold)
-			("READ"  :inherit (org-todo region) :foreground "MediumPurple2" :weight bold)
-			("PROJ"  :inherit (org-todo region) :foreground "orange3"     :weight bold)
-			("STUDY" :inherit (region org-todo) :foreground "plum3"       :weight bold)
-			("DONE" . "SeaGreen4")))
-
-  (setq org-lowest-priority ?F)  ;; Gives us priorities A through F
-  (setq org-default-priority ?E) ;; If an item has no priority, it is considered [#E].
-
-  (setq org-priority-faces
-		'((65 . "red2")
-		  (66 . "Gold1")
-		  (67 . "Goldenrod2")
-		  (68 . "PaleTurquoise3")
-		  (69 . "DarkSlateGray4")
-		  (70 . "PaleTurquoise4")))
-
-  (setq org-capture-templates
-		'(("t" "Todo" entry (file+headline "~/Org/todo.org" "Tasks")
-		   "* TODO %?\n  %i\n  %a")
-		  ("j" "Journal" entry (file+datetree "~/Org/journal.org")
-		   "* %?\nEntered on %U\n  %i\n  %a")))
-#+END_SRC
-*** Org-babel
-#+BEGIN_SRC emacs-lisp
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-	 (shell . t)
-	 (gnuplot .t )
-	 )
-   )
-
-  (use-package gnuplot :defer t)
-
-  (setq org-confirm-babel-evaluate nil)
-  (setq python-shell-completion-native-enable nil)
-  (setq org-src-window-setup 'reorganize-frame)
-#+END_SRC
-*** Org-habits
-#+BEGIN_SRC emacs-lisp
-  (setq org-habit-preceding-days 6
-		org-habit-following-days 6
-		org-habit-show-habits-only-for-today nil
-		org-habit-today-glyph ?⍟ ;;‖
-		org-habit-completed-glyph ?✓
-		org-habit-graph-column 40)
-#+END_SRC
-*** Org-agenda
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-restore-windows-after-quit t)
-  (setq org-agenda-window-setup 'current-window)
-
-  (setq org-deadline-warning-days 3) ;; default is 14
-  (setq org-agenda-skip-deadline-if-done t)
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
-
-  (setq org-agenda-timegrid-use-ampm nil)
-
-  (setq org-agenda-time-grid nil)
-
-  (setq org-agenda-block-separator ?-)
-
-  (setq org-agenda-prefix-format '((agenda . " %-12:T%?-12t% s")
-								   (todo . " %i %-12:c")
-								   (tags . " %i %-12:c")
-								   (search . " %i %-12:c")))
-  (setq org-agenda-deadline-leaders '("Deadline:  " "In %2d d.: " "%2d d. ago: "))
-
-  (add-hook 'org-agenda-mode-hook #'(lambda () (setq-local line-spacing 3)))
-  (add-hook 'org-agenda-mode-hook #'(lambda () (hide-mode-line-mode)))
-
-
-#+END_SRC
-*** Org-capture
-#+BEGIN_SRC emacs-lisp
-  (setq org-bookmark-names-plist nil)
-  (define-key global-map (kbd "C-c x")
-			  (lambda () (interactive) (org-capture nil "x")))
-  (setq org-capture-templates
-		'(
-		  ("n" "CPB Note" entry (file+headline "~/Org/cpb.org" "Refile")
-		   "** NOTE: %? @ %U"        :empty-lines 0 :refile-targets (("~/Org/cpb.org" :maxlevel . 8)))
-
-		  ("i" "CPB Idea" entry (file+headline "~/Org/cpb.org" "Refile")
-		   "** IDEA: %? @ %U :idea:" :empty-lines 0 :refile-targets (("~/Org/cpb.org" :maxlevel . 8)))
-
-		  ("m" "CPB Note Clipboard")
-
-		  ("mm" "Paste clipboard" entry (file+headline "~/Org/cpb.org" "Refile")
-		   "** NOTE: %(simpleclip-get-contents) %? @ %U" :empty-lines 0 :refile-targets (("~/Org/cpb.org" :maxlevel . 8)))
-
-		  ("ml" "Create link and fetch title" entry (file+headline "~/Org/cpb.org" "Refile")
-		   "** [[%(simpleclip-get-contents)][%(jib/www-get-page-title (simpleclip-get-contents))]] @ %U" :empty-lines 0 :refile-targets (("~/Org/cpb.org" :maxlevel . 8)))
-
-		  ("w" "Work Todo Entries")
-		  ("we" "No Time" entry (file "~/Org/work.org")
-		   "** %^{Type|HW|READ|TODO|PROJ} %^{Todo title} %?" :prepend t :empty-lines-before 0
-		   :refile-targets (("~/Org/work.org" :maxlevel . 2)))
-
-		  ("ws" "Scheduled" entry (file "~/Org/work.org")
-		   "** %^{Type|HW|READ|TODO|PROJ} %^{Todo title}\nSCHEDULED: %^t%?" :prepend t :empty-lines-before 0
-		   :refile-targets (("~/Org/work.org" :maxlevel . 2)))
-
-		  ("wd" "Deadline" entry (file "~/Org/work.org")
-		   "** %^{Type|HW|READ|TODO|PROJ} %^{Todo title}\nDEADLINE: %^t%?" :prepend t :empty-lines-before 0
-		   :refile-targets (("~/Org/work.org" :maxlevel . 2)))
-
-		  ("ww" "Scheduled & deadline" entry (file "~/Org/work.org")
-		   "** %^{Type|HW|READ|TODO|PROJ} %^{Todo title}\nSCHEDULED: %^t DEADLINE: %^t %?" :prepend t :empty-lines-before 0
-		   :refile-targets (("~/Org/work.org" :maxlevel . 2)))
-
-		  ("t" "Temp file entry" entry (file "~/Org/.tmp.org")
-		   "** %^{Heading} @ %u \n%?" :prepend t)
-		  ))
-#+END_SRC
-*** Org-exporting
-#+BEGIN_SRC emacs-lisp
-  (setq org-html-htmlize-output-type 'css)
-  (setq org-html-htmlize-font-prefix "org-")
-
-  (setq org-export-with-broken-links t
-		org-export-with-smart-quotes t
-		org-export-allow-bind-keywords t)
-
-  (defun org-export-filter-timestamp-remove-brackets (timestamp backend info)
-	"Removes relevant brackets from a timestamp."
-	(cond
-	 ((org-export-derived-backend-p 'latex )
-	  (replace-regexp-in-string "[<>]\\|[][]" "" timestamp))
-	 ((org-export-derived-backend-p 'html)
-	  (replace-regexp-in-string "%[lg]t;\\|[][]" "" timestamp))))
-
-  ;; html
-  (setq org-html-validation-link nil)
-
-  ;; LaTeX
-  (eval-after-load 'ox '(add-to-list
-						 'org-export-filter-timestamp-functions
-						 'org-export-filter-timestamp-remove-brackets))
-
-  (use-package ox-hugo
-	:defer 2
-	:after ox
-	:config
-	(setq org-hugo-base-dir "~/Org/Projects/cpb"))
-
-  (use-package ox-moderncv
-	:ensure nil
-	:init (require 'ox-moderncv))
-
-#+END_SRC
-**** LaTeX
-#+begin_src emacs-lisp  
-  (setq org-latex-listings t)
-  (setq org-latex-compiler "xelatex")
-  (with-eval-after-load 'ox-latex
-	(add-to-list 'org-latex-classes
-				 '("org-plain-latex"
-				   "\\documentclass{extarticle}
-  [NO-DEFAULT-PACKAGES]
-  [PACKAGES]
-  [EXTRA]"
-				   ("\\section{%s}" . "\\section*{%s}")
-				   ("\\subsection{%s}" . "\\subsection*{%s}")
-				   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-				   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-				   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 #+end_src
 
 #+RESULTS:
-| org-plain-latex | \documentclass{extarticle} |
-*** Misc Org Mode
-#+BEGIN_SRC emacs-lisp
-  (setq org-clock-mode-line-total 'current)
-  (setq org-clock-clocked-in-display 'both)
-  (setq org-attach-id-dir ".org-attach/"
-		org-attach-use-inheritance t)
+: 28
 
-  ) ;; This parenthesis ends the org use-package
-#+END_SRC
-*** Path
-#+BEGIN_SRC emacs-lisp
-  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
-  (setq org-directory "~/Org"
-		org-agenda-files (mapcar
-						  (lambda (f) (concat (file-name-as-directory org-directory) f))
-						  my-agenda-files)
-		org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
-  (setq org-log-done 'time)
+** Frame
+:PROPERTIES:
+:CUSTOM_ID: VisualsFrame-ikudeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (setq default-frame-alist '((left . 170)
+							  (width . 170)
+							  (top . 64)
+							  (height . 80)
+							  ;(fullscreen . fullheight)
+							  (internal-border-width . 8)))
 
-#+END_SRC
+ (setq frame-inhibit-implied-resize t) ;; is startup faster with this?
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+
+#+end_src
+
+#+RESULTS:
+: ((ns-transparent-titlebar . t) (left . 170) (width . 170) (top . 64) (height . 100) (fullscreen . fullheight) (internal-border-width . 8))
+
+** Line numbers, fringe and hl-line
+:PROPERTIES:
+:CUSTOM_ID: VisualsLinenumbersfringeandhlline-flwdeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (setq-default fringes-outside-margins nil)
+(setq-default indicate-buffer-boundaries nil)
+(setq-default indicate-empty-lines nil)
+
+(set-face-attribute 'fringe nil :background nil)
+(set-face-attribute 'header-line nil :background nil :inherit 'default)
+
+(add-hook 'prog-mode-hook 'hl-line-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+#+end_src
+
+#+RESULTS:
+| display-line-numbers-mode | hl-line-mode | rainbow-mode |
+
+** Highlight todo
+:PROPERTIES:
+:CUSTOM_ID: VisualsHighlighttodo-akydeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  
+(use-package hl-todo
+  :hook ((org-mode . hl-todo-mode)
+         (prog-mode . hl-todo-mode))
+  :config
+  (setq hl-todo-highlight-punctuation ":"
+        hl-todo-keyword-faces
+        '(("TODO" warning bold)
+          ("FIXME" error bold)
+          ("HACK" font-lock-constant-face bold)
+          ("REVIEW" font-lock-constant-face bold)
+          ("NOTE" success bold)
+          ("DEPRECATED" font-lock-doc-face bold))))
+
+
+#+end_src
+
+#+RESULTS:
+| hl-todo-mode | display-line-numbers-mode | hl-line-mode | rainbow-mode |
+
+** Nerd icons
+:PROPERTIES:
+:CUSTOM_ID: VisualsNerdicons-cc0eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package nerd-icons)
+
+#+end_src
+
+#+RESULTS:
+
+* Transient
+:PROPERTIES:
+:CUSTOM_ID: Transient-h12eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  ;;(require 'transient)
+
+(transient-define-prefix fet-config-command ()
+  "Config options"
+  [["Configuration files"
+    ("r" "Edit emacs config file" (lambda () (interactive) (
+                                                (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
+                                                )))
+    ("c" "Copy snippets" (lambda () (interactive) (
+                                                   message "hello"
+                                                   )))
+    ("g" "Git status" (lambda () (interactive) (magit-status)))
+    ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
+    ]
+
+   ["Theme options"
+    ("1" "doom-solarized-light" (lambda () (interactive) (
+                                                          load-theme 'doom-solarized-light
+                                                          )))
+    ("2" "doom-solarized-dark" (lambda () (interactive) (
+                                                         load-theme 'doom-solarized-dark
+                                                         )))
+    ]
+   ])
+
+;;(fet-config-command)
+
+#+end_src
+
+#+RESULTS:
+| [1 transient-columns nil ([1 transient-column (:description Configuration files) ((1 transient-suffix (:key r :description Edit emacs config file :command transient:fet-config-command:Edit emacs config file)) (1 transient-suffix (:key c :description Copy snippets :command transient:fet-config-command:Copy snippets)) (1 transient-suffix (:key g :description Git status :command transient:fet-config-command:Git status)) (1 transient-suffix (:key q :description Cancel :command transient:fet-config-command:Cancel)))] [1 transient-column (:description Theme options) ((1 transient-suffix (:key 1 :description doom-solarized-light :command transient:fet-config-command:doom-solarized-light)) (1 transient-suffix (:key 2 :description doom-solarized-dark :command transient:fet-config-command:doom-solarized-dark)))])] |
+
+* Magit
+:PROPERTIES:
+:CUSTOM_ID: Magit-nl3eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package transient)
+(use-package magit)
+
+(use-package git-gutter
+  :ensure t
+  :init (global-git-gutter-mode +1))
+
+(use-package git-timemachine
+  :after git-timemachine
+  :hook (evil-normalize-keymaps . git-timemachine-hook)
+  :config
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+  (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+  )
+
+
+
+#+end_src
+
+#+RESULTS:
+
 * Misc packages
-** Misc
-#+BEGIN_SRC emacs-lisp
-  (use-package magit :defer t)
-  (use-package unfill :defer t)
-  (use-package f) ;; provides functions for working with files
-  (use-package burly :defer t)
-  (use-package ace-window :defer t)
-  (defvar aw-dispatch-alist
-	'((?x aw-delete-window "Delete Window")
-	  (?m aw-swap-window "Swap Windows")
-	  (?M aw-move-window "Move Window")
-	  (?C aw-copy-window "Copy Window")
-	  (?j aw-switch-buffer-in-window "Select Buffer")
-	  (?n aw-flip-window)
-	  (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
-	  (?c aw-split-window-fair "Split Fair Window")
-	  (?v aw-split-window-vert "Split Vert Window")
-	  (?b aw-split-window-horz "Split Horz Window")
-	  (?o delete-other-windows "Delete Other Windows")
-	  (?? aw-show-dispatch-help))
-	"List of actions for `aw-dispatch-default'.")
-  (use-package centered-cursor-mode :diminish centered-cursor-mode)
-  (use-package restart-emacs :defer t)
+:PROPERTIES:
+:CUSTOM_ID: Miscpackages-555eeqe0d2k0
+:END:
+** Thesaurus
+:PROPERTIES:
+:CUSTOM_ID: MiscpackagesThesaurus-dd6eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package mw-thesaurus
+  :defer t
+  :config
+  (add-hook 'mw-thesaurus-mode-hook
+            (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
+
+#+end_src
+
+#+RESULTS:
+
+** TLDR
+:PROPERTIES:
+:CUSTOM_ID: MiscpackagesTLDR-qr7eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package tldr)
+
+#+end_src
+
+#+RESULTS:
+
+** Try
+:PROPERTIES:
+:CUSTOM_ID: MiscpackagesTry-f79eeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package try)
+
+#+end_src
+
+#+RESULTS:
+
+** Misc packages
+:PROPERTIES:
+:CUSTOM_ID: MiscpackagesMiscpackages-bjaeeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+    (use-package restart-emacs :defer t)
   (use-package diminish)
   (use-package reveal-in-osx-finder :commands (reveal-in-osx-finder))
 
-  (use-package bufler
-	:config
-	(setq bufler-filter-buffer-modes nil
-		  bufler-filter-buffer-name-regexps nil)
-	(setq bufler-groups
-		  (bufler-defgroups
-		   (group
-			(auto-workspace))
-		   (group
-			(group-or "*Help/Info*"
-					  (mode-match "*Help*" (rx bos "help-"))
-					  (mode-match "*Info*" (rx bos "info-"))))
-		   (group
-			(group-and "*Special*"
-					   (lambda (buffer)
-						 (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
-											  buffer)
-									 (funcall (mode-match "Dired" (rx bos "dired"))
-											  buffer)
-									 (funcall (auto-file) buffer))
-						   "*Special*"))))
-		   (group
-			(name-match "**Special**" (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
-		   (group
-			(mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-"))
-			(auto-directory))
-		   )
-		  (group (dir "~/Org/")
-				 (auto-mode)
-				 (auto-directory))
-		  (group (dir "~/Org/notes/")
-				 (auto-directory)
-				 (auto-mode)))
-	:general
-	(:keymaps 'bufler-list-mode-map "Q" 'kill-this-buffer))
+   (use-package unfill :defer t)
+   (use-package f) ;; provides functions for working with files
+   (use-package burly :defer t)
+   (use-package ace-window :defer t)
+   (defvar aw-dispatch-alist
+	  '((?x aw-delete-window "Delete Window")
+	    (?m aw-swap-window "Swap Windows")
+	    (?M aw-move-window "Move Window")
+	    (?C aw-copy-window "Copy Window")
+	    (?j aw-switch-buffer-in-window "Select Buffer")
+	    (?n aw-flip-window)
+	    (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+	    (?c aw-split-window-fair "Split Fair Window")
+	    (?v aw-split-window-vert "Split Vert Window")
+	    (?b aw-split-window-horz "Split Horz Window")
+	    (?o delete-other-windows "Delete Other Windows")
+	    (?? aw-show-dispatch-help))
+	  "List of actions for `aw-dispatch-default'.")
+   (use-package centered-cursor-mode :diminish centered-cursor-mode)
 
-  (use-package hl-prog-extra
-	:commands (hl-prog-extra-mode)
-	:config
-	(setq hl-prog-extra-list
-		  (list
-		   '("\\<\\(TODO\\|NOTE\\)\\(([^)+]+)\\)?" 0 comment
-			 (:weight bold :inherit diff-removed))
-		   ;; Match TKs in quotation marks (hl-prog-extra sees them as strings)
-		   '("\\(TK\\)+" 0 string '(:weight bold :inherit font-lock-warning-face))
-		   ;; Match TKs not in quotation marks
-		   '("\\(TK\\)+" 0 nil '(:weight bold :inherit font-lock-warning-face))))
-	(global-hl-prog-extra-mode))
 
-  (use-package xwidget
-	:general
-	(general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map
-						"j" 'xwidget-webkit-scroll-up-line
-						"k" 'xwidget-webkit-scroll-down-line
-						"gg" 'xwidget-webkit-scroll-top
-						"G" 'xwidget-webkit-scroll-bottom))
+   (use-package bufler
+	  :config
+	  (setq bufler-filter-buffer-modes nil
+		    bufler-filter-buffer-name-regexps nil)
+	  (setq bufler-groups
+		    (bufler-defgroups
+		     (group
+			  (auto-workspace))
+		     (group
+			  (group-or "*Help/Info*"
+					    (mode-match "*Help*" (rx bos "help-"))
+					    (mode-match "*Info*" (rx bos "info-"))))
+		     (group
+			  (group-and "*Special*"
+					     (lambda (buffer)
+						   (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+											    buffer)
+									   (funcall (mode-match "Dired" (rx bos "dired"))
+											    buffer)
+									   (funcall (auto-file) buffer))
+						     "*Special*"))))
+		     (group
+			  (name-match "**Special**" (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
+		     (group
+			  (mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-"))
+			  (auto-directory))
+		     )
+		    (group (dir "~/Org/")
+				   (auto-mode)
+				   (auto-directory))
+		    (group (dir "~/Org/notes/")
+				   (auto-directory)
+				   (auto-mode)))
+	  :general
+	  (:keymaps 'bufler-list-mode-map "Q" 'kill-this-buffer))
 
-  (use-package mw-thesaurus
-	:defer t
-	:config
-	(add-hook 'mw-thesaurus-mode-hook
-			  (lambda () (define-key evil-normal-state-local-map (kbd "q") 'mw-thesaurus--quit))))
+   (use-package hl-prog-extra
+	  :commands (hl-prog-extra-mode)
+	  :config
+	  (setq hl-prog-extra-list
+		    (list
+		     '("\\<\\(TODO\\|NOTE\\)\\(([^)+]+)\\)?" 0 comment
+			   (:weight bold :inherit diff-removed))
+		     ;; Match TKs in quotation marks (hl-prog-extra sees them as strings)
+		     '("\\(TK\\)+" 0 string '(:weight bold :inherit font-lock-warning-face))
+		     ;; Match TKs not in quotation marks
+		     '("\\(TK\\)+" 0 nil '(:weight bold :inherit font-lock-warning-face))))
+	  (global-hl-prog-extra-mode))
 
-  (use-package ansi-term
-	:ensure nil
-	:general
-	(:keymaps 'term-mode-map
-			  "<up>" 'term-previous-input
-			  "<down>" 'term-next-input))
+   (use-package xwidget
+	  :general
+	  (general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map
+						  "j" 'xwidget-webkit-scroll-up-line
+						  "k" 'xwidget-webkit-scroll-down-line
+						  "gg" 'xwidget-webkit-scroll-top
+						  "G" 'xwidget-webkit-scroll-bottom))
 
-  ;; https://github.com/oantolin/epithet
-  (use-package epithet
-	:ensure nil
-	:config
-	(add-hook 'Info-selection-hook #'epithet-rename-buffer)
-	(add-hook 'help-mode-hook #'epithet-rename-buffer))
+   (use-package ansi-term
+	  :ensure nil
+	  :general
+	  (:keymaps 'term-mode-map
+			    "<up>" 'term-previous-input
+			    "<down>" 'term-next-input))
 
-  ;; https://github.com/udyantw/most-used-words
-  (use-package most-used-words :ensure nil)
-#+END_SRC
-** Popper.el
+   ;; https://github.com/oantolin/epithet
+   (use-package epithet
+	  :ensure nil
+	  :config
+	  (add-hook 'Info-selection-hook #'epithet-rename-buffer)
+	  (add-hook 'help-mode-hook #'epithet-rename-buffer))
+
+   ;; https://github.com/udyantw/most-used-words
+   (use-package most-used-words :ensure nil)
+
+#+end_src
+
+#+RESULTS:
+: t
+
+* Org Mode
+:PROPERTIES:
+:CUSTOM_ID: OrgMode-i0ceeqe0d2k0
+:END:
+** Org Tempo
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgtempo-v0deeqe0d2k0
+:END:
 #+BEGIN_SRC emacs-lisp
-  (use-package popper
-	:bind (("C-'" . popper-toggle-latest)
-		   ("M-'" . popper-cycle)
-		   ("C-M-'" . popper-toggle-type))
-	:init
-	(setq popper-reference-buffers
-		  '("\\*Messages\\*"
-			"Output\\*$"
-			"\\*Warnings\\*"
-			help-mode
-			compilation-mode))
-	(popper-mode +1))
+  (require 'org-tempo)
 #+END_SRC
-** Current-window-only
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package current-window-only
-  ;;   :quelpa (current-window-only
-  ;; 		   :fetcher github
-  ;; 		   :repo "FrostyX/current-window-only")
-  ;;   :config
-  ;;   (current-window-only-mode))
+** Org Agenda
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgAgenda-7zei3vf0d2k0
+:END:
+ #+BEGIN_SRC emacs-lisp
+   (setq org-agenda-tags-column 0
+		 org-agenda-block-separator ?─
+		 org-agenda-time-grid '((daily today require-timed)
+								(600 800 1000 1200 1400 1600 1800 2000)
+								" ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+		 org-agenda-current-time-string
+		 "◀── now ─────────────────────────────────────────────────"
+		 )
+ #+END_SRC
+** Org Modern
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgModern-ewii3vf0d2k0
+:END:
+This package implements a modern style for your Org buffers using font locking and text properties. The package styles headlines, keywords, tables and source blocks. 
+- [[https://github.com/minad/org-modern][Org Modern]]
 
-  ;; (setq magit-commit-diff-inhibit-same-window t)
-#+END_SRC
+To see it in action, open [[file:./example.org]example.org].
+
+  #+BEGIN_SRC emacs-lisp
+	(use-package org-modern
+	  :hook (org-mode . global-org-modern-mode)
+	  :custom
+	  (org-modern-keyword nil)
+	  (org-modern-checkbox nil)
+	  (org-modern-table nil)
+	  )
+  #+END_SRC
+
+  #+RESULTS:
+  | global-org-modern-mode | org-appear-mode | org-tempo-setup | (closure (t) nil evil-org-mode) | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | hl-todo-mode | rainbow-mode |
+
+** Org Load languages
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgloadlanguages-m6eeeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+
+#+end_src
+
+#+RESULTS:
+
+** Org Appear
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgappear-kffeeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+	(setq org-pretty-entities t)
+
+	(use-package org-appear
+	  ;; :commands (org-appear-mode)
+	  :hook (org-mode . org-appear-mode)
+	  ;; :init
+	  ;; (setq org-hide-emphasis-markers t	
+	  ;; 		 org-appear-autoemphasis t		
+	  ;; 		 org-appear-trigger 'always      
+	  ;; 		 org-appear-autoentities t
+	  ;; 		 org-appear-autolinks t		
+	  ;; 		 org-appear-autosubmarkers t)
+	  )
+#+end_src
+
+#+RESULTS:
+| org-appear-mode | org-tempo-setup | (closure (t) nil evil-org-mode) | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | hl-todo-mode | rainbow-mode |
+
+** Org Id
+:PROPERTIES:
+:CUSTOM_ID: OrgModeOrgId-7kgeeqe0d2k0
+:END:
+#+begin_src emacs-lisp
+  (use-package org-unique-id
+	:init (add-hook 'before-save-hook #'org-unique-id-maybe))
+#+end_src
+
+#+RESULTS:
+: fet/org-add-ids-to-headlines-in-file
+
 * LaTeX
 #+BEGIN_SRC emacs-lisp
-  (use-package latex ;; This is a weird one. Package is auctex but needs to be managed like this.
+ (use-package latex ;; This is a weird one. Package is auctex but needs to be managed like this.
 	:ensure nil
 	:defer t
 	:init
@@ -2695,153 +1903,41 @@ TODO: fix this section
 
 	)
 
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ;; Standard way
+ (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ;; Standard way
 
-  ;; (use-package company-auctex
-  ;;   :after auctex
-  ;;   :init
-  ;;   (add-to-list 'company-backends 'company-auctex)
-  ;;   (company-auctex-init))
+ ;; (use-package company-auctex
+ ;;   :after auctex
+ ;;   :init
+ ;;   (add-to-list 'company-backends 'company-auctex)
+ ;;   (company-auctex-init))
 #+END_SRC
-* PDF
-- [[https://github.com/politza/pdf-tools]]
 
-#+begin_src emacs-lisp  
+#+RESULTS:
+| TeX-revert-document-buffer |
+
+* PDF Tools
+#+BEGIN_SRC emacs-lisp
   (use-package pdf-tools
-	:defer t
-	;; stop pdf-tools being automatically updated when I update the
-	;; rest of my packages, since it would need the installation command and restart
-	;; each time it updated.
-	:pin manual
-	:mode  ("\\.pdf\\'" . pdf-view-mode)
 	:config
-	(pdf-loader-install)
-	(setq-default pdf-view-display-size 'fit-height)
-	(setq pdf-view-continuous nil) ;; Makes it so scrolling down to the bottom/top of a page doesn't switch to the next page
-	(setq pdf-view-midnight-colors '("#ffffff" . "#121212" )) ;; I use midnight mode as dark mode, dark mode doesn't seem to work
-	:general
-	(general-define-key :states 'motion :keymaps 'pdf-view-mode-map
-						"j" 'pdf-view-next-page
-						"k" 'pdf-view-previous-page
-
-						"C-j" 'pdf-view-next-line-or-next-page
-						"C-k" 'pdf-view-previous-line-or-previous-page
-
-						;; Arrows for movement as well
-						(kbd "<down>") 'pdf-view-next-line-or-next-page
-						(kbd "<up>") 'pdf-view-previous-line-or-previous-page
-
-						(kbd "<down>") 'pdf-view-next-line-or-next-page
-						(kbd "<up>") 'pdf-view-previous-line-or-previous-page
-
-						(kbd "<left>") 'image-backward-hscroll
-						(kbd "<right>") 'image-forward-hscroll
-
-						"H" 'pdf-view-fit-height-to-window
-						"0" 'pdf-view-fit-height-to-window
-						"W" 'pdf-view-fit-width-to-window
-						"=" 'pdf-view-enlarge
-						"-" 'pdf-view-shrink
-
-						"q" 'quit-window
-						"Q" 'kill-this-buffer
-						"g" 'revert-buffer
-
-						"C-s" 'isearch-forward
-						)
-	)
-#+end_src
-* Programming-related
-** General
-#+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode :defer t)
-
-(use-package quickrun :defer t
-  :general
-  (general-define-key :states 'normal :keymaps 'quickrun--mode-map
-                      "q" 'quit-window
-                      "s-9" 'quickrun-shell))
-
+	(pdf-loader-install))
 #+END_SRC
-** Python
-#+BEGIN_SRC emacs-lisp
-;; A better python mode (supposedly)
-(use-package python-mode
-  :defer t)
 
-(general-define-key :states '(emacs) :keymaps 'inferior-python-mode-map
-                    "<up>" 'comint-previous-input
-                    "<down>" 'comint-next-input)
+#+RESULTS:
+: t
 
-;; Using my virtual environments
-(use-package pyvenv
-  :defer t
-  :init
-  (setenv "WORKON_HOME" "~/.pyenv/versions")) ;; Where the virtual envs are stored on my computer
-
-
-;; Automatically set the virtual environment when entering a directory
-(use-package auto-virtualenv
-  :defer 2
-  :config
-  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv))
-
-;; Python development helper
-;; (use-package elpy
-;;   :defer t
-;;   :init
-;;   (setq elpy-rpc-virtualenv-path 'current)
-;;   (advice-add 'python-mode :before 'elpy-enable))
-#+END_SRC
-** HTML/CSS/JS
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode
-  :defer t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode)) ;; Open .html files in web-mode
-  :config
-  (setq web-mode-enable-current-element-highlight t
-        web-mode-enable-current-column-highlight t)
-
-  :general
-  (general-def
-  :prefix ","
-  :states 'motion
-  :keymaps 'web-mode-map
-  "" nil
-  "i" '(web-mode-buffer-indent :which-key "web mode indent")
-  "c" '(web-mode-fold-or-unfold :which-key "web mode toggle fold")
-  ))
-#+END_SRC
-** Emacs-lisp-mode
-#+BEGIN_SRC emacs-lisp
-(use-package emacs-lisp-mode
-  :ensure nil
-  :general
-  (general-define-key
-   :prefix ","
-   :states 'motion
-   :keymaps 'emacs-lisp-mode-map
-   "" nil
-   "e" '(nil :which-key "eval")
-   "es" '(eval-last-sexp :which-key "eval-sexp")
-   "er" '(eval-region :which-key "eval-region")
-   "eb" '(eval-buffer :which-key "eval-buffer")
-
-   "g" '(counsel-imenu :which-key "imenu")
-   "c" '(check-parens :which-key "check parens")
-   "I" '(indent-region :which-key "indent-region")
-
-   "b" '(nil :which-key "org src")
-   "bc" 'org-edit-src-abort
-   "bb" 'org-edit-src-exit
-   )
-  )
-#+END_SRC
-* Footers in ~init.el~ and ~early-init.el~
-#+BEGIN_SRC emacs-lisp
-;;; init.el ends here
-#+END_SRC
-#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
+* Footers in =init.el= and =early-init.el=
+:PROPERTIES:
+:CUSTOM_ID: Footersininitelandearlyinitel-3iheeqe0d2k0
+:END:
+#+begin_src emacs-lisp :tangle "~/.config/emacs/early-init.el"
 ;;; early-init.el ends here
-#+END_SRC
+#+end_src
+
+#+RESULTS:
+
+#+begin_src emacs-lisp
+;;; init.el ends here
+
+#+end_src
+
+#+RESULTS:
