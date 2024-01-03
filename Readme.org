@@ -216,18 +216,10 @@ Enforce a sneaky Garbage Collection strategy to minimize GC interference with us
   (defvar macbook-p (equal (system-name) "au")                     "If true, I'm using my Macbook")
   (defvar linux-p (equal (system-name) "box")                      "If true, I'm using my Linux box")
   (defvar fet/home (concat (getenv "HOME") "/")                    "User home directory.")
-  (defvar fet/emacs (concat fet/home ".config/emacs/")             "Directory for emacs configuration files")
-  (defvar fet/org (concat fet/home "Org")                          "Directory for org files")
   (defvar fet/emacs-personal (concat fet/home "emacs-personal")    "Directory for personal emacs/lisp files")
   (defvar fet/scripts (concat fet/emacs "scripts")                 "Directory for supporting scripts")
   (defvar fet/snippets (concat fet/emacs "snippets")               "Directory for snippets")
   (defvar fet/images (concat fet/emacs "images")                   "Directory for images")
-  (defvar fet/backups (concat fet/emacs "backups")                 "Directory for backups")
-  (defvar fet/auto-save-list (concat fet/emacs "auto-save-list")   "Directory for auto-save-list")
-  (defvar fet/text-height nil                                      "My preferred default text height")
-  (defvar fet/doom-modeline-text-height nil                        "My preferred modeline text height")
-  (defvar fet/default-line-spacing 0                               "Baseline line spacing")
-  (setq-default fet/default-line-spacing 0)                        ;; don't know why I do this but it seems to work...
   (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
   (setq org-directory "~/Org"
 		  org-agenda-files (mapcar
@@ -1354,10 +1346,11 @@ I don't want saved customizations in my init.el file.
 :END:
 #+begin_src emacs-lisp
   (setq text-scale-mode-step 1)
-  (setq fet-default-line-spacing 1)
-  (setq-default line-spacing fet-default-line-spacing)
-  (setq fet-text-height 140)
-  (set-frame-font "RobotoMono Nerd Font:size=14" nil t)
+  (font-family-list)
+  (add-to-list 'default-frame-alist
+			   (cond
+				((string-equal system-type "darwin") '(font . "FireCode-14"))
+				((string-equal system-type "gnu/linux") '(font . "FiraCode-12"))))
 
   (use-package mixed-pitch
 	:defer t
@@ -1381,9 +1374,15 @@ I don't want saved customizations in my init.el file.
   (set-face-background 'fringe (face-attribute 'default :background))
 
   (setq-default line-spacing 0.12)
+
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+  (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 #+end_src
 
 #+RESULTS:
+: text-scale-decrease
 
 ** Dashboard
 :PROPERTIES:
