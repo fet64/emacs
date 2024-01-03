@@ -1558,32 +1558,32 @@ I don't want saved customizations in my init.el file.
 :CUSTOM_ID: Transient-h12eeqe0d2k0
 :END:
 #+begin_src emacs-lisp
-  ;;(require 'transient)
+	;;(require 'transient)
 
-(transient-define-prefix fet-config-command ()
-  "Config options"
-  [["Configuration files"
-    ("r" "Edit emacs config file" (lambda () (interactive) (
-                                                (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
-                                                )))
-    ("c" "Copy snippets" (lambda () (interactive) (
-                                                   message "hello"
-                                                   )))
-    ("g" "Git status" (lambda () (interactive) (magit-status)))
-    ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
-    ]
+  (transient-define-prefix fet-config-command ()
+	"Config options"
+	[["Configuration files"
+	  ("r" "Edit emacs config file" (lambda () (interactive) (
+												  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
+												  )))
+	  ("c" "Copy snippets" (lambda () (interactive) (
+													 message "hello"
+													 )))
+	  ("g" "Git status" (lambda () (interactive) (magit-status)))
+	  ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
+	  ]
 
-   ["Theme options"
-    ("1" "doom-solarized-light" (lambda () (interactive) (
-                                                          load-theme 'doom-solarized-light
-                                                          )))
-    ("2" "doom-solarized-dark" (lambda () (interactive) (
-                                                         load-theme 'doom-solarized-dark
-                                                         )))
-    ]
-   ])
+	 ["Theme options"
+	  ("l1" "doom-solarized-light" (lambda () (interactive) (fet/load-theme 'doom-solarized-light)))
+	  ("d1" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
+	  ("l2" "tango" (lambda () (interactive) (fet/load-theme 'tango)))
+	  ("l3" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
+	  ("l3" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
+	  ]
+	 ])
 
-;;(fet-config-command)
+  (fet/load-theme 'doom-one)
+  ;;(fet-config-command)
 
 #+end_src
 
