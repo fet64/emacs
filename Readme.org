@@ -112,7 +112,9 @@ emacs --debug-init
   ;;;
   ;;; init.el --- part of Fet64's Emacs Configuration
   ;;; Commentary: auto generated (tangled) from Readme.org available at https://github.com/fet64/emacs
-  ;;; 
+  ;;;
+
+  (setq load-path (cons "~/.config/emacs/lisp/" load-path))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/early-init.el"
@@ -128,17 +130,17 @@ emacs --debug-init
 :CUSTOM_ID: PackageManager-djjaeqe0d2k0
 :END:
 [[./images/melpa.png]]
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle "~/.config/emacs/lisp/package-manager.el"
   (setq warning-suppress-log-types '((package reinitialization)))
   (package-initialize)
   (unless (assoc-default "melpa" package-archives)
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+	(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
   (unless (assoc-default "nongnu" package-archives)
-    (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
+	(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t))
 
   (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+	(package-install 'use-package))
   (setq use-package-verbose t)
   (setq use-package-always-ensure t)
   (require 'use-package)
@@ -146,14 +148,22 @@ emacs --debug-init
   (use-package quelpa-use-package)
   (quelpa-use-package-activate-advice)
   (use-package auto-compile
-    :config (auto-compile-on-load-mode))
+	:config (auto-compile-on-load-mode))
   (setq load-prefer-newer t)
 
   (use-package async
-    :config
-    (setq async-bytecomp-package-mode 1))
+	:config
+	(setq async-bytecomp-package-mode 1))
+
+  (provide 'package-manager)
 #+END_SRC
 
+#+RESULTS:
+: package-manager
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package-manager)
+#+END_SRC
 #+RESULTS:
 : t
 
@@ -211,22 +221,16 @@ Enforce a sneaky Garbage Collection strategy to minimize GC interference with us
 :CUSTOM_ID: CustomVariables-5xig0se0d2k0
 :END:
 #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Fet64"                                     ;; My full name
-		  user-mail-address "fet64@outlook.com")                     ;; My email-address
-  (defvar macbook-p (equal (system-name) "au")                     "If true, I'm using my Macbook")
-  (defvar linux-p (equal (system-name) "box")                      "If true, I'm using my Linux box")
-  (defvar fet/home (concat (getenv "HOME") "/")                    "User home directory.")
-  (defvar fet/emacs-personal (concat fet/home "emacs-personal")    "Directory for personal emacs/lisp files")
-  (defvar fet/scripts (concat fet/emacs "scripts")                 "Directory for supporting scripts")
-  (defvar fet/snippets (concat fet/emacs "snippets")               "Directory for snippets")
-  (defvar fet/images (concat fet/emacs "images")                   "Directory for images")
-  (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
-  (setq org-directory "~/Org"
-		  org-agenda-files (mapcar
-							(lambda (f) (concat (file-name-as-directory org-directory) f))
-							my-agenda-files)
-		  org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
-  (setq org-log-done 'time)
+    (setq user-full-name "Fet64"                                     ;; My full name
+		    user-mail-address "fet64@outlook.com")                     ;; My email-address
+
+    (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
+    (setq org-directory "~/Org"
+		    org-agenda-files (mapcar
+							  (lambda (f) (concat (file-name-as-directory org-directory) f))
+							  my-agenda-files)
+		    org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
+    (setq org-log-done 'time)
 
 #+END_SRC
 
@@ -300,129 +304,133 @@ A register can store a position, a piece of text, a rectangle, a number, a windo
 :PROPERTIES:
 :CUSTOM_ID: Scrips-53yaeqe0d2k0
 :END:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.config/emacs/lisp/scripts.el"
 
- (defun fet/duplicate-line ()
-	"Duplicate current line"
-	(interactive)
-	(move-beginning-of-line 1)
-	(kill-line)
-	(yank)
-	(open-line 1)
-	(next-line 1)
-	(yank))
+  (defun fet/duplicate-line ()
+	 "Duplicate current line"
+	 (interactive)
+	 (move-beginning-of-line 1)
+	 (kill-line)
+	 (yank)
+	 (open-line 1)
+	 (next-line 1)
+	 (yank))
 
- (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
+  (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
 
- (defun fet/load-theme (theme)
-	"Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
-	(mapc #'disable-theme custom-enabled-themes)
-	(load-theme theme t))
+  (defun fet/load-theme (theme)
+	 "Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
+	 (mapc #'disable-theme custom-enabled-themes)
+	 (load-theme theme t))
 
- (defun mac-open-file ()
-	(interactive)
-	(let ((file (do-applescript "POSIX path of (choose file)")))
-	  (if (< (length file) 3)
-	  (setq file
-		(substring file 1 (- (length file) 1))))
-	  (if (and (not (equal file "")) (file-readable-p file))
-	  (find-file file))))
+  (defun mac-open-file ()
+	 (interactive)
+	 (let ((file (do-applescript "POSIX path of (choose file)")))
+	   (if (< (length file) 3)
+	   (setq file
+		 (substring file 1 (- (length file) 1))))
+	   (if (and (not (equal file "")) (file-readable-p file))
+	   (find-file file))))
 
- (defun mac-save-file-as ()
-	(interactive)
-	(let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
-	  (if (> (length file) 3)
-	  (setq file
-		(substring file 1 (- (length file) 1))))
-	  (if (not (equal file ""))
-	  (write-file file))))
+  (defun mac-save-file-as ()
+	 (interactive)
+	 (let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
+	   (if (> (length file) 3)
+	   (setq file
+		 (substring file 1 (- (length file) 1))))
+	   (if (not (equal file ""))
+	   (write-file file))))
 
- (defun fet/system-clipboard-to-emacs-clipboard ()
-	"Set Emacs kill ring to contents of system clipboard."
-	(interactive)
-	(kill-new (simpleclip-get-contents)))
+  (defun fet/system-clipboard-to-emacs-clipboard ()
+	 "Set Emacs kill ring to contents of system clipboard."
+	 (interactive)
+	 (kill-new (simpleclip-get-contents)))
 
- (defun fet/prettify-symbols-setup ()
- ;; checkboxes
- (push '("[ ]" .  "☐") prettify-symbols-alist)
- (push '("[X]" . "☑" ) prettify-symbols-alist)
- ;; (push '("[X]" . "☒" ) prettify-symbols-alist)
- (push '("[-]" . "❍" ) prettify-symbols-alist)
+  (defun fet/prettify-symbols-setup ()
+  ;; checkboxes
+  (push '("[ ]" .  "☐") prettify-symbols-alist)
+  (push '("[X]" . "☑" ) prettify-symbols-alist)
+  ;; (push '("[X]" . "☒" ) prettify-symbols-alist)
+  (push '("[-]" . "❍" ) prettify-symbols-alist)
 
- ;; org-babel
- (push '("#+BEGIN_SRC" . ?≫) prettify-symbols-alist)
- (push '("#+END_SRC" . ?≫) prettify-symbols-alist)
- (push '("#+begin_src" . ?≫) prettify-symbols-alist)
- (push '("#+end_src" . ?≫) prettify-symbols-alist)
+  ;; org-babel
+  (push '("#+BEGIN_SRC" . ?≫) prettify-symbols-alist)
+  (push '("#+END_SRC" . ?≫) prettify-symbols-alist)
+  (push '("#+begin_src" . ?≫) prettify-symbols-alist)
+  (push '("#+end_src" . ?≫) prettify-symbols-alist)
 
- (push '("#+BEGIN_QUOTE" . ?❝) prettify-symbols-alist)
- (push '("#+END_QUOTE" . ?❞) prettify-symbols-alist)
+  (push '("#+BEGIN_QUOTE" . ?❝) prettify-symbols-alist)
+  (push '("#+END_QUOTE" . ?❞) prettify-symbols-alist)
 
- ;; (push '("#+BEGIN_SRC python" . ) prettify-symbols-alist) ;; This is the Python symbol. Comes up weird for some reason
- (push '("#+RESULTS:" . ?≚ ) prettify-symbols-alist)
+  ;; (push '("#+BEGIN_SRC python" . ) prettify-symbols-alist) ;; This is the Python symbol. Comes up weird for some reason
+  (push '("#+RESULTS:" . ?≚ ) prettify-symbols-alist)
 
- ;; drawers
- (push '(":PROPERTIES:" . ?) prettify-symbols-alist)
+  ;; drawers
+  (push '(":PROPERTIES:" . ?) prettify-symbols-alist)
 
- ;; tags
- ;; (push '(":Misc:" . "" ) prettify-symbols-alist)
+  ;; tags
+  ;; (push '(":Misc:" . "" ) prettify-symbols-alist)
 
- (prettify-symbols-mode))
- (defun fet/org-done-keep-todo ()
-	"Mark an org todo item as done while keeping its former keyword intact, and archive.
- For example: * TODO This item   becomes   * DONE TODO This item."
-	(interactive)
-	(let ((state (org-get-todo-state)) (tag (org-get-tags)) (todo (org-entry-get (point) "TODO"))
-	  post-command-hook)
-	  (if (not (eq state nil))
-	  (progn (org-back-to-heading)
-		 (ort-todo "DONE")
-		 (org-set-tags tag)
-		 (beginning-of-line)
-		 (forward-word)
-		 (insert (concat " " todo)))
-	(user-error "Not a TODO."))
-	  (run-hooks 'post-command-hook)))
+  (prettify-symbols-mode))
+  (defun fet/org-done-keep-todo ()
+	 "Mark an org todo item as done while keeping its former keyword intact, and archive.
+  For example: * TODO This item   becomes   * DONE TODO This item."
+	 (interactive)
+	 (let ((state (org-get-todo-state)) (tag (org-get-tags)) (todo (org-entry-get (point) "TODO"))
+	   post-command-hook)
+	   (if (not (eq state nil))
+	   (progn (org-back-to-heading)
+		  (ort-todo "DONE")
+		  (org-set-tags tag)
+		  (beginning-of-line)
+		  (forward-word)
+		  (insert (concat " " todo)))
+	 (user-error "Not a TODO."))
+	   (run-hooks 'post-command-hook)))
 
- (defun fet/save-and-close-this-buffer (buffer)
- "Saves and closes given buffer."
- (if (get-buffer buffer)
-	  (let ((b (get-buffer buffer)))
-		(save-buffer b)
-		(kill-buffer b))))
+  (defun fet/save-and-close-this-buffer (buffer)
+  "Saves and closes given buffer."
+  (if (get-buffer buffer)
+	   (let ((b (get-buffer buffer)))
+		 (save-buffer b)
+		 (kill-buffer b))))
 
- (defmacro spacemacs|org-emphasize (fname char)
- "Make function for setting the emphasis in org mode"
- `(defun ,fname () (interactive)
-		  (org-emphasize ,char)))
+  (defmacro spacemacs|org-emphasize (fname char)
+  "Make function for setting the emphasis in org mode"
+  `(defun ,fname () (interactive)
+		   (org-emphasize ,char)))
 
- ;; bash
- (defun bash (&optional path)
-	"Open a bash window.
- PATH is optional, and defaults to the current directory."
-	(interactive (list (if (buffer-file-name)
-			   (file-name-directory (buffer-file-name))
-				 (expand-file-name default-directory))))
-	(cond
-	 ((string= system-type "gnu/linux")
-	  (shell-command "gnome-terminal"))
-	 ((string= system-type "darwin")
-	  (shell-command
-	   (format "open -b com.apple.terminal%s"
-		   (if path (format " \"%s\"" (expand-file-name path)) ""))))
-	 ((string= system-type "windows-nt")
-	  (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
+  ;; bash
+  (defun bash (&optional path)
+	 "Open a bash window.
+  PATH is optional, and defaults to the current directory."
+	 (interactive (list (if (buffer-file-name)
+				(file-name-directory (buffer-file-name))
+				  (expand-file-name default-directory))))
+	 (cond
+	  ((string= system-type "gnu/linux")
+	   (shell-command "gnome-terminal"))
+	  ((string= system-type "darwin")
+	   (shell-command
+		(format "open -b com.apple.terminal%s"
+			(if path (format " \"%s\"" (expand-file-name path)) ""))))
+	  ((string= system-type "windows-nt")
+	   (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
 
- ;; google
- (defun google ()
-	"Open default browser to google.com."
-	(interactive)
-	(browse-url "http://google.com"))
+  ;; google
+  (defun google ()
+	 "Open default browser to google.com."
+	 (interactive)
+	 (browse-url "http://google.com"))
 
+  (provide 'scripts)
 #+end_src
 
+#+BEGIN_SRC emacs-lisp
+  (require 'scripts)
+#+END_SRC
 #+RESULTS:
-: google
+: scripts
 
 * General configuration settings
 :PROPERTIES:
