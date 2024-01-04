@@ -1562,29 +1562,62 @@ I don't want saved customizations in my init.el file.
 
   (transient-define-prefix fet-config-command ()
 	"Config options"
-	[["Configuration files"
-	  ("r" "Edit emacs config file" (lambda () (interactive) (
-												  (lambda () (interactive) (find-file "~/dev/emacs/Readme.org"))
-												  )))
-	  ("c" "Copy snippets" (lambda () (interactive) (
-													 message "hello"
-													 )))
-	  ("g" "Git status" (lambda () (interactive) (magit-status)))
-	  ("q" "Cancel" (lambda () (interactive) (message "Cancel config options")))
+	[["Emacs"
+	  ("ec" "Edit emacs config file" (lambda () (interactive) (find-file "~/dev/emacs/Readme.org")))
+	  ("dd" "Dired ~/dev/emacs/" (lambda () (interactive) (find-file "~/dev/emacs/")))
+	  ("gg" "Git status" magit-status)
+	  ("S" "Insert snippet" yas-insert-snippet)
+	  ("T" "Org babel tangle" org-babel-tangle)
+	  ("E" "Export dispatch" org-export-dispatch)
+	  ("c" "Org capture" org-capture)
+  ;;	("x" "Change theme" tdp-theme )
+	  ("q" "Cancel" (lambda () (interactive)(message "Cancel")))
+	  ]
+
+	 ["Buffer"
+	  ("i" "Ibuffer" ibuffer)
+	  ("bb" "Switch to buffer" switch-to-buffer)
+	  ("bk" "Kill current buffer" kill-current-buffer)
+	  ("bP" "Print buffer" lpr-buffer)
+	  ]
+
+	 ["Evaluate"
+	  ("eb" "Evaluate buffer" eval-buffer)
+	  ("ee" "Evaluate expression" eval-expression)
+	  ("ed" "Evaluate defun" eval-defun)
 	  ]
 
 	 ["Theme options"
-	  ("l1" "doom-solarized-light" (lambda () (interactive) (fet/load-theme 'doom-solarized-light)))
-	  ("d1" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
-	  ("l2" "tango" (lambda () (interactive) (fet/load-theme 'tango)))
-	  ("l3" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
-	  ("l3" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
+	  ("1" "doom-solarized-light" (lambda () (interactive) (fet/load-theme 'doom-solarized-light)))
+	  ("2" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
+	  ("3" "tango" (lambda () (interactive) (fet/load-theme 'tango)))
+	  ("4" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
+	  ("5" "leuven" (lambda () (interactive) (fet/load-theme 'leuven)))
 	  ]
-	 ])
+	 ]
 
-  (fet/load-theme 'doom-one)
-  ;;(fet-config-command)
+	["Windows"
+	 ("wc" "Close window" evil-window-delete)
+	 ("wn" "New window" evil-window-new)
+	 ("ws" "Window split" evil-window-split)
+	 ("wv" "Window vert split" evil-window-vsplit)
+	 ]
+	)
 
+  (autoload 'tdp-theme "tdp-theme" "Change theme" t)
+
+  ;;;###autoload (autoload 'tdp-theme "tdp-theme" nil t)
+  (transient-define-prefix tdp-theme ()
+	"Switch theme"
+	(setq choosen-theme 'doom-one)
+	["Arguments"
+	 ("-l" "doom-solarized-light" (nil "--doom-solarized-light"))
+	 ("-d" "doom-one" (nil "--doom-one"))
+	 ]
+	["Change theme"
+	 ("c" (lamda () (interactive) (message "Theme choosen")))
+	 ]
+	)
 #+end_src
 
 #+RESULTS:
