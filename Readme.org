@@ -1747,7 +1747,7 @@ Using transient menus for my main work. I like them a little bit more than =gene
 
      ["Buffer"
       ("i" "Ibuffer" ibuffer)
-       ("k" "Kill current buffer" kill-current-buffer)
+       ("kk" "Kill current buffer" kill-current-buffer)
        ("bn" "Next buffer" next-buffer)
        ("bp" "Previous buffer" previous-buffer)
        ("bb" "More buffer commands" tdp-buffers)
@@ -1767,11 +1767,7 @@ Using transient menus for my main work. I like them a little bit more than =gene
       ("hh" "More help commands" tdp-help)
       ]
 
-     ["Settings"
-      ("st" "Themes" tdp-themes)
-      ("sl" "Line numbers" tdp-line-numbers)
-      ]
-    ["Windows"
+      ["Windows"
      ("wc" "Close window" evil-window-delete)
      ("wn" "New window" evil-window-new)
      ("ws" "Window split" evil-window-split)
@@ -1785,9 +1781,13 @@ Using transient menus for my main work. I like them a little bit more than =gene
       ("ec" "Edit emacs config file" (lambda () (interactive) (find-file "~/dev/emacs/Readme.org")))
       ("dd" "Dired ~/dev/emacs/" (lambda () (interactive) (find-file "~/dev/emacs/")))
       ]
+      ["Settings"
+      ("st" "Themes" tdp-themes)
+      ("sl" "Line numbers" tdp-line-numbers)
+      ]
+
      ]
     )
-
 #+end_src
 
 #+RESULTS:
