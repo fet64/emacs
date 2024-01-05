@@ -1581,6 +1581,10 @@ I don't want saved customizations in my init.el file.
 :PROPERTIES:
 :CUSTOM_ID: Transient-h12eeqe0d2k0
 :END:
+Using transient menus for my main work. I like them a little bit more than =general.el=. I still use =general.el= from time to time.
+- [[./images/transient-base.png]]
+- [[./images/transient-help.png]]
+  
 #+begin_src emacs-lisp
   (require 'transient)
 
