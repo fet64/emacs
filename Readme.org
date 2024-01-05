@@ -1762,6 +1762,8 @@ Using transient menus for my main work. I like them a little bit more than =gene
      ["Help"
       ("hf" "Desc. function" describe-function)
       ("hv" "Desc. variable" describe-variable)
+      ("ho" "Browse orgmode.org" (lambda () (interactive)(browse-url "https://orgmode.org")))
+      ("he" "Browse Emacs manual" (lambda () (interactive)(browse-url "https://www.gnu.org/software/emacs/manual/html_node/emacs/index.html")))
       ("hh" "More help commands" tdp-help)
       ]
 
