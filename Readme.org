@@ -221,16 +221,19 @@ Enforce a sneaky Garbage Collection strategy to minimize GC interference with us
 :CUSTOM_ID: CustomVariables-5xig0se0d2k0
 :END:
 #+BEGIN_SRC emacs-lisp
-    (setq user-full-name "Fet64"                                     ;; My full name
-		    user-mail-address "fet64@outlook.com")                     ;; My email-address
+  (setq user-full-name "Fet64"                                     ;; My full name
+		  user-mail-address "fet64@outlook.com")                     ;; My email-address
 
-    (defvar my-agenda-files '("inbox.org" "projects.org" "habits.org" "agenda.org" "read.org" "todo.org"))
-    (setq org-directory "~/Org"
-		    org-agenda-files (mapcar
-							  (lambda (f) (concat (file-name-as-directory org-directory) f))
-							  my-agenda-files)
-		    org-default-notes-file (concat (file-name-as-directory org-directory) "notes.org"))
-    (setq org-log-done 'time)
+  (setq org-directory "~/Org")
+  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-capture-templates
+		'(("t" "Todo" entry (file+headline "~/Org/gtd.org" "Tasks")
+		   "* TODO %?\n  %i\n  %a")
+		  ("j" "Journal" entry (file+datetree "~/Org/journal.org")
+		   "* %?\nEntered on %U\n  %i\n  %a")))
+  (setq org-log-done 'time)
 
 #+END_SRC
 
@@ -307,44 +310,44 @@ A register can store a position, a piece of text, a rectangle, a number, a windo
 #+begin_src emacs-lisp :tangle "~/.config/emacs/lisp/scripts.el"
 
   (defun fet/duplicate-line ()
-	 "Duplicate current line"
-	 (interactive)
-	 (move-beginning-of-line 1)
-	 (kill-line)
-	 (yank)
-	 (open-line 1)
-	 (next-line 1)
-	 (yank))
+     "Duplicate current line"
+     (interactive)
+     (move-beginning-of-line 1)
+     (kill-line)
+     (yank)
+     (open-line 1)
+     (next-line 1)
+     (yank))
 
   (global-set-key (kbd "C-S-d") 'fet/duplicate-line)
 
   (defun fet/load-theme (theme)
-	 "Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
-	 (mapc #'disable-theme custom-enabled-themes)
-	 (load-theme theme t))
+     "Enhance 'load-theme' by first disabling enabled themes (by jake-emacs)"
+     (mapc #'disable-theme custom-enabled-themes)
+     (load-theme theme t))
 
   (defun mac-open-file ()
-	 (interactive)
-	 (let ((file (do-applescript "POSIX path of (choose file)")))
-	   (if (< (length file) 3)
-	   (setq file
-		 (substring file 1 (- (length file) 1))))
-	   (if (and (not (equal file "")) (file-readable-p file))
-	   (find-file file))))
+     (interactive)
+     (let ((file (do-applescript "POSIX path of (choose file)")))
+       (if (< (length file) 3)
+       (setq file
+         (substring file 1 (- (length file) 1))))
+       (if (and (not (equal file "")) (file-readable-p file))
+       (find-file file))))
 
   (defun mac-save-file-as ()
-	 (interactive)
-	 (let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
-	   (if (> (length file) 3)
-	   (setq file
-		 (substring file 1 (- (length file) 1))))
-	   (if (not (equal file ""))
-	   (write-file file))))
+     (interactive)
+     (let ((file (do-applescript "POSIX path of (choose file name with prompt \"Save As...\")")))
+       (if (> (length file) 3)
+       (setq file
+         (substring file 1 (- (length file) 1))))
+       (if (not (equal file ""))
+       (write-file file))))
 
   (defun fet/system-clipboard-to-emacs-clipboard ()
-	 "Set Emacs kill ring to contents of system clipboard."
-	 (interactive)
-	 (kill-new (simpleclip-get-contents)))
+     "Set Emacs kill ring to contents of system clipboard."
+     (interactive)
+     (kill-new (simpleclip-get-contents)))
 
   (defun fet/prettify-symbols-setup ()
   ;; checkboxes
@@ -373,55 +376,64 @@ A register can store a position, a piece of text, a rectangle, a number, a windo
 
   (prettify-symbols-mode))
   (defun fet/org-done-keep-todo ()
-	 "Mark an org todo item as done while keeping its former keyword intact, and archive.
+     "Mark an org todo item as done while keeping its former keyword intact, and archive.
   For example: * TODO This item   becomes   * DONE TODO This item."
-	 (interactive)
-	 (let ((state (org-get-todo-state)) (tag (org-get-tags)) (todo (org-entry-get (point) "TODO"))
-	   post-command-hook)
-	   (if (not (eq state nil))
-	   (progn (org-back-to-heading)
-		  (ort-todo "DONE")
-		  (org-set-tags tag)
-		  (beginning-of-line)
-		  (forward-word)
-		  (insert (concat " " todo)))
-	 (user-error "Not a TODO."))
-	   (run-hooks 'post-command-hook)))
+     (interactive)
+     (let ((state (org-get-todo-state)) (tag (org-get-tags)) (todo (org-entry-get (point) "TODO"))
+       post-command-hook)
+       (if (not (eq state nil))
+       (progn (org-back-to-heading)
+          (ort-todo "DONE")
+          (org-set-tags tag)
+          (beginning-of-line)
+          (forward-word)
+          (insert (concat " " todo)))
+     (user-error "Not a TODO."))
+       (run-hooks 'post-command-hook)))
 
   (defun fet/save-and-close-this-buffer (buffer)
   "Saves and closes given buffer."
   (if (get-buffer buffer)
-	   (let ((b (get-buffer buffer)))
-		 (save-buffer b)
-		 (kill-buffer b))))
+       (let ((b (get-buffer buffer)))
+         (save-buffer b)
+         (kill-buffer b))))
 
   (defmacro spacemacs|org-emphasize (fname char)
   "Make function for setting the emphasis in org mode"
   `(defun ,fname () (interactive)
-		   (org-emphasize ,char)))
+           (org-emphasize ,char)))
 
   ;; bash
   (defun bash (&optional path)
-	 "Open a bash window.
+     "Open a bash window.
   PATH is optional, and defaults to the current directory."
-	 (interactive (list (if (buffer-file-name)
-				(file-name-directory (buffer-file-name))
-				  (expand-file-name default-directory))))
-	 (cond
-	  ((string= system-type "gnu/linux")
-	   (shell-command "gnome-terminal"))
-	  ((string= system-type "darwin")
-	   (shell-command
-		(format "open -b com.apple.terminal%s"
-			(if path (format " \"%s\"" (expand-file-name path)) ""))))
-	  ((string= system-type "windows-nt")
-	   (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
+     (interactive (list (if (buffer-file-name)
+                (file-name-directory (buffer-file-name))
+                  (expand-file-name default-directory))))
+     (cond
+      ((string= system-type "gnu/linux")
+       (shell-command "gnome-terminal"))
+      ((string= system-type "darwin")
+       (shell-command
+        (format "open -b com.apple.terminal%s"
+            (if path (format " \"%s\"" (expand-file-name path)) ""))))
+      ((string= system-type "windows-nt")
+       (shell-command "start \"\" \"%SYSTEMDRIVE%\\Program Files\\Git\\bin\\bash.exe\" --login &"))))
 
   ;; google
   (defun google ()
-	 "Open default browser to google.com."
-	 (interactive)
-	 (browse-url "http://google.com"))
+     "Open default browser to google.com."
+     (interactive)
+     (browse-url "http://google.com"))
+
+  (defun ap/switch-theme (theme)
+    "Disable active thems and load THEME."
+    (interactive (->> (custom-available-themes)
+                      (-map #'symbol-name)
+                      (completing-read "Theme: ")
+                      intern list))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme 'no-confirm))
 
   (provide 'scripts)
 #+end_src
@@ -1573,196 +1585,201 @@ I don't want saved customizations in my init.el file.
   (require 'transient)
 
   (defcustom tdp-exit-at-once-p nil
-	"Exit tdp at onece option"
-	:type 'boolean
-	:group 'my-options)
+    "Exit tdp at onece option"
+    :type 'boolean
+    :group 'my-options)
 
   (defun tdp-toggle-exit-at-once-p ()
-	"Toggle the value of the boolean option."
-	(interactive)
-	(setq tdp-exit-at-once-p (not tdp-exit-at-once-p)))
+    "Toggle the value of the boolean option."
+    (interactive)
+    (setq tdp-exit-at-once-p (not tdp-exit-at-once-p)))
 
   (transient-define-prefix tdp-line-numbers ()
-	"Line-numbers"
-	:transient-suffix 'transient--do-stay
-	["Line number style"
-	  ("l" "Toggle line-numbers" display-line-numbers-mode)
-	  ("r" "Relative line-numbers" menu-bar--display-line-numbers-mode-relative)
-	  ("a" "Absolute line-numbers" menu-bar--display-line-numbers-mode-absolute)
-	 ]
-	["Navigation"
-	  ("b" "Back" transient-quit-one)
-	  ("q" "Quit" transient-quit-all)
-	  ]
-	)
+    "Line-numbers"
+    :transient-suffix 'transient--do-stay
+    ["Line number style"
+      ("l" "Toggle line-numbers" display-line-numbers-mode)
+      ("r" "Relative line-numbers" menu-bar--display-line-numbers-mode-relative)
+      ("a" "Absolute line-numbers" menu-bar--display-line-numbers-mode-absolute)
+     ]
+    ["Navigation"
+      ("b" "Back" transient-quit-one)
+      ("q" "Quit" transient-quit-all)
+      ]
+    )
 
   (transient-define-prefix tdp-buffers ()
-	"Buffers"
-	:transient-suffix 'transient--do-stay
-	[["Buffers"
-	 ("b" "Switch to buffer" switch-to-buffer)
-	 ("c" "Create indirect buffer copy in a split" clone-indirect-buffer)
-	 ("C" "Clone indirect buffer in new window" clone-indirect-buffer-other-window)
-	 ("i" "Ibuffer" ibuffer)
-	 ]
-	["Kill"
-	 ("k" "Kill current buffer" kill-current-buffer)
-	 ("K" "Kill some buffers" kill-some-buffers)
-	 ]
-	["Movement"
-	 ("n" "Next buffer" next-buffer)
-	 ("p" "Previous buffer" previous-buffer)
-	 ]
-	["Commands"
-	 ("r" "Revert buffer" revert-buffer)
-	 ("R" "Rename buffer" rename-buffer)
-	 ("s" "Save buffer" basic-save-buffer)
-	 ("S" "Save multiple buffers" save-some-buffers)
-	 ("P" "Print buffer" lpr-buffer)
-	 ]]
-	["Navigation"
-	  ("b" "Back" transient-quit-one)
-	  ("q" "Quit" transient-quit-all)
-	  ]
-	)
+    "Buffers"
+    :transient-suffix 'transient--do-stay
+    [["Buffers"
+     ("b" "Switch to buffer" switch-to-buffer)
+     ("c" "Create indirect buffer copy in a split" clone-indirect-buffer)
+     ("C" "Clone indirect buffer in new window" clone-indirect-buffer-other-window)
+     ("i" "Ibuffer" ibuffer)
+     ]
+    ["Kill"
+     ("k" "Kill current buffer" kill-current-buffer)
+     ("K" "Kill some buffers" kill-some-buffers)
+     ]
+    ["Movement"
+     ("n" "Next buffer" next-buffer)
+     ("p" "Previous buffer" previous-buffer)
+     ]
+    ["Commands"
+     ("r" "Revert buffer" revert-buffer)
+     ("R" "Rename buffer" rename-buffer)
+     ("s" "Save buffer" basic-save-buffer)
+     ("S" "Save multiple buffers" save-some-buffers)
+     ("P" "Print buffer" lpr-buffer)
+     ]]
+    ["Navigation"
+      ("b" "Back" transient-quit-one)
+      ("q" "Quit" transient-quit-all)
+      ]
+    )
 
   (transient-define-prefix tdp-help ()
-	"Help"
-	:transient-suffix 'transient--exit
-	[["Describe"
-	  ("c" "Desc. char" describe-char)
-	  ("f" "Desc. function" describe-function)
-	  ("F" "Desc. face" describe-face)
-	  ("i" "Desc. input method" describe-input-method)
-	  ("l" "Desc. language environment" describe-language-environment)
-	  ("m" "Desc. mode" describe-mode)
-	  ("v" "Desc. variable" describe-variable)
-	  ("x" "Desc. command" describe-command)
-	  ]
-	 ["Info"
+    "Help"
+    :transient-suffix 'transient--exit
+    [["Describe"
+      ("c" "Desc. char" describe-char)
+      ("f" "Desc. function" describe-function)
+      ("F" "Desc. face" describe-face)
+      ("i" "Desc. input method" describe-input-method)
+      ("l" "Desc. language environment" describe-language-environment)
+      ("m" "Desc. mode" describe-mode)
+      ("v" "Desc. variable" describe-variable)
+      ("x" "Desc. command" describe-command)
+      ]
+     ["Info"
   ;;	("a" "Apropos" counsel-apropos)
   ;;	("b" "Show bindings" counsel-bindings)
-	  ("V" "Veiw echo area messages" view-echo-area-messages)
-	  ("I" "View Info" info)
-	  ("L" "Display recent keystrokes and the commands run" view-lossage)
-	  ("w" "Prints keybinding for command if set" where-is)
-	  ]
-	 ["Emacs documentation"
-	  ("ea" "About Emacs" about-emacs)
-	  ("ed" "View Emacs debugging" view-emacs-debugging)
-	  ("ef" "View Emacs FAQ" view-emacs-FAQ)
-	  ("em" "View Emacs Manual" info-emacs-manual)
-	  ("en" "View Emacs News" view-emacs-news)
-	  ("eo" "How to obtain Emacs" describe-distribution)
-	  ("ep" "View Emacs problems" view-emacs-problems)
-	  ("et" "View Emacs todo" view-emacs-todo)
-	  ("ew" "Describe No Warranty" describe-no-warranty)
-	  ]
-	 ]
-	["Navigation"
-	 ("b" "Back" transient-quit-one)
-	 ("q" "Quit" transient-quit-all)
-	 ]
-	)
+      ("V" "Veiw echo area messages" view-echo-area-messages)
+      ("I" "View Info" info)
+      ("L" "Display recent keystrokes and the commands run" view-lossage)
+      ("w" "Prints keybinding for command if set" where-is)
+      ]
+     ["Emacs documentation"
+      ("ea" "About Emacs" about-emacs)
+      ("ed" "View Emacs debugging" view-emacs-debugging)
+      ("ef" "View Emacs FAQ" view-emacs-FAQ)
+      ("em" "View Emacs Manual" info-emacs-manual)
+      ("en" "View Emacs News" view-emacs-news)
+      ("eo" "How to obtain Emacs" describe-distribution)
+      ("ep" "View Emacs problems" view-emacs-problems)
+      ("et" "View Emacs todo" view-emacs-todo)
+      ("ew" "Describe No Warranty" describe-no-warranty)
+      ]
+     ]
+    ["Navigation"
+     ("b" "Back" transient-quit-one)
+     ("q" "Quit" transient-quit-all)
+     ]
+    )
 
   (transient-define-prefix tdp-magit ()
-	"Magit"
-	:transient-suffix 'transient--do-stay
-	[["Commands"
-	  ("g" "Magit status" magit-status)
-	  ("." "Magit file dispatch" magit-file-dispatch)
-	  ("b" "Switch branch" magit-branch-checkout)
-	  ("F" "Git fetch" magit-fetch)
-	  ("i" "Initialize git repo" magit-init)
-	  ("l" "Magit buffer log" magit-log-buffer-file)
-	  ("r" "Git revert file" vc-revert)
-	  ("s" "Git stage file" magit-stage-file)
-	  ("u" "git unstage file" magit-unstage-file)
-	  ]
-	 ["Create"
-	  ("cb" "Create branch and checkout" magit-branch-checkout)
-	  ("cc" "Create commit" magit-commit-create)
-	  ("cf" "Create fixup commit" magit-commit-fixup)
-	  ]
-	 ["Find"
-	  ("fc" "Show commit" magit-show-commit)
-	  ("ff" "Magit find file" magit-find-file)
-	  ("fg" "Find gitconfig file" magit-find-git-config-file)
-	  ]
-	 ]
-	   ["Navigation"
-	  ("b" "Back" transient-quit-one)
-	  ("q" "Quit" transient-quit-all)
-	  ]
-	)
+    "Magit"
+    :transient-suffix 'transient--do-stay
+    [["Commands"
+      ("g" "Magit status" magit-status)
+      ("." "Magit file dispatch" magit-file-dispatch)
+      ("b" "Switch branch" magit-branch-checkout)
+      ("F" "Git fetch" magit-fetch)
+      ("i" "Initialize git repo" magit-init)
+      ("l" "Magit buffer log" magit-log-buffer-file)
+      ("r" "Git revert file" vc-revert)
+      ("s" "Git stage file" magit-stage-file)
+      ("u" "git unstage file" magit-unstage-file)
+      ]
+     ["Create"
+      ("cb" "Create branch and checkout" magit-branch-checkout)
+      ("cc" "Create commit" magit-commit-create)
+      ("cf" "Create fixup commit" magit-commit-fixup)
+      ]
+     ["Find"
+      ("fc" "Show commit" magit-show-commit)
+      ("ff" "Magit find file" magit-find-file)
+      ("fg" "Find gitconfig file" magit-find-git-config-file)
+      ]
+     ]
+       ["Navigation"
+      ("b" "Back" transient-quit-one)
+      ("q" "Quit" transient-quit-all)
+      ]
+    )
 
   (transient-define-prefix tdp-themes ()
-	"Themes"
-	:transient-suffix 'transient--do-stay
-	 [["Dark themes"
-	 ("1" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
-	 ("2" "doom-nord" (lambda () (interactive) (fet/load-theme 'doom-nord)))
-	 ]
-	["Light themes"
-	 ("s" "doom-solarized-light" (lambda () (interactive) (fet/load-theme 'doom-solarized-light)))
-	 ]]
-	 ["Navigation"
+    "Themes"
+    :transient-suffix 'transient--do-stay
+     [["Dark themes"
+     ("1" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
+     ("2" "doom-nord" (lambda () (interactive) (fet/load-theme 'doom-nord)))
+     ("3" "doom-acario-dark" (lambda () (interactive) (fet/load-theme 'doom-acario-dark)))
+     ("4" "doom-ayu-dark" (lambda () (interactive) (fet/load-theme 'doom-ayu-dark)))
+     ]
+    ["Light themes"
+     ("s" "doom-solarized-light" (lambda () (interactive) (fet/load-theme 'doom-solarized-light)))
+     ]]
+     ["Navigation"
   ;;	("b" "Back" transient-quit-one)
-	  ("q" "Quit" transient-quit-all)
-	  ]
-	)
+      ("q" "Quit" transient-quit-all)
+      ]
+    )
 
   (transient-define-prefix fet-space-command ()
-	"Config options"
-	[
-	 ["Commands"
-	  ("g" "Magit status" magit-status)
-	  ("G" "Magit" tdp-magit)
-	  ("S" "Insert snippet" yas-insert-snippet)
-	  ("T" "Org babel tangle" org-babel-tangle)
-	  ("E" "Export dispatch" org-export-dispatch)
-	  ("c" "Org capture" org-capture)
-	  ]
+    "Config options"
+    [
+     ["Commands"
+      ("SPC" "M-x" counsel-M-x)
+      ("g" "Magit status" magit-status)
+      ("G" "Magit" tdp-magit)
+      ("S" "Insert snippet" yas-insert-snippet)
+      ("T" "Org babel tangle" org-babel-tangle)
+      ("E" "Export dispatch" org-export-dispatch)
+      ("a" "Org agenda" org-agenda)
+      ("l" "TODO list" org-todo-list)
+      ("c" "Org capture" org-capture)
+      ]
 
-	 ["Buffer"
-	  ("i" "Ibuffer" ibuffer)
-	   ("bn" "Next buffer" next-buffer)
-	   ("bp" "Previous buffer" previous-buffer)
-	   ("bb" "More buffer commands" tdp-buffers)
-	  ]
+     ["Buffer"
+      ("i" "Ibuffer" ibuffer)
+       ("bn" "Next buffer" next-buffer)
+       ("bp" "Previous buffer" previous-buffer)
+       ("bb" "More buffer commands" tdp-buffers)
+      ]
 
-	 ["Evaluate"
-	  ("eb" "Evaluate buffer" eval-buffer)
-	  ("ee" "Evaluate expression" eval-expression)
-	  ("ed" "Evaluate defun" eval-defun)
-	  ]
+     ["Evaluate"
+      ("eb" "Evaluate buffer" eval-buffer)
+      ("ee" "Evaluate expression" eval-expression)
+      ("ed" "Evaluate defun" eval-defun)
+      ]
 
-	 ["Help"
-	  ("hf" "Desc. function" describe-function)
-	  ("hv" "Desc. variable" describe-variable)
-	  ("hh" "More help commands" tdp-help)
-	  ]
+     ["Help"
+      ("hf" "Desc. function" describe-function)
+      ("hv" "Desc. variable" describe-variable)
+      ("hh" "More help commands" tdp-help)
+      ]
 
-	 ["Settings"
-	  ("t" "Themes" tdp-themes)
-	  ("l" "Line numbers" tdp-line-numbers)
-	  ]
-	["Windows"
-	 ("wc" "Close window" evil-window-delete)
-	 ("wn" "New window" evil-window-new)
-	 ("ws" "Window split" evil-window-split)
-	 ("wv" "Window vert split" evil-window-vsplit)
-	 ]]
-	[["Navigation"
-	;; 	("b" "Back" transient-quit-one)
-	  ("q" "Quit" transient-quit-all)
-	  ]
-	 ["Emacs"
-	  ("ec" "Edit emacs config file" (lambda () (interactive) (find-file "~/dev/emacs/Readme.org")))
-	  ("dd" "Dired ~/dev/emacs/" (lambda () (interactive) (find-file "~/dev/emacs/")))
-	  ]
-	 ]
-	)
+     ["Settings"
+      ("st" "Themes" tdp-themes)
+      ("sl" "Line numbers" tdp-line-numbers)
+      ]
+    ["Windows"
+     ("wc" "Close window" evil-window-delete)
+     ("wn" "New window" evil-window-new)
+     ("ws" "Window split" evil-window-split)
+     ("wv" "Window vert split" evil-window-vsplit)
+     ]]
+    [["Navigation"
+    ;; 	("b" "Back" transient-quit-one)
+      ("q" "Quit" transient-quit-all)
+      ]
+     ["Emacs"
+      ("ec" "Edit emacs config file" (lambda () (interactive) (find-file "~/dev/emacs/Readme.org")))
+      ("dd" "Dired ~/dev/emacs/" (lambda () (interactive) (find-file "~/dev/emacs/")))
+      ]
+     ]
+    )
 
 #+end_src
 
