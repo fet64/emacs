@@ -561,6 +561,23 @@ By default, Emacs saves backup files in the current directory. These are files e
 #+RESULTS:
 : recentf-open-files
 
+* GNUS
+#+BEGIN_SRC emacs-lisp
+  (setq smtpmail-auth-credentials "~/.authinfo")
+  (setq user-mail-address "fet64@outlook.com"
+        user-full-name "Fet64")
+  (setq gnus-select-method
+        '(nnimap "my_mail"
+                 (nnimap-address "outlook.live.com")
+                 (nnimap-server-port 993)
+                 (nnimap-stream ssl)
+                 (nnimap-search-engine imap)
+                 (nnimap-authinfo-file "~/.authinfo")))
+
+  (setq smtpmail-stream-type 'ssl
+        smtpmail-smtp-server "outlook.live.com"
+        smtpmail-smtp-service 587)
+#+END_SRC
 * Saving customizations
 :PROPERTIES:
 :CUSTOM_ID: Savingcustomizations-4pibeqe0d2k0
