@@ -2207,6 +2207,30 @@ To see it in action, open [[file:./example.org]example.org].
 #+RESULTS:
 : t
 
+* Embark
+#+begin_src emacs-lisp 
+  (use-package embark
+    :ensure t
+    :bind
+    (("C-." . embark-act) ;; pick some comfortable binding
+     ("C-;" . embark-dwim) ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for describe-bindings
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  (use-package embark-consult
+    :ensure t
+    :hook (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+#+RESULTS:
+| consult-preview-at-point-mode |
+
 * Footers in =init.el= and =early-init.el=
 :PROPERTIES:
 :CUSTOM_ID: Footersininitelandearlyinitel-3iheeqe0d2k0
