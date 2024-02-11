@@ -1654,6 +1654,16 @@ Using transient menus for my main work. I like them a little bit more than =gene
 - [[./images/transient-base.png]]
 - [[./images/transient-help.png]]
   
+  #+begin_src emacs-lisp
+    (defun fet-load-theme (theme)
+      "Disable active theme and load THEME."
+      (interactive (->> (custom-available-themes)
+                        (-map #'symbol-name)
+                        (completing-read "Theme: ")
+                        intern list))
+      (mapc #'disable-theme custom-enabled-themes)
+      (load-theme theme 'no-confirm))
+  #+end_src
 #+begin_src emacs-lisp
   (require 'transient)
 
@@ -1790,6 +1800,7 @@ Using transient menus for my main work. I like them a little bit more than =gene
     "Themes"
     :transient-suffix 'transient--do-stay
      [["Dark themes"
+       ("0" "Choose from all themes" fet-load-theme)
      ("1" "doom-one" (lambda () (interactive) (fet/load-theme 'doom-one)))
      ("2" "doom-nord" (lambda () (interactive) (fet/load-theme 'doom-nord)))
      ("3" "doom-acario-dark" (lambda () (interactive) (fet/load-theme 'doom-acario-dark)))
