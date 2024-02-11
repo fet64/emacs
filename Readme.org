@@ -64,9 +64,12 @@ cp -v leuven_theme.css ~/.config/emacs/
 | scripts/buffer-move.el                | -> | /Users/au/.config/emacs/scripts/buffer-move.el                |
 | emacs-custom.el                       | -> | /Users/au/.config/emacs/emacs-custom.el                       |
 | images                                | -> | /Users/au/.config/emacs/images                                |
+| images/transient-help.png             | -> | /Users/au/.config/emacs/images/transient-help.png             |
 | images/melpa.png                      | -> | /Users/au/.config/emacs/images/melpa.png                      |
+| images/transient-base.png             | -> | /Users/au/.config/emacs/images/transient-base.png             |
 | images/emacs.png                      | -> | /Users/au/.config/emacs/images/emacs.png                      |
 | images/which-key.png                  | -> | /Users/au/.config/emacs/images/which-key.png                  |
+| images/general.png                    | -> | /Users/au/.config/emacs/images/general.png                    |
 | setupfiles_html                       | -> | /Users/au/.config/emacs/setupfiles_html                       |
 | setupfiles_html/readtheorg.setup      | -> | /Users/au/.config/emacs/setupfiles_html/readtheorg.setup      |
 | setupfiles_html/org.min_css.setup     | -> | /Users/au/.config/emacs/setupfiles_html/org.min_css.setup     |
@@ -87,7 +90,7 @@ To create =early-init.el= and =init.el= you need to tangle this org-file. You ca
 #+end_src
 
 #+RESULTS:
-| ~/.config/emacs/early-init.el | ~/.config/emacs/init.el |
+| ~/.config/emacs/lisp/scripts.el | ~/.config/emacs/lisp/package-manager.el | ~/.config/emacs/early-init.el | ~/.config/emacs/init.el |
 
 ** Restart Emacs to load the new configuration
 :PROPERTIES:
